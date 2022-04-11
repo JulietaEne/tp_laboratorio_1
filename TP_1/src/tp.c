@@ -136,3 +136,18 @@ void tp_MensajeError(char* mensaje)
 {
 	printf("%s", mensaje);
 }
+
+/**
+* \brief Interactua con el usuario para recibir una opción del menú mostrado, retorna la opción ingresada
+* \param descripcion y opciones Todos corresponden a la descripción del menu
+* \return Retorna la opción ingresada por el Usuario
+*
+*/
+int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres)
+{
+    int opcionElegida;
+    printf("%s\n%s\n%s\n%s", descripcion, opcionUno, opcionDos, opcionTres);
+    utn_GetNumeroInt(&opcionElegida, "\n\nIngresar opción: ", "por favor, ingrese una opción válida", 1, 3, 1);
+
+    return opcionElegida;
+}

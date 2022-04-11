@@ -11,13 +11,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+//#include <conio.h>
 #include "utn.h"
 #include "tp.h"
 
 int main(void) {
 
 	int menuPrincipal;
+	int menuSecundario;
 	int flagVuelosCargados;
+	int flagSubMenuUno;
+	int flagSubMenuDos;
 	int retornoFuncion;
 	float distanciaTotal;
 	float vueloAerolineas;
@@ -34,6 +38,8 @@ int main(void) {
 	float diferenciaAerolineasLatam;
 
 	flagVuelosCargados = -1;
+	flagSubMenuUno = 0;
+	flagSubMenuDos = 0;
 
 	//retornoFuncion = tp_calcularBitcoin(20000);
 //	printf("PRUEBA valor en BTC para20000$ ARG = %.6f", retornoFuncion);
@@ -44,9 +50,10 @@ int main(void) {
 		switch (menuPrincipal)
 		{
 			case 1:
-				retornoFuncion = utn_GetNumeroFloat(&distanciaTotal, "1. Ingresar Kilometros: ", "Ingrese un dato valido\n", 2, 20000, 2);
+				retornoFuncion = utn_GetNumeroFloat(&distanciaTotal, "1. Ingresar Kilometros: ", "Ingrese un dato valido [2km a 20.000km]\n", 2, 20000, 2);
 				if(!retornoFuncion)
 				{
+					//system(clear);
 					printf("km=%.2f\n\n",distanciaTotal);
 					flagVuelosCargados = 1;
 				}
@@ -60,16 +67,54 @@ int main(void) {
 				if(flagVuelosCargados == 1)
 				{
 					printf("2. Ingresar Precio de vuelos\n");
-					retornoFuncion = utn_GetNumeroFloat(&vueloAerolineas, "Precio vuelo Aerolineas: $", "Ingrese un dato valido[ENTRE $25000 y $200000]", 25000, 200000, 2);
-					if(!retornoFuncion && !utn_GetNumeroFloat(&vueloLatam, "Precio vuelo Latam: $", "Ingrese un dato valido[ENTRE $25000 y $200000]", 25000, 200000, 2))
+					do
 					{
-						printf("Aerolineas=$%.2f - Latam=$%.2f\n\n",vueloAerolineas, vueloLatam);
-						flagVuelosCargados = 2;
-					}
-					else
-					{
-						tp_MensajeErrorGenerico(retornoFuncion);
-					}
+						menuSecundario= tp_ImprimirMenuTresOpciones("\n	SUBMENU","	 1. Vuelos en Aerolineas", "	 2. Vuelos en Latam", "	 3. Continuar con el Menu Principal");
+						switch (menuSecundario)
+						{
+							case 1:
+								retornoFuncion = utn_GetNumeroFloat(&vueloAerolineas, "	Precio vuelo Aerolineas: $", "	ngrese un dato valido[ENTRE $25000 y $200000]", 25000, 200000, 2);
+								if(!retornoFuncion)
+								{
+									printf("	Aerolineas=$%.2f\n",vueloAerolineas);
+									if(flagSubMenuDos >= 0 && flagSubMenuUno == 0 )
+									{
+										flagSubMenuUno = 2;
+									}
+								}
+								else
+								{
+									tp_MensajeErrorGenerico(retornoFuncion);
+								}
+								break;
+
+							case 2:
+								retornoFuncion = utn_GetNumeroFloat(&vueloLatam, "	Precio vuelo Latam: $", "	Ingrese un dato valido[ENTRE $25000 y $200000]", 25000, 200000, 2);
+								if(!retornoFuncion)
+								{
+									printf("	Latam=$%.2f\n",vueloLatam);
+									if(flagSubMenuDos == 0 && flagSubMenuUno >= 0 )
+									{
+										flagSubMenuDos= 2;
+									}
+								}
+								else
+								{
+									tp_MensajeErrorGenerico(retornoFuncion);
+								}
+								break;
+
+							case 3:
+								if(flagSubMenuDos == 2 && flagSubMenuUno==2)
+								{
+									flagVuelosCargados = 2;
+								}
+								printf("...\n");
+								sleep(1);
+								printf("Retornando al menú principal...\n\n");
+						}
+					}while(menuSecundario!= 3);
+
 				}
 				else
 				{
@@ -120,14 +165,6 @@ int main(void) {
 							tp_MensajeError("ADVERTENCIA ya se han calculado los costos. Ingrese al MENU op4. para visualizarlos\n\n");
 							break;
 					}
-					if(flagVuelosCargados == 0)
-					{
-						tp_MensajeError("ERROR\nPrimero debe cargar la distancia total. Ingrese al MENU op1. para continuar\n\n");
-					}
-					else
-					{
-						tp_MensajeError("ERROR\nPrimero debe cargar el precio total. Ingrese al MENU op2. para continuar\n\n");
-					}
 				}
 
 				break;
@@ -172,18 +209,22 @@ int main(void) {
 				distanciaTotal = 7090;
 				vueloAerolineas = 162965;
 				vueloLatam = 159339;
-				sleep(0.5);
-				printf("DISTANCIA TOTAL %d\nVUELO AEROLINEAS %d\nVUELO LATAM %d\n\n", distanciaTotal, vueloAerolineas, vueloLatam);
+				sleep(1);
+				printf("DISTANCIA TOTAL %.2f\nVUELO AEROLINEAS $%.2f\nVUELO LATAM $%.2f\n\n", distanciaTotal, vueloAerolineas, vueloLatam);
 				//acá KM = 7090
 				//AA=$162965
 				//LATAM=$159339
 				break;
 			case 6:
-				printf("\nSaliendo del programa ...");
+				sleep(0.5);
+				printf("\nSaliendo del programa...");
+				sleep(0.5);
 				printf("\nMuchas gracias ...");
+				sleep(1.3);
 				printf("\nFINALIZADO");
 				break;
 		}
 
 	}while(menuPrincipal != 6);
+	return EXIT_SUCCESS;
 }

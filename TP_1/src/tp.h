@@ -20,5 +20,6 @@ float tp_calcularDiferencia(float minuendo, float sustraendo);
 int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres, char* opcionCuatro, char* opcionCinco, char* opcionSeis);
 void tp_MensajeErrorGenerico(int error);
 void tp_MensajeError(char* mensaje);
+int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres);
 
 #endif /* TP_H_ */
