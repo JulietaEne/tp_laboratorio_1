@@ -8,50 +8,90 @@
 #include <stdlib.h>
 #include "tp.h"
 #include "utn.h"
-//____________________________:::::FUNCIONES tp 1:::::___________________________
+//____________________________:::::FUNCIONES tp 1:::::____________________________
+/**
+ * \brief calcula un descuento según los valores recibidos y retorna el resultado
+ * \param numero Recibe por valor el dato sobre el cual se calculará
+ * \param descuento Recibe por valor el dato que indique el descuento a realizar
+ * \return Retorna > 0 si la operación se realizó con éxito (retorna el resultado de la operación).
+ * 				   = -1 si no se pudo realizar la operación (el dato ingresado como descuento no está entre el rango 0-100)
+ *
+ */
 float tp_calcularTotalConDescuento(float numero, float descuento)
 {
-	float retorno;
-	retorno = -1;
+	float resultado;
+	resultado = -1;
 
-	if(descuento < 100 && descuento >0)
+	if(descuento <= 100 && descuento >0)
 	{
 		descuento = 1-descuento*0.01;
 		//printf("DECUENTO descuento = %.2f", descuento);
-		retorno = numero*descuento;
+		resultado = numero*descuento;
 	}
-	return retorno;
+	return resultado;
 }
 
+/**
+ * \brief calcula un porcentaje de aumento según los valores recibidos y retorna el resultado
+ * \param numero Recibe por valor el dato sobre el cual se calculará
+ * \param interes Recibe por valor el dato que indica porcentaje de aumento
+ * \return Retorna > 0 si la operación se realizó con éxito (retorna el resultado de la operación).
+ * 				   = -1 si no se pudo realizar la operación (el dato ingresado como descuento no está entre el rango 0-100)
+ *
+ */
 float tp_calcularTotalConInteres(float numero, float interes)
 {
-	float retorno;
-	retorno = -1;
+	float resultado;
+	resultado = -1;
 
-	if(interes < 100 && interes >0)
+	if(interes <= 100 && interes >0)
 	{
 		interes = 1+interes*0.01;
-		retorno = numero*interes;
+		resultado = numero*interes;
 	}
-	return retorno;
+	return resultado;
 }
 
+/**
+ * \brief calcula el cambio pesos argentinos en bitcoin y retorna el resultado
+ * \param pesosArgIngresados Recibe por valor el importe en pesos
+ * \param interes Recibe por valor el dato que indica porcentaje de aumento
+ * \return Retorna > 0 (retorna el resultado de la operación).
+ *
+ */
 float tp_calcularTotalEnBitcoin(float pesosArgIngresados)
 {
 	//valor actual 1 bitcoin = 4606954.55 Pesos Argentinos
 	return pesosArgIngresados/4606954.55;
 }
+
+/**
+ * \brief realiza una división y retorna el resultado
+ * \param dividendo Recibe por valor el dato sobre el cual opera
+ * \param divisor Recibe por valor el dato por el cual se divide
+ * \return Retorna > 0 si la operación se realizó con éxito(retorna el resultado de la operación).
+ * 				   = -1 si hubo un error en el parámetro divisor
+ *
+ */
 float tp_calcularPrecioUnitario(float dividendo, float divisor)
 {
-	float retorno;
-	retorno = -1;
+	float resultado;
+	resultado = -1;
 	if(divisor != 0)
 	{
-		retorno = dividendo/divisor;
+		resultado = dividendo/divisor;
 	}
 
-	return retorno;
+	return resultado;
 }
+
+/**
+ * \brief calcula una diferencia y retorna el resultado
+ * \param minuendo Recibe por valor el dato sobre el cual opera
+ * \param sustraendo Recibe por valor el dato que resta
+ * \return Retorna el resultado de la resta
+ *
+ */
 float tp_calcularDiferencia(float minuendo, float sustraendo)
 {
 	return minuendo-sustraendo;
@@ -59,9 +99,9 @@ float tp_calcularDiferencia(float minuendo, float sustraendo)
 
 
 
-//__________________:::::FUNCIONES ASISTENTES DEL PROGRAMA:::::___________________
+//____________________________:::::FUNCIONES ASISTENTES DEL PROGRAMA:::::____________________________
 /**
-* \brief Interactua con el usuario para recibir una opción del menú mostrado
+* \brief Interactua con el usuario para recibir una opción del menú mostrado, retorna la opción ingresada
 * \param descripcion y opciones Todos corresponden a la descripción del menu
 * \return Retorna la opción ingresada por el Usuario
 *
@@ -77,7 +117,7 @@ int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionD
 
 /**
 * \brief Muestra a usuario un mensaje con el código del error
-* \param int error: recibe el código del error presentado
+* \param error Recibe por valor el código del error presentado
 * \return void
 *
 */
@@ -88,7 +128,7 @@ void tp_MensajeErrorGenerico(int error)
 
 /**
 * \brief Muestra a usuario un mensaje de error
-* \param int error: recibe el código del error presentado
+* \param error Recibe el mensaje a imprimir
 * \return void
 *
 */
