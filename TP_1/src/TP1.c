@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-//#include <conio.h>
 #include "utn.h"
 #include "tp.h"
 
@@ -111,7 +110,7 @@ int main(void) {
 								}
 								printf("...\n");
 								sleep(1);
-								printf("Retornando al menú principal...\n\n");
+								printf("Retornando al menu principal...\n\n");
 						}
 					}while(menuSecundario!= 3);
 

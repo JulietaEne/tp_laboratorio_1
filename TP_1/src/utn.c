@@ -6,6 +6,7 @@
  */
 
 #include <stdio_ext.h>
+//#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "utn.h"
@@ -17,13 +18,13 @@ static int esFlotante(char* pCadena, int limite);
 static int getInt(int* pRespuesta);
 static int getFloat(float* pRespuesta);
 
-//a partir de acá desarrollo mis funciones
+//a partir de aca desarrollo mis funciones
 
 /**
  * \brief 	Lee el stdin hasta que encuentra un '\n' o hasta que haya copiado en cadena
- * 			un máximo de 'longitud - 1' caracteres. EN ÉSTA FUNCIÓN, MARCA ERROR SI EL USUARIO
- *          INGRESA MÁS CARACTERES DE LO SOLICITADO.######TAMBIEN ME SIRVE PARA LEVANTAR UN ARRAY CHAR :D###########
- * \param *cadena Puntero al espacio de memoria donde se copiará la cadena obtenida
+ * 			un maximo de 'longitud - 1' caracteres. EN ÉSTA FUNCION, MARCA ERROR SI EL USUARIO
+ *          INGRESA MAS CARACTERES DE LO SOLICITADO.######TAMBIEN ME SIRVE PARA LEVANTAR UN ARRAY CHAR :D###########
+ * \param *cadena Puntero al espacio de memoria donde se copiara la cadena obtenida
  * \param longitud Indica la longitud de la cadena trabajada
  * \return Retorna 0 si se obtiene la cadena exitosamente, y -1 si ha encontrado un error.
  *
@@ -45,12 +46,12 @@ int myGets_prueba(char* pCadena, int len)
 			if(strnlen(bufferString,sizeof(bufferString)) <= len)
 			{
 				strncpy(pCadena, bufferString, len);
-				//retorno = printf("entró a mygets, obvio --->");
+				//retorno = printf("entro a mygets, obvio --->");
 				retorno =0;
 			}
 		}
 	}
-	//printf("retorno función myGets %d", retorno);
+	//printf("retorno funcion myGets %d", retorno);
 	return retorno;
 }
 
@@ -86,7 +87,7 @@ static int esFlotante(char* pCadena, int limite)
 			}
 		}
 	}
-	//printf("retorno función esFlotante %d", retorno);
+	//printf("retorno funcion esFlotante %d", retorno);
 	return retorno;
 }
 
@@ -94,19 +95,19 @@ static int esFlotante(char* pCadena, int limite)
  * #####probando con myGets_prueba
  * \brief 	Solicita un dato desde la terminal (se sirve de myGets) y
  * 			busca haber obtenido un numero flotante (se sirve de esNumerica)
- * \param *pRespuesta Puntero al espacio de memoria donde se dejará el resultado de la función
- * \return Retorna 0 si se obtiene un número entero exitosamente y -1 si ha encontrado un error.
+ * \param *pRespuesta Puntero al espacio de memoria donde se dejara el resultado de la funcion
+ * \return Retorna 0 si se obtiene un numero entero exitosamente y -1 si ha encontrado un error.
  *
  */
 static int getFloat(float* pRespuesta)
 {
 	int retorno= -1;
-	char buffer[4096]; // por qué en la clase 7 se usa un buffer de 128?
+	char buffer[4096]; // por que en la clase 7 se usa un buffer de 128?
 	if(pRespuesta!=NULL)
 	{
 		if(myGets_prueba(buffer, sizeof(buffer))==0 && esFlotante(buffer,sizeof(buffer))==1)
 			{
-				//retorno=printf("\nentroó a getFloat");
+				//retorno=printf("\nentro a getFloat");
 				retorno=0;
 				*pRespuesta = atof(buffer);
 			}
@@ -118,12 +119,12 @@ static int getFloat(float* pRespuesta)
 
 /**
  * \brief 	Solicita un numero al usuario(se sirve de getFloat), luego de verificarlo devuelve el resultado
- * \param *pRespuesta Puntero al espacio de memoria donde se dejará el resultado de la función
+ * \param *pRespuesta Puntero al espacio de memoria donde se dejara el resultado de la funcion
  * \param *mensaje Es el mensaje a ser mostrado
  * \param *mensajeError Es el mensaje de Error a ser mostrado
  * \param minimo Es el numero minimo a ser aceptado
- * \param maximo Es el numero máximo a ser aceptado
- * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
+ * \param maximo Es el numero maximo a ser aceptado
+ * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la funcion
  * \return Retorna 0 si se obtuvo exitosamente el numero y -1 si no se obtuvo
  *
  */
@@ -145,7 +146,7 @@ int utn_GetNumeroFloat(float* pRespuesta, char* mensaje, char* mensajeError, flo
 			if(getFloat(&bufferFloat)==0 && bufferFloat >= minimo && bufferFloat <= maximo)
 			{
 				*pRespuesta= bufferFloat;
-				//retorno=printf("\nentroó a getNumeroFloat");
+				//retorno=printf("\nentro a getNumeroFloat");
 				retorno = 0;
 				break;
 			}
@@ -153,7 +154,7 @@ int utn_GetNumeroFloat(float* pRespuesta, char* mensaje, char* mensajeError, flo
 			reintentos--;
 		}while(reintentos >= 0);
 	}
-	//printf("--->retorno de función %d", retorno);
+	//printf("--->retorno de funcion %d", retorno);
 	return retorno;
 }
 
@@ -183,17 +184,17 @@ static int esEntero(char* pCadena, int limite) //tengo que hacer uno para flotan
 	}
 	if (flagFlotante > 1)
 	{
-		retorno = 0;//acá hay muchos puntitos
+		retorno = 0;//aca hay muchos puntitos
 	}
-	//printf("retorno función esEntero %d", retorno);
+	//printf("retorno funcion esEntero %d", retorno);
 	return retorno;
 }
 
 /** #####probando con myGets_prueba + ARREGLOS
  * \brief 	Solicita un dato desde la terminal (se sirve de myGets) y
  * 			busca haber obtenido un numero entero (se sirve de esNumerica)
- * \param *pRespuesta Puntero al espacio de memoria donde se dejará el resultado de la función
- * \return Retorna 0 si se obtiene un número entero exitosamente y -1 si ha encontrado un error.
+ * \param *pRespuesta Puntero al espacio de memoria donde se dejara el resultado de la funcion
+ * \return Retorna 0 si se obtiene un numero entero exitosamente y -1 si ha encontrado un error.
  *
  */
 static int getInt(int* pRespuesta)
@@ -212,12 +213,12 @@ static int getInt(int* pRespuesta)
 
 /**
  * \brief 	Solicita un numero al usuario(se sirve de getInt), luego de verificarlo devuelve el resultado
- * \param *pRespuesta Puntero al espacio de memoria donde se dejará el resultado de la función
+ * \param *pRespuesta Puntero al espacio de memoria donde se dejara el resultado de la funcion
  * \param *mensaje Es el mensaje a ser mostrado
  * \param *mensajeError Es el mensaje de Error a ser mostrado
  * \param minimo Es el numero minimo a ser aceptado
- * \param maximo Es el numero máximo a ser aceptado
- * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
+ * \param maximo Es el numero maximo a ser aceptado
+ * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la funcion
  * \return Retorna 0 si se obtuvo exitosamente el numero y -1 si no se obtuvo
  *
  */
@@ -239,7 +240,7 @@ int utn_GetNumeroInt(int* pRespuesta, char* mensaje, char* mensajeError, int min
 			{
 				*pRespuesta= bufferInt;
 				retorno = 0;
-				break; //porque ya no precisaría continuar el bucle do-while ya que llegué al caso de éxito
+				break; //porque ya no precisaria continuar el bucle do-while ya que llegue al caso de exito
 			}
 			printf("%s", mensajeError);
 			reintentos--;

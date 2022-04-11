@@ -3,7 +3,7 @@
  *
  *  Created on: 4 abr. 2022
  *      Author: juliet
- *      Description : Contendrá todas las funciones que dan sercicio a los tp
+ *      Description : Contendra todas las funciones que dan sercicio a los tp
  */
 
 #ifndef TP_H_
