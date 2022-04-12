@@ -9,8 +9,9 @@
  */
 
 #include <stdio.h>
+#include <stdio_ext.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <unistd.h>//para sleep
 #include "utn.h"
 #include "tp.h"
 
@@ -165,8 +166,8 @@ int main(void) {
 							break;
 					}
 				}
-
 				break;
+
 			case 4:
 				if(flagVuelosCargados == 3)
 				{
@@ -202,6 +203,7 @@ int main(void) {
 					}
 				}
 				break;
+
 			case 5:
 				printf("5. Carga forzada de datos\n");
 				flagVuelosCargados = 5;
@@ -209,11 +211,36 @@ int main(void) {
 				vueloAerolineas = 162965;
 				vueloLatam = 159339;
 				sleep(1);
-				printf("DISTANCIA TOTAL %.2f\nVUELO AEROLINEAS $%.2f\nVUELO LATAM $%.2f\n\n", distanciaTotal, vueloAerolineas, vueloLatam);
-				//acá KM = 7090
-				//AA=$162965
-				//LATAM=$159339
+				printf("DISTANCIA TOTAL %.2f\nVUELO AEROLINEAS $%.2f\nVUELO LATAM $%.2f\n", distanciaTotal, vueloAerolineas, vueloLatam);
+
+				printf("Calculando todos los costos...\n");
+				flagVuelosCargados = 3;
+				descuentoAerolineas= tp_calcularTotalConDescuento(vueloAerolineas, 10);
+				interesAerolineas= tp_calcularTotalConInteres(vueloAerolineas, 25);
+				bitcoinAerolineas= tp_calcularTotalEnBitcoin(vueloAerolineas);
+				unitarioAerolineas= tp_calcularPrecioUnitario(vueloAerolineas, distanciaTotal);
+
+				descuentoLatam= tp_calcularTotalConDescuento(vueloLatam, 10);
+				interesLatam= tp_calcularTotalConInteres(vueloLatam, 25);
+				bitcoinLatam= tp_calcularTotalEnBitcoin(vueloLatam);
+				unitarioLatam= tp_calcularPrecioUnitario(vueloLatam, distanciaTotal);
+
+				diferenciaAerolineasLatam= tp_calcularDiferencia(vueloLatam, vueloAerolineas);
+
+				printf("Informe de resultados\n");
+				printf("LATAM\na- Precio con tarjeta de debito: $%.2f\n", descuentoLatam);
+				printf("b- Precio con tarjeta de credito: $%.2f\n", interesLatam);
+				printf("c- Precio pagando con bitcoin: %f BTC\n", bitcoinLatam);
+				printf("d- Precio unitario: $%.2f por cada KM\n", unitarioLatam);
+
+				printf("\nAEROLINEAS\na- Precio con tarjeta de debito: $%.2f\n", descuentoAerolineas);
+				printf("b- Precio con tarjeta de credito: $%.2f\n", interesAerolineas);
+				printf("c- Precio pagando con bitcoin: %f BTC\n", bitcoinAerolineas);
+				printf("d- Precio unitario: $%.2f por cada KM\n", unitarioAerolineas);
+
+				printf("\nLa diferencia de precio es : $%.2f(Latam - Aerolineas)\n\n", diferenciaAerolineasLatam);
 				break;
+
 			case 6:
 				sleep(0.5);
 				printf("\nSaliendo del programa...");
