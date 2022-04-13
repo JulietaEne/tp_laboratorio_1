@@ -6,6 +6,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdio_ext.h>
 #include "tp.h"
 #include "utn.h"
 //____________________________:::::FUNCIONES tp 1:::::____________________________
@@ -178,3 +179,63 @@ int continuarY(char* mensaje)
 	}
 	return retorno;
 }
+
+
+/**
+ * \brief valida si el numero a analizar es distinto del numero con el que se compara
+ * \param numeroAnalizar Recibe por valor el dato al cual analizara
+ * \param inicialCompare Recibe por valor el dato contra el cual se compara
+ * \return Retorna 0 si es falso
+ * 				   1 si es verdadero
+ *
+ */
+int esDistintoDeInicial(int numeroAnalizar, int inicialCompare)
+{
+	int retorno;
+	retorno = 0;
+	if(numeroAnalizar != inicialCompare)
+	{
+		retorno = 1;
+	}
+	return retorno;
+}
+
+
+
+//____________________________________:::::FUNCIONES DE LOGICA:::::__________________________________
+/**
+ * \brief valida si el numero recibido es mayor que cero
+ * \param numero Recibe por valor el dato al cual analizara
+ * \return Retorna 0 si es falso
+ * 				   1 si es verdadero
+ *
+ */
+int esPositivo(int numero)
+{
+	int retorno;
+	retorno = 0;
+	if(numero>0)
+	{
+		retorno = 1;
+	}
+	return retorno;
+}
+
+/**
+ * \brief valida si el numero recibido es par
+ * \param numero Recibe por valor el dato al cual analizara
+ * \return Retorna 0 si es falso
+ * 				   1 si es verdadero
+ *
+ */
+int esPar(int numero)
+ {
+    int retorno;
+    retorno = 0;
+    if(numero%2==0)
+	{
+		retorno = 1;
+	}
+
+    return retorno;
+ }

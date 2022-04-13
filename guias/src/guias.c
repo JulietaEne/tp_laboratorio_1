@@ -24,11 +24,14 @@
 #include "tp.h"
 #include "arrays.h"
 
-#define ARRAY 3
+#define ARRAY 5
 #define INICIALIZAR 0
 #define MINIMO 0
 #define MAXIMO 100
 #define REINTENTOS 1
+
+
+int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPositivos);
 
 
 int main(void) {
@@ -37,25 +40,21 @@ int main(void) {
 	int ind;
 	int valorIngresado;
 	int respuesta;
-	ind = 0;
+	int acumuladorPositivos;
+	int cantidadPositivos;
+	float promedio;
 
+	ind = 0;
+	acumuladorPositivos = 0;
+
+//inicializo el array
 	if(array_inicializar(arrayNum, ARRAY, INICIALIZAR)==0)
 	{
 		array_imprimirArray(arrayNum, ARRAY);
 	}
 
-	//printf("\nCARGA DE VALORES PARA ARRAY (%d posiciones)\n", ARRAY);
-	/*if(array_cargarSecuencial(arrayNum, ARRAY, MINIMO, MAXIMO, REINTENTOS)==0)
-	{
-		array_imprimirArray(arrayNum, ARRAY);
-	}*/
-
+//carga de datos
 	do{
-		/*do
-		{
-			utn_GetNumeroInt(&valorIngresado, "Ingrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS);
-		}while(valorIngresado == 0);PROBAR SI PODEMOS PONER OTRO MENSAJE EN OPCION CONTINUAR SI CARGO EL NUMERO 0*/
-
 		if(!utn_GetNumeroInt(&valorIngresado, "Ingrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS))
 		{
 			if(valorIngresado != 0 && !array_cargarAleatorio(arrayNum, ARRAY, &ind, valorIngresado))
@@ -67,16 +66,59 @@ int main(void) {
 				printf("ERROR el valor debe ser distinto de 0\n");
 			}
 		}
-
 		respuesta= continuarY("\npresione 'Y' para cargar otro. Presione cualquier tecla para cancelar");
 
-
 	}while(respuesta);
-	printf("\nFINALIZANDO");
+
+//analisis de datos
+	cantidadPositivos= array_acumuladorPositivos(arrayNum, ARRAY, &acumuladorPositivos);
+	if(cantidadPositivos>0)
+	{
+		//promedio= acumuladorPositivos/cantidadPositivos;
+		promedio = (float)acumuladorPositivos/cantidadPositivos;
+	}
+
+
+//Informes
+	printf("acumulador: %d\n cantidad: %d\npromedio positivos: %.2f", acumuladorPositivos, cantidadPositivos, promedio);
+
 
 
 
 	return EXIT_SUCCESS;
+}
+
+/*
+ * \breif recorre el array recibido para acumular los numeros positivos
+ * \param unArray[] Recibe por referencia el array sobre el cual trabajara
+ * \param sizeArray Recibe por valor el tamaño del array con el que trabaja
+ * \param *acumuladorPositivos Recibe por referencia un espacio de memoria para almacenar el acumulado de los valores positivos
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   		    0 si no existen numeros positivos
+ * 			   		>0 si existen positivos (la cantidad de positivos que se encontraron)
+ *
+ */
+int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPositivos)
+{
+	int i;
+	int positivos;
+
+	positivos = -1;
+
+	if(unArray!= NULL && sizeArray>0)
+	{
+		positivos = 0;
+		for(i=0; i<sizeArray; i++)
+		{
+			if(unArray[i]!= 0 && esPositivo(unArray[i])==1)
+			{
+				*acumuladorPositivos = *acumuladorPositivos+unArray[i];
+				positivos++;
+			}
+		}
+	}
+
+	return positivos;
 }
 
 

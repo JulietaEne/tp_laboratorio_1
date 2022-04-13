@@ -23,4 +23,10 @@ void tp_MensajeError(char* mensaje);
 int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres);
 int continuarY(char* mensaje);
 
+//____________________________________:::::FUNCIONES DE LOGICA:::::__________________________________
+int esPositivo(int numero);
+int esPar(int numero);
+int esDistintoDeInicial(int numeroAnalizar, int inicialCompare);
+
+
 #endif /* TP_H_ */
