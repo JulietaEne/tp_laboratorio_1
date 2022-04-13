@@ -39,7 +39,7 @@
 int main(void) {
 
 	int arrayNum[ARRAY];
-	int ind;
+	int indice;
 	int valorIngresado;
 	int respuesta;
 	int acumuladorPositivos;
@@ -48,7 +48,7 @@ int main(void) {
 	int menorNumero;
 	int acumuladorNegativos;
 
-	ind = 0;
+	indice = 0;
 	acumuladorPositivos = 0;
 	acumuladorNegativos = 0;
 
@@ -60,19 +60,25 @@ int main(void) {
 
 //carga de datos
 	do{
-		if(!utn_GetNumeroInt(&valorIngresado, "Ingrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS))
+		if(!utn_GetNumeroInt(&valorIngresado, "\nIngrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS))
 		{
-			if(valorIngresado != 0 && !array_cargarAleatorio(arrayNum, ARRAY, &ind, valorIngresado))
+			if(valorIngresado != 0 && !array_cargarAleatorio(arrayNum, ARRAY, &indice, valorIngresado))
 			{
 				array_imprimirArrayCompleto(arrayNum, ARRAY);
 			}
 			else
 			{
 				printf("ERROR el valor debe ser distinto de 0\n");
+				indice--;
 			}
 		}
 		respuesta= continuarY("\npresione 'Y' para cargar otro. Presione cualquier tecla para cancelar");
 
+		if(indice == ARRAY)
+		{
+			printf("\n****el array ha sido completamente cargado****\n");
+			break;
+		}
 	}while(respuesta);
 
 //analisis de datos
@@ -88,27 +94,12 @@ int main(void) {
 	acumuladorNegativos= acumuladorNegativos-menorNumero;
 
 //Informes
-	printf("\npromedio positivos: %.2f", promedio);
+	printf("\nINFORMES\npromedio positivos: %.2f", promedio);
 	//printf("menor numero: %d\n", menorNumero);
-	printf("Sumatoria de negativos menos el menor numero: %d", acumuladorNegativos);
+	printf("\nSumatoria de negativos menos el menor numero: %d", acumuladorNegativos);
 
 
 
 	return EXIT_SUCCESS;
 }
 
-
-/*int identificarMenorNumero(int numeroAnalizado, int** menorNumero)
-{
-	int retorno;
-	retorno = -1;
-	if(*menorNumero != NULL)
-	{
-		retorno =0;
-		if(**menorNumero > numeroAnalizado)
-		{
-			**menorNumero = numeroAnalizado;
-		}
-	}
-	return retorno;
-}*/
