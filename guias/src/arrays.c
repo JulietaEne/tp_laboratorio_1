@@ -80,13 +80,10 @@ int array_imprimirArrayCompleto(int unArray[], int sizeArray)
 	{
 		for (i = 0; i<sizeArray; i++)
 		{
-			if(esDistintoDeInicial(unArray[i], INICIAL))
+			array_imprimirPosicionArray(unArray, i);
+			if(i== sizeArray-1)
 			{
-				array_imprimirPosicionArray(unArray, i);
-				if(i== sizeArray-1)
-				{
-					printf("\n");
-				}
+				printf("\n");
 			}
 		}
 		retorno = 0;
@@ -177,5 +174,96 @@ int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor)
 		*indice = *indice+1;
 	}
 
+	return retorno;
+}
+
+/*
+ * \breif recorre el array recibido para acumular los valores positivos
+ * \param unArray[] Recibe por referencia el array sobre el cual trabajara
+ * \param sizeArray Recibe por valor el tamaño del array con el que trabaja
+ * \param *acumuladorPositivos Recibe por referencia un espacio de memoria para almacenar la sumatoria de los valores positivos
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   		    0 si no existen numeros positivos
+ * 			   		>0 si existen positivos (la cantidad de positivos que se encontraron)
+ *
+ */
+int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPositivos)
+{
+	int i;
+	int positivos;
+
+	positivos = -1;
+
+	if(unArray!= NULL && sizeArray>0)
+	{
+		positivos = 0;
+		for(i=0; i<sizeArray; i++)
+		{
+			if(unArray[i]!= 0 && esPositivo(unArray[i])==1)
+			{
+				*acumuladorPositivos = *acumuladorPositivos+unArray[i];
+				positivos++;
+			}
+		}
+	}
+
+	return positivos;
+}
+
+/*
+ * \breif recorre el array recibido para acumular los valores negativos
+ * \param unArray[] Recibe por referencia el array sobre el cual trabajara
+ * \param sizeArray Recibe por valor el tamaño del array con el que trabaja
+ * \param *acumuladorNegativos Recibe por referencia un espacio de memoria para almacenar la sumatoria de los valores negativos
+ * \return retorna 1 si hubo un error en los parametros recibidos
+ * 		   		   0 si no existen numeros positivos
+ * 			   	   >0 si existen negativos (la cantidad de negativos que se encontraron)
+ *
+ */
+int array_acumuladorNegativos(int unArray[], int sizeArray, int* acumuladorNegativos)
+{
+	int i;
+	int cantNegativos;
+
+	cantNegativos = -1;
+
+	if(unArray!= NULL && sizeArray>0)
+	{
+		cantNegativos = 0;
+		for(i=0; i<sizeArray; i++)
+		{
+			if(unArray[i]!= 0 && !esPositivo(unArray[i]))
+			{
+				*acumuladorNegativos = *acumuladorNegativos+unArray[i];
+				cantNegativos++;
+			}
+		}
+	}
+
+	return cantNegativos;
+}
+
+
+int array_identificarMenorNumero(int unArray[], int sizeArray, int* menorNumero)
+{
+	int retorno;
+	int i;
+	retorno = -1;
+	if(unArray != NULL && sizeArray > 0 && menorNumero != NULL )
+	{
+		retorno =0;
+		for (i = 0; i<sizeArray; i++)
+		{
+			if(i==0)
+			{
+				*menorNumero = unArray[i];
+				continue;
+			}
+			if(*menorNumero > unArray[i])
+			{
+				*menorNumero = unArray[i];
+			}
+		}
+	}
 	return retorno;
 }

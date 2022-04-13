@@ -14,6 +14,9 @@
 
 			   Utilizar funciones y vectores.
 
+
+1- identificar el menor negativo
+2- sumar todos los negativos, restarles el menor de los negativos
  ============================================================================
  */
 
@@ -26,13 +29,12 @@
 
 #define ARRAY 5
 #define INICIALIZAR 0
-#define MINIMO 0
+#define MINIMO -100
 #define MAXIMO 100
 #define REINTENTOS 1
 
 
-int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPositivos);
-
+//int identificarMenorNumero(int numeroAnalizado, int** menorNumero);
 
 int main(void) {
 
@@ -43,14 +45,17 @@ int main(void) {
 	int acumuladorPositivos;
 	int cantidadPositivos;
 	float promedio;
+	int menorNumero;
+	int acumuladorNegativos;
 
 	ind = 0;
 	acumuladorPositivos = 0;
+	acumuladorNegativos = 0;
 
 //inicializo el array
 	if(array_inicializar(arrayNum, ARRAY, INICIALIZAR)==0)
 	{
-		array_imprimirArray(arrayNum, ARRAY);
+		array_imprimirArraySinInicializados(arrayNum, ARRAY);
 	}
 
 //carga de datos
@@ -59,7 +64,7 @@ int main(void) {
 		{
 			if(valorIngresado != 0 && !array_cargarAleatorio(arrayNum, ARRAY, &ind, valorIngresado))
 			{
-				array_imprimirArray(arrayNum, ARRAY);
+				array_imprimirArrayCompleto(arrayNum, ARRAY);
 			}
 			else
 			{
@@ -77,48 +82,33 @@ int main(void) {
 		//promedio= acumuladorPositivos/cantidadPositivos;
 		promedio = (float)acumuladorPositivos/cantidadPositivos;
 	}
-
+	array_identificarMenorNumero(arrayNum, ARRAY, &menorNumero);
+	array_acumuladorNegativos(arrayNum, ARRAY, &acumuladorNegativos);
+	//printf("DEBUG Acumulador negativos: %d", acumuladorNegativos);
+	acumuladorNegativos= acumuladorNegativos-menorNumero;
 
 //Informes
-	printf("acumulador: %d\n cantidad: %d\npromedio positivos: %.2f", acumuladorPositivos, cantidadPositivos, promedio);
-
+	printf("\npromedio positivos: %.2f", promedio);
+	//printf("menor numero: %d\n", menorNumero);
+	printf("Sumatoria de negativos menos el menor numero: %d", acumuladorNegativos);
 
 
 
 	return EXIT_SUCCESS;
 }
 
-/*
- * \breif recorre el array recibido para acumular los numeros positivos
- * \param unArray[] Recibe por referencia el array sobre el cual trabajara
- * \param sizeArray Recibe por valor el tamaño del array con el que trabaja
- * \param *acumuladorPositivos Recibe por referencia un espacio de memoria para almacenar el acumulado de los valores positivos
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   		    0 si no existen numeros positivos
- * 			   		>0 si existen positivos (la cantidad de positivos que se encontraron)
- *
- */
-int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPositivos)
+
+/*int identificarMenorNumero(int numeroAnalizado, int** menorNumero)
 {
-	int i;
-	int positivos;
-
-	positivos = -1;
-
-	if(unArray!= NULL && sizeArray>0)
+	int retorno;
+	retorno = -1;
+	if(*menorNumero != NULL)
 	{
-		positivos = 0;
-		for(i=0; i<sizeArray; i++)
+		retorno =0;
+		if(**menorNumero > numeroAnalizado)
 		{
-			if(unArray[i]!= 0 && esPositivo(unArray[i])==1)
-			{
-				*acumuladorPositivos = *acumuladorPositivos+unArray[i];
-				positivos++;
-			}
+			**menorNumero = numeroAnalizado;
 		}
 	}
-
-	return positivos;
-}
-
-
+	return retorno;
+}*/
