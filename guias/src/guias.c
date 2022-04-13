@@ -4,7 +4,16 @@
  Author      : Julieta Nakasone
  Version     : 1
  Copyright   : Your copyright notice
- Description : guia de ejercicios
+ Description : Ejercicio 5-3
+			   Realizar un programa que permita el ingreso de 10 números enteros distintos de cero.
+			   La carga deberá ser aleatoria (todos los elementos se inicializan en cero por default).
+
+			   Determinar el promedio de los positivos,
+			   y del menor de los negativos la suma de los antecesores
+			   (Según la recta numérica de los reales, hasta llegar a cero).
+
+			   Utilizar funciones y vectores.
+
  ============================================================================
  */
 
@@ -21,8 +30,6 @@
 #define MAXIMO 100
 #define REINTENTOS 1
 
-int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor);
-int opcionContinuar(char* mensaje);
 
 int main(void) {
 
@@ -37,7 +44,7 @@ int main(void) {
 		array_imprimirArray(arrayNum, ARRAY);
 	}
 
-	printf("\nCARGA DE VALORES PARA ARRAY (%d posiciones)\n", ARRAY);
+	//printf("\nCARGA DE VALORES PARA ARRAY (%d posiciones)\n", ARRAY);
 	/*if(array_cargarSecuencial(arrayNum, ARRAY, MINIMO, MAXIMO, REINTENTOS)==0)
 	{
 		array_imprimirArray(arrayNum, ARRAY);
@@ -47,7 +54,7 @@ int main(void) {
 		/*do
 		{
 			utn_GetNumeroInt(&valorIngresado, "Ingrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS);
-		}while(valorIngresado == 0);PROBAR SI PODEMOS */
+		}while(valorIngresado == 0);PROBAR SI PODEMOS PONER OTRO MENSAJE EN OPCION CONTINUAR SI CARGO EL NUMERO 0*/
 
 		if(!utn_GetNumeroInt(&valorIngresado, "Ingrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS))
 		{
@@ -61,74 +68,15 @@ int main(void) {
 			}
 		}
 
-		respuesta= opcionContinuar("\npresione 'Y' para cargar otro. Presione cualquier tecla para cancelar");
+		respuesta= continuarY("\npresione 'Y' para cargar otro. Presione cualquier tecla para cancelar");
 
 
-	}while(!respuesta);
+	}while(respuesta);
 	printf("\nFINALIZANDO");
 
 
 
 	return EXIT_SUCCESS;
 }
-
-int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor)
-{
-	int retorno;
-	retorno = -1;
-
-	if(unArray != NULL)
-	{
-		unArray[*indice] = valor;
-		retorno = 0;
-		*indice = *indice+1;
-	}
-
-	return retorno;
-}
-
-
-int opcionContinuar(char* mensaje)
-{
-	int retorno;
-	char respuesta;
-	retorno = -1;
-
-	printf("%s\nOpcion: ", mensaje);
-	__fpurge(stdin);
-	scanf("%c", &respuesta);
-	if(respuesta == 'Y')
-	{
-		respuesta = 'y';
-	}
-	if(respuesta == 'y')
-	{
-		retorno = 0;
-	}
-	return retorno;
-}
-
-/*
-		 * int opcionContinuar(char* mensaje, char respuesta)
-		{
-			int retorno;
-			char buffer;
-			int bufferInt;
-			int respuestaInt;
-			retorno =-1;
-
-			printf("%s", mensaje);
-			__fpurge(stdin);
-			scanf("%c", &buffer);
-			bufferInt= atoi(buffer);
-			respuestaInt= atoi(respuesta);
-			if(bufferInt+32 == respuestaInt)
-			{
-
-			}
-
-			return retorno;
-		}*/
-
 
 

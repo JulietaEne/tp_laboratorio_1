@@ -21,5 +21,6 @@ int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionD
 void tp_MensajeErrorGenerico(int error);
 void tp_MensajeError(char* mensaje);
 int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres);
+int continuarY(char* mensaje);
 
 #endif /* TP_H_ */

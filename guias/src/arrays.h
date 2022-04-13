@@ -13,5 +13,6 @@ int array_asignarValorAUnaPosicion(int unArray[], int unaPosicion, int valor);
 int array_imprimirArray(int unArray[], int sizeArray);
 int array_imprimirPosicionArray(int unArray[], int unaPosicion);
 int array_cargarSecuencial(int unArray[], int sizeArray, int minimoPosible, int maximoPosible, int reintentos);
+int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor);
 
 #endif /* ARRAYS_H_ */

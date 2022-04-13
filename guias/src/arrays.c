@@ -127,3 +127,18 @@ int array_cargarSecuencial(int unArray[], int sizeArray, int minimoPosible, int 
 
 	return retorno;
 }
+
+int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor)
+{
+	int retorno;
+	retorno = -1;
+
+	if(unArray != NULL)
+	{
+		unArray[*indice] = valor;
+		retorno = 0;
+		*indice = *indice+1;
+	}
+
+	return retorno;
+}

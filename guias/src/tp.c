@@ -151,3 +151,30 @@ int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionD
 
     return opcionElegida;
 }
+
+/*
+ * \breif muestra mensaje y recibe un caracter para corroborar que sea 'y'
+ * \param *mensaje Recibe por referencia el literal a mostrar
+ * \return retorna 1 si continua
+ * 		   retorna 0 si no continua
+ *
+ */
+int continuarY(char* mensaje)
+{
+	int retorno;
+	char respuesta;
+	retorno = 0;
+
+	printf("%s\nOpcion: ", mensaje);
+	__fpurge(stdin);
+	scanf("%c", &respuesta);
+	if(respuesta == 'Y')
+	{
+		respuesta = 'y';
+	}
+	if(respuesta == 'y')
+	{
+		retorno = 1;
+	}
+	return retorno;
+}
