@@ -62,10 +62,9 @@ int array_asignarValorAUnaPosicion(int unArray[], int unaPosicion, int valor)
 }
 
 /*
- * \breif asigna un valor a la posicion indicada del array
- * \param unArray[] Recibe por referencia el array sobre el cual trabajara
- * \param unaPosicion Recibe por valor el indice sobre el cual se asignara el dato
- * \param valor Recibe por valor el dato que se asigna
+ * \breif recorre el array para imprimirlo (se sirve de imprimirPosicionArray)
+ * \param unArray[] Recibe por referencia el array
+ * \param sizeArray Recibe por valor el tamaño del array
  * \return retorna -1 si hubo un error en los parametros recibidos
  * 		   retorna 0 si opero exitosamente
  *
@@ -78,51 +77,19 @@ int array_imprimirArray(int unArray[], int sizeArray)
 
 	if(unArray!= NULL && sizeArray >0)
 	{
-		retorno = 0;
 		for (i = 0; i<sizeArray; i++)
 		{
-			printf("%d ", unArray[i]);
-			//array_imprimirPosicionArray(unArray, i);
-
-			/*if(i== sizeArray-1)
-			{
-				printf("\n");
-			}*/
-		}
-	}
-
-	return retorno;
-}
-
-/*
-int array_imprimirArray(int unArray[], int sizeArray)
-{
-	int retorno;
-	int i;
-	retorno = -1;
-
-	if(unArray!= NULL && sizeArray >0)
-	{
-		retorno = 0;
-		for (i = 0; i<sizeArray; i++)
-		{
-			if(i==0)
-			{
-				printf("\n");
-			}
-			printf("%d ", unArray[i]);
-
+			array_imprimirPosicionArray(unArray, i);
 			if(i== sizeArray-1)
 			{
 				printf("\n");
 			}
 		}
+		retorno = 0;
 	}
 
 	return retorno;
 }
- */
-
 
 int array_imprimirPosicionArray(int unArray[], int unaPosicion)
 {
@@ -132,17 +99,17 @@ int array_imprimirPosicionArray(int unArray[], int unaPosicion)
 	if(unArray!= NULL)
 	{
 		retorno = 0;
-		/*if(unaPosicion==0)
+		if(unaPosicion==0)
 		{
 			printf("\n");
-		}*/
+		}
 		printf("%d ", unArray[unaPosicion]);
 	}
 
 	return retorno;
 }
 
-int array_cargaSecuencial(int unArray[], int sizeArray, int minimoPosible, int maximoPosible, int reintentos)
+int array_cargarSecuencial(int unArray[], int sizeArray, int minimoPosible, int maximoPosible, int reintentos)
 {
 	int retorno;
 	int i;

@@ -20,11 +20,14 @@
 #define MAXIMO 100
 #define REINTENTOS 1
 
-
+int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor);
 
 int main(void) {
 
 	int arrayNum[ARRAY];
+	int ind;
+	int valorIngresado;
+	ind = 0;
 
 	if(array_inicializar(arrayNum, ARRAY, INICIALIZAR)==0)
 	{
@@ -32,10 +35,35 @@ int main(void) {
 	}
 
 	printf("\nCARGA DE VALORES PARA ARRAY (%d posiciones)\n", ARRAY);
-	if(array_cargaSecuencial(arrayNum, ARRAY, MINIMO, MAXIMO, REINTENTOS)==0)
+	/*if(array_cargarSecuencial(arrayNum, ARRAY, MINIMO, MAXIMO, REINTENTOS)==0)
+	{
+		array_imprimirArray(arrayNum, ARRAY);
+	}*/
+	if(!utn_GetNumeroInt(&valorIngresado, "ingrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS)
+			&& !array_cargarAleatorio(arrayNum, ARRAY, &ind, valorIngresado))
 	{
 		array_imprimirArray(arrayNum, ARRAY);
 	}
 
 
 }
+
+int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor)
+{
+	int retorno;
+	retorno = -1;
+
+	if(unArray != NULL)
+	{
+		unArray[*indice] = valor;
+		retorno = 0;
+		*indice = *indice+1;
+	}
+
+	return retorno;
+}
+
+
+
+
+
