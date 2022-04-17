@@ -38,33 +38,33 @@
 
 int main(void) {
 
-	int arrayNum[ARRAY];
+	float arrayNum[ARRAY];
 	int indice;
-	int valorIngresado;
+	float valorIngresado;
 	int respuesta;
-	int acumuladorPositivos;
-	int cantidadPositivos;
+	float acumuladorPositivos;
+	float cantidadPositivos;
 	float promedio;
-	int menorNumero;
-	int acumuladorNegativos;
+	float menorNumero;
+	float acumuladorNegativos;
 
 	indice = 0;
 	acumuladorPositivos = 0;
 	acumuladorNegativos = 0;
 
 //inicializo el array
-	if(array_inicializar(arrayNum, ARRAY, INICIALIZAR)==0)
+	if(array_floatInicializar(arrayNum, ARRAY, INICIALIZAR)==0)
 	{
-		array_imprimirArraySinInicializados(arrayNum, ARRAY);
+		array_floatImprimirArraySinInicializados(arrayNum, ARRAY);
 	}
 
 //carga de datos
 	do{
-		if(!utn_GetNumeroInt(&valorIngresado, "\nIngrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS))
+		if(!utn_GetNumeroFloat(&valorIngresado, "\nIngrese valor: ", "ERROR", MINIMO, MAXIMO, REINTENTOS))
 		{
-			if(valorIngresado != 0 && !array_cargarAleatorio(arrayNum, ARRAY, &indice, valorIngresado))
+			if(valorIngresado != 0 && !array_floatCargarAleatorio(arrayNum, ARRAY, &indice, valorIngresado))
 			{
-				array_imprimirArrayCompleto(arrayNum, ARRAY);
+				array_floatImprimirArrayCompleto(arrayNum, ARRAY);
 			}
 			else
 			{
@@ -82,24 +82,23 @@ int main(void) {
 	}while(respuesta);
 
 //analisis de datos
-	cantidadPositivos= array_acumuladorPositivos(arrayNum, ARRAY, &acumuladorPositivos);
+	cantidadPositivos= array_floatAcumuladorPositivos(arrayNum, ARRAY, &acumuladorPositivos);
 	if(cantidadPositivos>0)
 	{
 		//promedio= acumuladorPositivos/cantidadPositivos;
 		promedio = (float)acumuladorPositivos/cantidadPositivos;
 	}
-	array_identificarMenorNumero(arrayNum, ARRAY, &menorNumero);
-	array_acumuladorNegativos(arrayNum, ARRAY, &acumuladorNegativos);
-	//printf("DEBUG Acumulador negativos: %d", acumuladorNegativos);
+	array_floatIdentificarMenorNumero(arrayNum, ARRAY, &menorNumero);
+	array_floatAcumuladorNegativos(arrayNum, ARRAY, &acumuladorNegativos);
+	printf("\nDEBUG Acumulador negativos: %.2f - menor numero: %.2f\n", acumuladorNegativos, menorNumero);
 	acumuladorNegativos= acumuladorNegativos-menorNumero;
 
 //Informes
 	printf("\nINFORMES\npromedio positivos: %.2f", promedio);
 	//printf("menor numero: %d\n", menorNumero);
-	printf("\nSumatoria de negativos menos el menor numero: %d", acumuladorNegativos);
+	printf("\nSumatoria de negativos menos el menor numero: %.2f", acumuladorNegativos);
 
 
 
 	return EXIT_SUCCESS;
 }
-

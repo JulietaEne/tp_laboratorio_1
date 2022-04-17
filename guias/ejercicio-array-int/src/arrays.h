@@ -19,4 +19,16 @@ int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPosit
 int array_acumuladorNegativos(int unArray[], int sizeArray, int* acumuladorNegativos);
 int array_identificarMenorNumero(int unArray[], int sizeArray, int* menorNumero);
 
+////// ############################### { ARRAY FLOAT } ############################### //////
+int array_floatInicializar(float unArray[], int sizeArray, float inicializar);
+int array_floatAsignarValorAUnaPosicion(float unArray[], int unaPosicion, float valor);
+int array_floatImprimirArrayCompleto(float unArray[], int sizeArray);
+int array_floatImprimirArraySinInicializados(float unArray[], int sizeArray);
+int array_floatImprimirPosicionArray(float unArray[], int unaPosicion);
+int array_floatCargarSecuencial(float unArray[], int sizeArray, float minimoPosible, float maximoPosible, int reintentos);
+int array_floatCargarAleatorio(float unArray[], int sizeArray, int* indice, float valor);
+int array_floatAcumuladorPositivos(float unArray[], int sizeArray, float* acumuladorPositivos);
+int array_floatAcumuladorNegativos(float unArray[], int sizeArray, float* acumuladorNegativos);
+int array_floatIdentificarMenorNumero(float unArray[], int sizeArray, float* menorNumero);
+
 #endif /* ARRAYS_H_ */
