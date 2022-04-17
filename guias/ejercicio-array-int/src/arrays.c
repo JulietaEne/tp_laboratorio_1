@@ -270,6 +270,41 @@ int array_identificarMenorNumero(int unArray[], int sizeArray, int* menorNumero)
 	return retorno;
 }
 
+int array_sortNumeros(int unArray[], int sizeArray, int criterio)
+{
+    int retorno;
+    int i;
+    int j;
+    retorno = -1;
+    if(unArray!= NULL && sizeArray>0)
+    {
+        retorno = 0;
+        for(i=0; i<sizeArray-1; i++)
+        {
+            for (j=i+1; j<sizeArray; j++)
+            {
+                switch(criterio)
+                {
+                    case 1: //ordena de menor a mayor
+                        if(unArray[i]>unArray[j])
+                        {
+                            swap(&unArray[i], &unArray[j]);
+                        }
+                        break;
+                    case 2: //ordena de mayor a menor
+                        if(unArray[i]<unArray[j])
+                        {
+                            swap(&unArray[i], &unArray[j]);
+                        }
+                        break;
+                }
+
+            }
+        }
+    }
+    return retorno;
+}
+
 ////// ############################### { ARRAY FLOAT } ############################### //////
 
 /*
@@ -414,7 +449,7 @@ int array_floatCargarSecuencial(float unArray[], int sizeArray, float minimoPosi
 		retorno = 0;
 		for (i=0; i<sizeArray; i++)
 		{
-			printf("%.2f ", i+1);
+			printf("%d ", i+1);
 			utn_GetNumeroFloat(&unArray[i], "ingrese valor: ", "[ERROR] ", minimoPosible, maximoPosible, reintentos);
 		}
 	}

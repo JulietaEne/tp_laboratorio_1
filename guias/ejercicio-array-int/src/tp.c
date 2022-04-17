@@ -239,3 +239,19 @@ int esPar(int numero)
 
     return retorno;
  }
+
+int swap(int* numero1, int* numero2)
+{
+    int retorno;
+    int aux;
+
+    retorno = -1;
+    if(numero1!= NULL && numero2!= NULL)
+    {
+        retorno=0;
+        aux = *numero1;
+        *numero1 = *numero2;
+        *numero2 = aux;
+    }
+    return retorno;
+}

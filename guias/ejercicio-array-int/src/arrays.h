@@ -18,6 +18,7 @@ int array_cargarAleatorio(int unArray[], int sizeArray, int* indice, int valor);
 int array_acumuladorPositivos(int unArray[], int sizeArray, int* acumuladorPositivos);
 int array_acumuladorNegativos(int unArray[], int sizeArray, int* acumuladorNegativos);
 int array_identificarMenorNumero(int unArray[], int sizeArray, int* menorNumero);
+int array_sortNumeros(int unArray[], int sizeArray, int criterio);
 
 ////// ############################### { ARRAY FLOAT } ############################### //////
 int array_floatInicializar(float unArray[], int sizeArray, float inicializar);

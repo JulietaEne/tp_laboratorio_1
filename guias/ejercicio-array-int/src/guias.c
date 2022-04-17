@@ -4,6 +4,120 @@
  Author      : Julieta Nakasone
  Version     : 1
  Copyright   : Your copyright notice
+ Description :  Ejercicio 6-2:
+
+                Realizar un programa que permita el ingreso de 10 números enteros
+                (positivos y negativos).
+
+                Necesito generar un listado de los números positivos de manera creciente
+                y negativos de manera decreciente.
+
+                (Como máximo 5 estructuras repetitivas)
+                Ejemplo:
+
+
+                Listado 1 : 4, 5, 6, 10, 18, 29
+                Listado 2 : -1,-5,-9,-12
+
+
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdio_ext.h>
+#include <stdlib.h>
+#include "utn.h"
+#include "tp.h"
+#include "arrays.h"
+
+#define ARRAY 5
+#define INICIALIZAR -101
+#define MINIMO -100
+#define MAXIMO 100
+#define REINTENTOS 1
+
+
+
+//int identificarMenorNumero(int numeroAnalizado, int** menorNumero);
+
+int main(void)
+{
+	int numEnteros[ARRAY];
+	int numPositivos[ARRAY];
+	int numNegativos[ARRAY];
+	int flag;
+	int i;
+	int indicePositivos;
+	int indiceNegativos;
+	indicePositivos=0;
+	indiceNegativos=0;
+	flag = 0;
+
+	if(!array_cargarSecuencial(numEnteros, ARRAY, MINIMO, MAXIMO, REINTENTOS))//carga de datos
+	{
+	    flag=1;
+	   // printf("[DEBUG]array cargado\n");
+	}
+	if( !array_inicializar(numPositivos, ARRAY, INICIALIZAR) &&
+        !array_inicializar(numNegativos, ARRAY, INICIALIZAR) &&
+        flag == 1)
+    {
+        //printf("[DEBUG]inicializados\n");
+        flag=2;
+    }
+    if(flag == 2)
+    {
+        flag =3; //analisis de datos
+        for(i=0; i<ARRAY; i++)
+        {
+           // printf("DEBUG EN EL FOR\n");
+            if(esPositivo(numEnteros[i]))
+            {
+               // printf("hay positivos\n");
+                array_cargarAleatorio(numPositivos, ARRAY, &indicePositivos, numEnteros[i]);
+            }
+            else
+            {
+                if(numEnteros[i]!=0)
+                {
+                    array_cargarAleatorio(numNegativos, ARRAY, &indiceNegativos, numEnteros[i]);
+                }
+                //printf("hay negativos\n");
+            }
+        }
+    }
+    //falta ordenar los positivos y los negativos
+    printf("\nINFORME\n");
+
+    if(indicePositivos >0 && !array_sortNumeros(numPositivos, ARRAY, 1))
+    {
+        printf("positivos en forma creciente: \n");
+        array_imprimirArraySinInicializados(numPositivos, ARRAY);
+    }
+    else
+    {
+        printf("no hay numeros positivos\n");
+    }
+
+    if(indiceNegativos >0 && !array_sortNumeros(numNegativos, ARRAY, 2))
+    {
+        printf("negativos en forma decreciente: \n");
+        array_imprimirArraySinInicializados(numNegativos, ARRAY);
+    }
+    else
+    {
+        printf("no hay numeros negativos\n");
+    }
+
+
+	return EXIT_SUCCESS;
+}
+/*
+ ============================================================================
+ Name        : guias.c
+ Author      : Julieta Nakasone
+ Version     : 1
+ Copyright   : Your copyright notice
  Description : Ejercicio 5-3
 			   Realizar un programa que permita el ingreso de 10 números enteros distintos de cero.
 			   La carga deberá ser aleatoria (todos los elementos se inicializan en cero por default).
@@ -18,7 +132,7 @@
 1- identificar el menor negativo
 2- sumar todos los negativos, restarles el menor de los negativos
  ============================================================================
- */
+
 
 #include <stdio.h>
 #include <stdio_ext.h>
@@ -90,7 +204,7 @@ int main(void) {
 	}
 	array_floatIdentificarMenorNumero(arrayNum, ARRAY, &menorNumero);
 	array_floatAcumuladorNegativos(arrayNum, ARRAY, &acumuladorNegativos);
-	printf("\nDEBUG Acumulador negativos: %.2f - menor numero: %.2f\n", acumuladorNegativos, menorNumero);
+	//printf("\nDEBUG Acumulador negativos: %.2f - menor numero: %.2f\n", acumuladorNegativos, menorNumero);
 	acumuladorNegativos= acumuladorNegativos-menorNumero;
 
 //Informes
@@ -102,3 +216,4 @@ int main(void) {
 
 	return EXIT_SUCCESS;
 }
+ */

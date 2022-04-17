@@ -28,5 +28,8 @@ int esPositivo(int numero);
 int esPar(int numero);
 int esDistintoDeInicial(int numeroAnalizar, int inicialCompare);
 
+//int intercambiarValor(int* a, int* b);
+int swap(int* numero1, int* numero2);
+
 
 #endif /* TP_H_ */
