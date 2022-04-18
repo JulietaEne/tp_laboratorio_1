@@ -160,7 +160,7 @@ int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionD
  * 		   retorna 0 si no continua
  *
  */
-int continuarY(char* mensaje)
+int continuar(char* mensaje)
 {
 	int retorno;
 	char respuesta;
@@ -169,13 +169,13 @@ int continuarY(char* mensaje)
 	printf("%s\nOpcion: ", mensaje);
 	__fpurge(stdin);
 	scanf("%c", &respuesta);
-	if(respuesta == 'Y')
-	{
-		respuesta = 'y';
-	}
-	if(respuesta == 'y')
+	if(respuesta == 'Y' || respuesta == 'y')
 	{
 		retorno = 1;
+	}
+	if(respuesta == 'N' || respuesta == 'n')
+	{
+		retorno = 0;
 	}
 	return retorno;
 }
@@ -200,7 +200,51 @@ int esDistintoDeInicial(int numeroAnalizar, int inicialCompare)
 	return retorno;
 }
 
+int swap(int* numero1, int* numero2)
+{
+    int retorno;
+    int aux;
 
+    retorno = -1;
+    if(numero1!= NULL && numero2!= NULL)
+    {
+        retorno=0;
+        aux = *numero1;
+        *numero1 = *numero2;
+        *numero2 = aux;
+    }
+    return retorno;
+}
+
+int convertirAMayuscula(char* caracter)
+{
+	int retorno;
+	retorno = -1;
+	if( caracter != NULL)
+	{
+		retorno = 0;
+		if(*caracter>96 && *caracter<123)
+		{
+			*caracter=*caracter-32;
+		}
+	}
+	return retorno;
+}
+
+int convertirAMinuscula(char* caracter)
+{
+	int retorno;
+	retorno = -1;
+	if( caracter != NULL)
+	{
+		retorno = 0;
+		if(*caracter>64 && *caracter<91)
+		{
+			*caracter=*caracter+32;
+		}
+	}
+	return retorno;
+}
 
 //____________________________________:::::FUNCIONES DE LOGICA:::::__________________________________
 /**
@@ -240,21 +284,7 @@ int esPar(int numero)
     return retorno;
  }
 
-int swap(int* numero1, int* numero2)
-{
-    int retorno;
-    int aux;
 
-    retorno = -1;
-    if(numero1!= NULL && numero2!= NULL)
-    {
-        retorno=0;
-        aux = *numero1;
-        *numero1 = *numero2;
-        *numero2 = aux;
-    }
-    return retorno;
-}
 
 /**
  * \brief Compara los valores recibidos y si el primero es mayor, intercambia los valores para ordenar de menor a mayor

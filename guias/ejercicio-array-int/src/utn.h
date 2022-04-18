@@ -13,6 +13,6 @@ int utn_GetNumeroFloat(float* pRespuesta, char* mensaje, char* mensajeError, flo
 int utn_GetChar(char* pRespuesta, char* mensaje, char* mensajeError, char minimo, char maximo, int reintentos);
 int utn_ingresarAlfabetica(char pArray[], int len, char* mensaje, char* mensajeError, int reintentos);
 int utn_getAlfaNumerica(char pArray[], int len, char* mensaje, char* mensajeError, int reintentos);
-void convertirMayuscula(char pArray[], int lenArray);
+
 //int myGets_prueba(char* pCadena, int len);
 #endif /* UTN_H_ */

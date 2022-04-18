@@ -6,6 +6,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utn.h"
 #include "tp.h"
 #include "arrays.h"
@@ -613,3 +614,57 @@ int array_floatIdentificarMenorNumero(float unArray[], int sizeArray, float* men
 	}
 	return retorno;
 }
+
+////// ############################### { ARRAY CHAR } ############################### //////
+int array_convertirStringMayuscula(char unString[], int lenArray)
+{
+	int retorno;
+	int i;
+	retorno = -1;
+
+	if(unString != NULL && lenArray >0)
+	{
+		retorno = 0;
+		for(i=0; i<lenArray; i++)
+		{
+			convertirAMayuscula(&unString[i]);
+		}
+	}
+	return retorno;
+}
+
+int array_convertirStringMinuscula(char unString[], int lenArray)
+{
+	int retorno;
+	int i;
+	retorno = -1;
+
+	if(unString != NULL && lenArray >0)
+	{
+		retorno = 0;
+		for(i=0; i<lenArray; i++)
+		{
+			convertirAMinuscula(&unString[i]);
+		}
+	}
+	return retorno;
+}
+
+int array_visualizarApellidoNombre(char nombre[], char apellido[], char apellidoNombre[], int lenApellidoNombre)
+{
+	int retorno;
+
+	retorno = -1;
+
+	if(nombre != NULL && apellido != NULL && apellidoNombre != NULL && lenApellidoNombre >0)
+	{
+		retorno = 0;
+		//apellidoNombre[0]='\0'inicializamos la variable para que no tenga datos basura
+		//strcpy(apellidoNombre, apellidoNombre);
+		strncpy(apellidoNombre,apellido,lenApellidoNombre);
+		strncat(apellidoNombre, ", ", lenApellidoNombre);
+		strncat(apellidoNombre, nombre, lenApellidoNombre);
+	}
+	return retorno;
+}
+

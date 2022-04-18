@@ -21,7 +21,14 @@ int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionD
 void tp_MensajeErrorGenerico(int error);
 void tp_MensajeError(char* mensaje);
 int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres);
-int continuarY(char* mensaje);
+int continuar(char* mensaje);
+
+int swap(int* numero1, int* numero2);
+//int ordenarFormaCreciente(int* numeroA, int* numeroB);
+//int ordenarFormaDecreciente(int* numeroA, int* numeroB); -> necesito saber puntero de puntero :(
+
+int convertirAMayuscula(char* caracter);
+int convertirAMinuscula(char* caracter);
 
 //____________________________________:::::FUNCIONES DE LOGICA:::::__________________________________
 int esPositivo(int numero);
@@ -29,8 +36,6 @@ int esPar(int numero);
 int esDistintoDeInicial(int numeroAnalizar, int inicialCompare);
 
 //int intercambiarValor(int* a, int* b);
-int swap(int* numero1, int* numero2);
-//int ordenarFormaCreciente(int* numeroA, int* numeroB);
-//int ordenarFormaDecreciente(int* numeroA, int* numeroB); -> necesito saber puntero de puntero :(
+
 
 #endif /* TP_H_ */

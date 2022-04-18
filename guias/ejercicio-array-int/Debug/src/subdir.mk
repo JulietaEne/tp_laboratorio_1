@@ -7,19 +7,22 @@ C_SRCS += \
 ../src/arrays.c \
 ../src/guias.c \
 ../src/tp.c \
-../src/utn.c 
+../src/utn.c \
+../src/validaciones.c 
 
 OBJS += \
 ./src/arrays.o \
 ./src/guias.o \
 ./src/tp.o \
-./src/utn.o 
+./src/utn.o \
+./src/validaciones.o 
 
 C_DEPS += \
 ./src/arrays.d \
 ./src/guias.d \
 ./src/tp.d \
-./src/utn.d 
+./src/utn.d \
+./src/validaciones.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

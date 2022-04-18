@@ -31,5 +31,12 @@ int array_floatCargarAleatorio(float unArray[], int sizeArray, int* indice, floa
 int array_floatAcumuladorPositivos(float unArray[], int sizeArray, float* acumuladorPositivos);
 int array_floatAcumuladorNegativos(float unArray[], int sizeArray, float* acumuladorNegativos);
 int array_floatIdentificarMenorNumero(float unArray[], int sizeArray, float* menorNumero);
+//int array_floatsortNumeros(int unArray[], int sizeArray, int criterio);
+
+////// ############################### { ARRAY CHAR } ############################### //////
+int array_convertirStringMayuscula(char unString[], int lenArray);
+int array_convertirStringMinuscula(char unString[], int lenArray);
+int array_visualizarApellidoNombre(char nombre[], char apellido[], char apellidoNombre[], int lenApellidoNombre);
+
 
 #endif /* ARRAYS_H_ */

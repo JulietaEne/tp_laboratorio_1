@@ -18,11 +18,14 @@
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utn.h"
 #include "tp.h"
 #include "arrays.h"
+#include "validaciones.h"
 
-#define ARRAY 9
+#define STR 41
+#define STR2 81
 #define INICIALIZAR -101
 #define MINIMO -100
 #define MAXIMO 100
@@ -31,30 +34,39 @@
 
 int main(void)
 {
-	int edades[ARRAY] = {54,26,93,17,77,31,44,55,27};
-	int retorno;
 
-	array_imprimirArrayCompleto(edades, ARRAY);
-	retorno = array_sortNumeros(edades, ARRAY, 2);
+	char nombre[STR];
+	//int retorno;
+	char apellido[STR];
+	char apellidoNombre[STR2];
 
-	if(retorno > 0)
+	if(	!utn_ingresarAlfabetica(nombre, STR, "nombre: ", "ingrese un dato valido", REINTENTOS)
+		&& !utn_ingresarAlfabetica(apellido, STR, "apellido: ", "**ERROR** por favor ingrese un apellido\n", REINTENTOS)
+		&& validaciones_esNombre(nombre, STR)>0
+		&& validaciones_esNombre(apellido, STR)>0)
 	{
-		printf("\n\nitereciones: %d\n", retorno);
-		array_imprimirArrayCompleto(edades, ARRAY);
+		array_visualizarApellidoNombre(nombre, apellido, apellidoNombre, STR2);
+		printf("%s", apellidoNombre);
 	}
 
-	retorno = array_sortNumeros(edades, ARRAY, 2);
 
-	if(retorno > 0)
-	{
-		printf("\n\nitereciones: %d\n", retorno);
-		array_imprimirArrayCompleto(edades, ARRAY);
-	}
 	return EXIT_SUCCESS;
 }
 
 
 /*
+ *
+ * utn_ingresarAlfabetica(nombre, STR, "nombre: ", "**ERROR** por favor ingrese un nombre\n", REINTENTOS);
+	utn_ingresarAlfabetica(apellido, STR, "apellido: ", "**ERROR** por favor ingrese un apellido\n", REINTENTOS);
+	//if(		!utn_ingresarAlfabetica(nombre, STR, "nombre: ", "**ERROR** por favor ingrese un nombre\n", REINTENTOS)
+		//	&& !utn_ingresarAlfabetica(apellido, STR, "apellido: ", "**ERROR** por favor ingrese un apellido\n", REINTENTOS))
+	{
+		printf("\n todo ok nombre: %s, apellido: %s", nombre, apellido);
+		array_visualizarApellidoNombre(nombre, apellido, apellidoYNombre, STR*2);
+	}
+ *
+ *
+ *
  ============================================================================
  Name        : guias.c
  Author      : Julieta Nakasone
