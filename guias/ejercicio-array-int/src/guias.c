@@ -4,6 +4,62 @@
  Author      : Julieta Nakasone
  Version     : 1
  Copyright   : Your copyright notice
+ Description : 	Ejercicio 6-3:
+				Pedirle al usuario su nombre y apellido (en variables separadas, una para el nombre y otra para el apellido).
+				Ninguna de las dos variables se puede modificar.
+
+				Debemos lograr guardar en una tercer variable el apellido y el nombre con el siguiente formato:
+				Por ejemplo ->	Si el nombre es juan ignacio y el apellido es gOmEz, la salida debería ser:
+
+				Gomez, Juan Ignacio
+
+ ============================================================================
+ */
+#include <stdio.h>
+#include <stdio_ext.h>
+#include <stdlib.h>
+#include "utn.h"
+#include "tp.h"
+#include "arrays.h"
+
+#define ARRAY 9
+#define INICIALIZAR -101
+#define MINIMO -100
+#define MAXIMO 100
+#define REINTENTOS 1
+
+
+int main(void)
+{
+	int edades[ARRAY] = {54,26,93,17,77,31,44,55,27};
+	int retorno;
+
+	array_imprimirArrayCompleto(edades, ARRAY);
+	retorno = array_sortNumeros(edades, ARRAY, 2);
+
+	if(retorno > 0)
+	{
+		printf("\n\nitereciones: %d\n", retorno);
+		array_imprimirArrayCompleto(edades, ARRAY);
+	}
+
+	retorno = array_sortNumeros(edades, ARRAY, 2);
+
+	if(retorno > 0)
+	{
+		printf("\n\nitereciones: %d\n", retorno);
+		array_imprimirArrayCompleto(edades, ARRAY);
+	}
+	return EXIT_SUCCESS;
+}
+
+
+/*
+ ============================================================================
+ Name        : guias.c
+ Author      : Julieta Nakasone
+ Version     : 1
+ Copyright   : Your copyright notice
  Description :  Ejercicio 6-2:
 
                 Realizar un programa que permita el ingreso de 10 números enteros
@@ -21,7 +77,7 @@
 
 
  ============================================================================
- */
+
 
 #include <stdio.h>
 #include <stdio_ext.h>
@@ -111,7 +167,9 @@ int main(void)
 
 
 	return EXIT_SUCCESS;
-}
+}*/
+
+
 /*
  ============================================================================
  Name        : guias.c

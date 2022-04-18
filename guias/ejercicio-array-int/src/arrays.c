@@ -270,7 +270,64 @@ int array_identificarMenorNumero(int unArray[], int sizeArray, int* menorNumero)
 	return retorno;
 }
 
+
+/*
+ * \breif Ordena un array de enteros segun el criterio indicado
+ * \param unArray[] Recibe por referencia el array sobre el cual trabajara
+ * \param sizeArray Recibe por valor el tamaño del array con el que trabaja
+ * \param criterio Recibe por valor el codigo del criterio indicado: 1 ordena en forma ascendente
+ * 																	 2 ordena de forma descendente
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   		   0 si no se realizo ningur ordenamiento
+ * 			   	   >0 si se realizo ordenamiento (retorna la cantidad de iteraciones que fueron necesarias para ordenarlo)
+ *
+ */
 int array_sortNumeros(int unArray[], int sizeArray, int criterio)
+{
+	int retorno;
+	int flagSwap;
+	int i;
+	int nuevoLimite;
+	int contador;
+
+	retorno = -1;
+
+	if(unArray!= NULL && sizeArray>0)
+	{
+		nuevoLimite = sizeArray-1;
+		contador = 0;
+		do
+		{
+			flagSwap = 0;
+			for (i=0; i<nuevoLimite; i++)
+			{
+				contador++;
+				switch(criterio)
+				{
+					case 1: //ordena de menor a mayor
+						if(unArray[i] > unArray[i+1]) //#######!!!cuando sepa llamar a un puntero de un puntero, puedo hacerlo en una funcion!!!#######
+						{
+							swap(&unArray[i], &unArray[i+1]);
+						}
+
+						break;
+					case 2: //ordena de mayor a menor
+						if(unArray[i] < unArray[i+1])
+						{
+							flagSwap=1;
+							swap(&unArray[i], &unArray[i+1]);
+						}
+						break;
+				}
+			}
+			nuevoLimite--;
+		}while(flagSwap);
+	}
+	retorno = contador;
+
+	return retorno;
+}
+/*int array_sortNumeros(int unArray[], int sizeArray, int criterio)
 {
     int retorno;
     int i;
@@ -286,16 +343,10 @@ int array_sortNumeros(int unArray[], int sizeArray, int criterio)
                 switch(criterio)
                 {
                     case 1: //ordena de menor a mayor
-                        if(unArray[i]>unArray[j])
-                        {
-                            swap(&unArray[i], &unArray[j]);
-                        }
+                        ordenarFormaCreciente(numeroA, numeroB);
                         break;
                     case 2: //ordena de mayor a menor
-                        if(unArray[i]<unArray[j])
-                        {
-                            swap(&unArray[i], &unArray[j]);
-                        }
+                        ordenarFormaDecreciente(numeroA, numeroB);
                         break;
                 }
 
@@ -303,7 +354,7 @@ int array_sortNumeros(int unArray[], int sizeArray, int criterio)
         }
     }
     return retorno;
-}
+}*/
 
 ////// ############################### { ARRAY FLOAT } ############################### //////
 

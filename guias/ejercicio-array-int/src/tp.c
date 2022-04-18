@@ -255,3 +255,53 @@ int swap(int* numero1, int* numero2)
     }
     return retorno;
 }
+
+/**
+ * \brief Compara los valores recibidos y si el primero es mayor, intercambia los valores para ordenar de menor a mayor
+ * \param numeroA Recibe por referencia el valor a analizar
+ * \param numeroB Recibe por referencia el valor contra el cual compara
+ * \return Retorna -1 si hubo un error en los parámetros
+ * 				    0 si no hubo intercambio
+ * 				    1 si se realizo un intercambio en los valores
+ *
+
+int ordenarFormaCreciente(int* numeroA, int* numeroB)
+{
+	int retorno;
+	retorno = -1;
+	if(numeroA!= NULL && numeroB != NULL)
+	{
+		retorno = 0;
+		if(*numeroA > *numeroB)
+		{
+			swap(&numeroA, &numeroB);
+			retorno = 1;
+		}
+	}
+	return retorno;
+} */
+
+/**
+ * \brief Compara los valores recibidos y si el primero es menor, intercambia los valores para ordenar de mayor a menor
+ * \param numeroA Recibe por referencia el valor a analizar
+ * \param numeroB Recibe por referencia el valor contra el cual compara
+ * \return Retorna -1 si hubo un error en los parámetros
+ * 				    0 si no hubo intercambio
+ * 				    1 si se realizo un intercambio en los valores
+ *
+
+int ordenarFormaDecreciente(int* numeroA, int* numeroB)
+{
+	int retorno;
+	retorno = -1;
+	if(numeroA!= NULL && numeroB != NULL)
+	{
+		retorno = 0;
+		if(*numeroA < *numeroB)
+		{
+			swap(&numeroA, &numeroB);
+			retorno = 1;
+		}
+	}
+	return retorno;
+}*/

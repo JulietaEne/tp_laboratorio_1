@@ -30,6 +30,7 @@ int esDistintoDeInicial(int numeroAnalizar, int inicialCompare);
 
 //int intercambiarValor(int* a, int* b);
 int swap(int* numero1, int* numero2);
-
+//int ordenarFormaCreciente(int* numeroA, int* numeroB);
+//int ordenarFormaDecreciente(int* numeroA, int* numeroB); -> necesito saber puntero de puntero :(
 
 #endif /* TP_H_ */
