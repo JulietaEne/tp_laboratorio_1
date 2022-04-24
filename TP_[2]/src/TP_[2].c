@@ -17,7 +17,7 @@
 
 #define ID_INICIAL 100
 
-#define QTY_PASS 10
+#define QTY_PASS 2
 
 int main(void) {
 
@@ -37,14 +37,14 @@ int main(void) {
 		switch (menuPrincipal)
 		{
 			case 1:
-				printf("ALTA DE CLIENTES\n");
+				printf("\nALTA DE CLIENTES\n");
 				if(contadorClientesCargados == -1)
 				{
 					pass_initArray(arrayPasajeros, QTY_PASS);
 					contadorClientesCargados = 0;
 					//printf("[DEBUG****]inicializamos OK!");
 				}
-				if(!pass_pedirNuevoPasajero(arrayPasajeros, QTY_PASS, idUltimo))
+				if(pass_pedirNuevoPasajero(arrayPasajeros, QTY_PASS, idUltimo)>=0)
 				{
 					idUltimo++;
 					contadorClientesCargados++;
@@ -55,12 +55,12 @@ int main(void) {
 				}
 				else
 				{
-					tp_MensajeError("ERROR**** ha habido un error en la carga del cliente\n");
+					tp_MensajeError("[ERROR**ALTA DE CLIENTES] Ha habido un error en la carga del cliente\n");
 				}
 
 				break;
 			case 2:
-				printf("MODIFICAR CLIENTE\n");
+				printf("\nMODIFICAR CLIENTE\n");
 				if(contadorClientesCargados > 0)
 				{
 					idConsulta = pass_pedirIdConsulta(idUltimo);
@@ -146,7 +146,7 @@ int main(void) {
 				}
 				break;
 			case 3:
-				printf("ELIMINAR CLIENTE\n");
+				printf("\nELIMINAR CLIENTE\n");
 				if(contadorClientesCargados > 0)
 				{
 					idConsulta = pass_pedirIdConsulta(idUltimo);

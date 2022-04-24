@@ -24,9 +24,10 @@ static int getChar(char* pRespuesta);
  * \brief 	Lee el stdin hasta que encuentra un '\n' o hasta que haya copiado en cadena
  * 			un máximo de 'longitud - 1' caracteres. EN ÉSTA FUNCIÓN, MARCA ERROR SI EL USUARIO
  *          INGRESA MÁS CARACTERES DE LO SOLICITADO.######TAMBIEN ME SIRVE PARA LEVANTAR UN ARRAY CHAR :D###########
- * \param *cadena Puntero al espacio de memoria donde se copiará la cadena obtenida
- * \param longitud Indica la longitud de la cadena trabajada
- * \return Retorna 0 si se obtiene la cadena exitosamente, y -1 si ha encontrado un error.
+ * \param *pCadena char* Puntero al espacio de memoria donde se copiará la cadena obtenida
+ * \param len int Indica la longitud de la cadena trabajada
+ * \return Retorna 0 si se obtiene la cadena exitosamente
+ *		  -1 si ha encontrado un error.
  *
  */
 int myGets_prueba(char* pCadena, int len)
@@ -56,8 +57,10 @@ int myGets_prueba(char* pCadena, int len)
 
 /**
  * \brief 	Verifica si cada dato de la cadena ingresada es un dato numerico int (contempla negativos)
- * \param cadena Cadena de caracteres a ser analizada
- * \return Retorna 1(verdadero) si la cadena es numerica y 0(falso) si no lo es
+ * \param pCadena char* Cadena de caracteres a ser analizada
+ * \param limite int Indica la longitud de la cadena trabajada
+ * \return Retorna 1(verdadero) si la cadena es numerica
+ *		   0(falso) si no lo es
  * 			//PORQUE LAS FUNCIONES QUE SON TIPO PREGUNTA, DEVUELVEN SI ES V(1) Ó F(0)
  */
 static int esEntero(char* pCadena, int limite) //tengo que hacer uno para flotante
@@ -88,8 +91,10 @@ static int esEntero(char* pCadena, int limite) //tengo que hacer uno para flotan
 
 /**
  * \brief 	Verifica si cada dato de la cadena ingresada es un dato flotante (contempla negativos)
- * \param cadena Cadena de caracteres a ser analizada
- * \return Retorna 1(verdadero) si la cadena es numerica y 0(falso) si no lo es
+ * \param pCadena char* Cadena de caracteres a ser analizada
+ * \param limite int Indica la longitud de la cadena trabajada
+ * \return Retorna 1(verdadero) si la cadena es numerica
+ *		   0(falso) si no lo es
  *
  */
 static int esFlotante(char* pCadena, int limite)
@@ -123,10 +128,11 @@ static int esFlotante(char* pCadena, int limite)
 }
 
 /** #####probando con myGets_prueba + ARREGLOS
- * \brief 	Solicita un dato desde la terminal (se sirve de myGets) y
- * 			busca haber obtenido un numero entero (se sirve de esNumerica)
+ * \brief Solicita un dato desde la terminal (se sirve de myGets) y
+ * 	 busca haber obtenido un numero entero (se sirve de esNumerica)
  * \param *pRespuesta Puntero al espacio de memoria donde se dejará el resultado de la función
- * \return Retorna 0 si se obtiene un número entero exitosamente y -1 si ha encontrado un error.
+ * \return Retorna 0 si se obtiene un número entero exitosamente
+ *		  -1 si ha encontrado un error.
  *
  */
 static int getInt(int* pRespuesta)
@@ -147,9 +153,10 @@ static int getInt(int* pRespuesta)
 /**
  * #####probando con myGets_prueba
  * \brief 	Solicita un dato desde la terminal (se sirve de myGets) y
- * 			busca haber obtenido un numero flotante (se sirve de esNumerica)
+ * 		busca haber obtenido un numero flotante (se sirve de esNumerica)
  * \param *pRespuesta Puntero al espacio de memoria donde se dejará el resultado de la función
- * \return Retorna 0 si se obtiene un número entero exitosamente y -1 si ha encontrado un error.
+ * \return Retorna 0 si se obtiene un número entero exitosamente
+ *		   -1 si ha encontrado un error.
  *
  */
 static int getFloat(float* pRespuesta)
@@ -175,7 +182,8 @@ static int getFloat(float* pRespuesta)
  * \brief 	Solicita un dato desde la terminal (se sirve de myGets) y
  * 			busca haber obtenido un caracter(se sirve de esNumerica negado)
  * \param *pRespuesta Puntero al espacio de memoria donde se dejará la respuesta de la función
- * \return Retorna 0 si se obtiene un número entero exitosamente y -1 si ha encontrado un error.
+ * \return Retorna 0 si se obtiene un número entero exitosamente
+ *		  -1 si ha encontrado un error.
  *
 */
 static int getChar(char* pRespuesta)
@@ -202,7 +210,8 @@ static int getChar(char* pRespuesta)
  * \param minimo Es el numero minimo a ser aceptado
  * \param maximo Es el numero máximo a ser aceptado
  * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
- * \return Retorna 0 si se obtuvo exitosamente el numero y -1 si no se obtuvo
+ * \return Retorna 0 si se obtuvo exitosamente el numero
+ *		  -1 si no se obtuvo
  *
  */
 int utn_GetNumeroInt(int* pRespuesta, char* mensaje, char* mensajeError, int minimo, int maximo, int reintentos)
@@ -239,7 +248,8 @@ int utn_GetNumeroInt(int* pRespuesta, char* mensaje, char* mensajeError, int min
  * \param minimo Es el numero minimo a ser aceptado
  * \param maximo Es el numero máximo a ser aceptado
  * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
- * \return Retorna 0 si se obtuvo exitosamente el numero y -1 si no se obtuvo
+ * \return Retorna 0 si se obtuvo exitosamente el numero
+ *		  -1 si no se obtuvo
  *
  */
 int utn_GetNumeroFloat(float* pRespuesta, char* mensaje, char* mensajeError, float minimo, float maximo, int reintentos)
@@ -279,7 +289,8 @@ int utn_GetNumeroFloat(float* pRespuesta, char* mensaje, char* mensajeError, flo
  * \param minimo Es el numero minimo a ser aceptado
  * \param maximo Es el numero máximo a ser aceptado
  * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
- * \return Retorna 0 si se obtuvo exitosamente el numero y -1 si no se obtuvo
+ * \return Retorna 0 si se obtuvo exitosamente el numero
+ *	          -1 si no se obtuvo
  *
  */
 int utn_GetChar(char* pRespuesta, char* mensaje, char* mensajeError, char minimo, char maximo, int reintentos)
