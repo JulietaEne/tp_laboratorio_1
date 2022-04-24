@@ -15,6 +15,7 @@ struct
 	float price;
 	char flycode[10];
 	int typePassenger;
+	int statusFlight;
 	int isEmpty;
 }typedef Passenger;
 
@@ -30,6 +31,11 @@ int pass_initArray(Passenger* listPass, int sizeListPass);
 int passenger_initAPossition(Passenger* listPass, int indice, int valorInicial);
 int pass_printArray(Passenger* listPass, int sizeListPass);
 int passenger_printOneIndice(Passenger* listPass, int indice);
+
+int pass_pedirNuevoPasajero(Passenger* listPass, int sizePass, int ultimoId);
+int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass);
+int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo);
+
 int pass_pedirNombre(char* nombre, int sizeNombre);
 int pass_pedirApellido(char* apellido, int sizeApellido);
 float pass_pedirPrecio(float* precio);

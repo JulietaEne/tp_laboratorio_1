@@ -335,3 +335,4 @@ int ordenarFormaDecreciente(int* numeroA, int* numeroB)
 	}
 	return retorno;
 }*/
+

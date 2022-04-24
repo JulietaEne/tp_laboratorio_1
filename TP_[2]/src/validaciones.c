@@ -128,16 +128,16 @@ int validaciones_esNombre(char unString[], int sizeString)
 	retorno = -1;
 	if(unString != NULL && sizeString > 0)
 	{
-		retorno =0;
+		retorno =-2;
 		if(strlen(unString)>=LEN_MINIMO_NOMBRE)
 		{
-			retorno =1;
+			retorno =0;
 			eliminarEspaciosAdelante(unString, sizeString);
 			eliminarEspaciosExtra(unString, sizeString);
 			arrayChar_convertirStringMinuscula(unString, sizeString);
 			if(convertirASustantivoPropio(unString, sizeString)>3)
 			{
-				retorno=-2;
+				retorno=-3;
 			}
 		}
 	}
