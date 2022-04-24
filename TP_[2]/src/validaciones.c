@@ -20,7 +20,12 @@ static int eliminarEspaciosExtra(char unString[], int sizeString);
 static int convertirASustantivoPropio(char unString[], int sizeString);
 
 /*
- * retorna 1 si encontro espacios adelante del nombre
+ * \brief Analiza el array recibido y en caso de encontrar espacios antes del primer caracter, los sobreexcribe con los caracteres correspondientes
+ * \param unString char[] Recibe la direccion de memoria del array a analizar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		    0 si realizo la operacion pero no encontro espacios
+ *		    1 si elimino espacios (al menos uno)
  */
 static int eliminarEspaciosAdelante(char unString[], int sizeString)
 {
@@ -49,8 +54,14 @@ static int eliminarEspaciosAdelante(char unString[], int sizeString)
 
 	return retorno;
 }
+
 /*
- * retorna 1 si encontro al menos un espacio extra
+ * \brief Analiza el array recibido y en caso de encontrar espacios en cualquier posicion de la cadena, los sobreesccribe con el caracter correspondiente
+ * \param unString char[] Recibe la direccion de memoria del array a analizar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		    0 si realizo la operacion pero no encontro espacios
+ *		    1 si elimino espacios (al menos uno)
  */
 static int eliminarEspaciosExtra(char unString[], int sizeString)
 {
@@ -80,8 +91,12 @@ static int eliminarEspaciosExtra(char unString[], int sizeString)
 }
 
 /*
- * retorna 0 si trabajo correctamente
- * 		   >0 si encontro mas de 1 palabra (el valor que retorne sera la cantidad de palabras que encontro)
+ * \brief Recibe un array para analizar la estructura y devolver los primeros caracteres a mayuscula
+ * \param unString char[] Recibe la direccion de memoria del array a analizar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		    0 si no realizo cambios
+ *		    >0 si opero en mas de 1 palabra(el valor que retorne sera la cantidad de palabras que encontro)
  */
 static int convertirASustantivoPropio(char unString[], int sizeString)
 {
@@ -115,8 +130,9 @@ static int convertirASustantivoPropio(char unString[], int sizeString)
  * \param unString recibe la direccion de memoria del primer elemento del array que se analizara
  * \param sizeString Recibe por valor el tamaño del array
  * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   retorna -2 si hubo un error en la interaccion con el usuario
- * 		   retorna 0 si la operacion se realizo correctamente
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ *		   -3 si se trata de una cadena compuesta por mas de 3 palabras
+ * 		   0 si la operacion se realizo correctamente
  *
  */
 int validaciones_esNombre(char unString[], int sizeString)
@@ -150,7 +166,7 @@ int validaciones_esNombre(char unString[], int sizeString)
  * \param variable Recibe por valor la variable que sera analizada
  * \param valor Recibe por valor el dato contra el cual se compara
  * \return Retorna 0 si es falso
- * 				   1 si es verdadero
+ * 		   1 si es verdadero
  *
  */
 int validacionesInt_sonIdenticos(int variable, int valor)
