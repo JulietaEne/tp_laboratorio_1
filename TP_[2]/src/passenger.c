@@ -112,7 +112,11 @@ int pass_printArray(Passenger* listPass, int sizeListPass) //printPassenger
 
 /**
  * \brief Imprime el encabezado de la planilla
+<<<<<<< HEAD
  * \return void
+=======
+ * \return void 
+>>>>>>> ae67d6a9b59e92cc10463595ea46956c7abffa70
  *
  */
 void pass_printRotulo(void)
@@ -156,7 +160,11 @@ int pass_printOneIndice(Passenger* listPass, int indice)
 * \param listPass Passenger* receives the list where will write the struct
 * \param sizePass int to indicate array size
 * \param ultimoId int receives by value that data that will assigned in .id
+<<<<<<< HEAD
 * \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
+=======
+* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space] 
+>>>>>>> ae67d6a9b59e92cc10463595ea46956c7abffa70
 *			(0) if Ok
 *
 */
@@ -580,12 +588,13 @@ int pass_pedirTipoPasajero(int* tipoPasajero)
 }
 ////////////////////////***************GETTERS***************////////////////////////
 
-/**
+
+/** 
 * \brief Interactua con el usuario para solicitar un id y validar que contenga datos, si lo hace, lo retorna
 * \param idUltimo int Recibe por valor el dato contra el cual compara para validar el dato ingresado
 * \return Return >=0 si opero correctamente
-* 		(-1) si hubo un error en el dato ingresado
-*		(-2) si el id no corresponde a un cliente valido
+* 				(-1) si hubo un error en el dato ingresado
+*				(-2) si el id no corresponde a un cliente valido
 *
 */
 int pass_pedirIdConsulta(int idUltimo)
@@ -607,7 +616,7 @@ int pass_pedirIdConsulta(int idUltimo)
 	return retorno;
 }
 
-/**
+/** 
 * \brief find a Passenger by Id and returns the index position in array.
 * \param listPass Passenger* receives the array's memory adress that will operate
 * \param sizeListPass int to indicate array size
@@ -638,7 +647,7 @@ int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsult
 	return retorno;
 }
 
-/**
+/** 
 * \brief Asigna valor -2 en campo .isEmpty del array recibido, segun el index indicado por parametro
 * \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
 * \param indexIdConsulta int Recibe por valor el index en el cual se hara la asignacion

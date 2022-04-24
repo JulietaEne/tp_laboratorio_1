@@ -93,8 +93,8 @@ static int esEntero(char* pCadena, int limite) //tengo que hacer uno para flotan
  * \brief 	Verifica si cada dato de la cadena ingresada es un dato flotante (contempla negativos)
  * \param pCadena char* Cadena de caracteres a ser analizada
  * \param limite int Indica la longitud de la cadena trabajada
- * \return Retorna 1(verdadero) si la cadena es numerica
- *		   0(falso) si no lo es
+ * \return Retorna 1(verdadero) si la cadena es numerica 
+ *		  		   0(falso) si no lo es
  *
  */
 static int esFlotante(char* pCadena, int limite)
@@ -210,8 +210,8 @@ static int getChar(char* pRespuesta)
  * \param minimo Es el numero minimo a ser aceptado
  * \param maximo Es el numero máximo a ser aceptado
  * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
- * \return Retorna 0 si se obtuvo exitosamente el numero
- *		  -1 si no se obtuvo
+ * \return Retorna 0 si se obtuvo exitosamente el numero 
+ *		  		   -1 si no se obtuvo
  *
  */
 int utn_GetNumeroInt(int* pRespuesta, char* mensaje, char* mensajeError, int minimo, int maximo, int reintentos)
@@ -248,8 +248,8 @@ int utn_GetNumeroInt(int* pRespuesta, char* mensaje, char* mensajeError, int min
  * \param minimo Es el numero minimo a ser aceptado
  * \param maximo Es el numero máximo a ser aceptado
  * \param reintentos Cantidad de reintentos posibles, luego del primer uso de la función
- * \return Retorna 0 si se obtuvo exitosamente el numero
- *		  -1 si no se obtuvo
+ * \return Retorna 0 si se obtuvo exitosamente el numero 
+ *		 		   -1 si no se obtuvo
  *
  */
 int utn_GetNumeroFloat(float* pRespuesta, char* mensaje, char* mensajeError, float minimo, float maximo, int reintentos)
