@@ -23,6 +23,9 @@
 #define NOT_EMPTY 1
 #define SIZE_STR 51
 #define SIZE_CODE 10
+#define ID_INICIAL 100
+#define ID_MAXIMO 2200
+
 
 /*
  * \brief Recorre el array recibido para asignar valor inicial al campo isEmpty
@@ -32,7 +35,7 @@
  * 		   retorna 0 si la operacion se realizo correctamente
  *
  */
-int pass_initArray(Passenger* listPass, int sizeListPass)
+int pass_initArray(Passenger* listPass, int sizeListPass)//init passengers
 {
 	int retorno;
 	int i;
@@ -44,7 +47,7 @@ int pass_initArray(Passenger* listPass, int sizeListPass)
 		retorno = 0;
 		for(i=0; i<sizeListPass; i++)
 		{
-			passenger_initAPossition(listPass, i, IS_EMPTY);
+			pass_initAPossition(listPass, i, IS_EMPTY);
 		}
 	}
 	return retorno;
@@ -59,7 +62,7 @@ int pass_initArray(Passenger* listPass, int sizeListPass)
  * 		   retorna 0 si opero exitosamente
  *
 */
-int passenger_initAPossition(Passenger* listPass, int indice, int valorInicial)
+int pass_initAPossition(Passenger* listPass, int indice, int valorInicial)
 {
 	int retorno;
 	retorno = -1;
@@ -73,7 +76,15 @@ int passenger_initAPossition(Passenger* listPass, int indice, int valorInicial)
 	return retorno;
 }
 
-int pass_printArray(Passenger* listPass, int sizeListPass)
+/*
+ * \brief Recorre el array recibido para imprimir los indices que estan cargados
+ * \param listPass recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListPass Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   retorna 0 si la operacion se realizo correctamente
+ *
+ */
+int pass_printArray(Passenger* listPass, int sizeListPass) //printPassenger
 {
 	int retorno;
 	int i;
@@ -88,17 +99,29 @@ int pass_printArray(Passenger* listPass, int sizeListPass)
 			{
 				if(i==0)
 				{
-					printf("\nID\tNOMBRE\t\tAPELLIDO\tPRECIO\t\tCODIGO VUELO\tTIPO PASAJERO\tESTADO VUELO\n");
+					pass_printRotulo();
 				}
 				//printf("DEBUG** print pasajeros\n");
-				passenger_printOneIndice(listPass, i);
+				pass_printOneIndice(listPass, i);
 			}
 		}
 	}
 	return retorno;
 }
 
-int passenger_printOneIndice(Passenger* listPass, int indice)
+void pass_printRotulo(void)
+{
+	printf("\nID\tNOMBRE\t\tAPELLIDO\tPRECIO\t\tCODIGO VUELO\tTIPO PASAJERO\tESTADO VUELO\n");
+}
+/*
+ * \brief Recibe un array de estructuras e imprime una estructura segun el indice recibido
+ * \param listPass recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param indice Recibe por valor la posicion del array del cual imprimira los valores de sus campos
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   retorna 0 si la operacion se realizo correctamente
+ *
+ */
+int pass_printOneIndice(Passenger* listPass, int indice)
 {
 	int retorno;
 	retorno = -1;
@@ -206,6 +229,7 @@ int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass)
 *
 *
 */
+//addPassenger
 int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo)
 {
 	int retorno;
@@ -224,6 +248,7 @@ int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId,
 			listPass[primerIndiceLibre].price = precio;
 			listPass[primerIndiceLibre].typePassenger = tipoPasajero;
 			strncpy(listPass[primerIndiceLibre].flycode, codigoVuelo, SIZE_CODE);
+			listPass[primerIndiceLibre].statusFlight = estadoVuelo;
 			listPass[primerIndiceLibre].isEmpty = NOT_EMPTY;
 			retorno=0;
 		}
@@ -232,6 +257,149 @@ int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId,
 	return retorno;
 }
 
+/**
+* \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido y cambiar el dato en el campo name
+* \param listPass employee* recibe la direccion de memoria del array a analizar
+* \param sizePass int recibe por valor el tamaño del array
+
+* \return int Retorna -1 si hubo un error en los parametros recibidos
+* 					  -2 si hubo un error en la interaccion con el usuario
+* 					  0 si pudo operar exitosamente
+*
+*
+*/
+int pass_cambiarNombre(Passenger* listPass, int idCambio)
+{
+	int retorno;
+	char nuevoNombre[SIZE_STR];
+	retorno = -1;
+	if(listPass != NULL)
+	{
+		retorno = -2;
+		if(!pass_pedirNombre(nuevoNombre, SIZE_STR))
+		{
+			strncpy(listPass[idCambio].name, nuevoNombre, SIZE_STR);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
+* \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido
+* 				y cambiar el dato en el campo lastName
+* \param listPass employee* recibe la direccion de memoria del array a analizar
+* \param sizePass int recibe por valor el tamaño del array
+
+* \return int Retorna -1 si hubo un error en los parametros recibidos
+* 					  -2 si hubo un error en la interaccion con el usuario
+* 					  0 si pudo operar exitosamente
+*
+*
+*/
+int pass_cambiarApellido(Passenger* listPass, int idCambio)
+{
+	int retorno;
+	char nuevoApellido[SIZE_STR];
+	retorno = -1;
+	if(listPass != NULL)
+	{
+		retorno = -2;
+		if(!pass_pedirApellido(nuevoApellido, SIZE_STR))
+		{
+			strncpy(listPass[idCambio].lastName, nuevoApellido, SIZE_STR);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
+* \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido
+* 				y cambiar el dato en el campo price
+* \param listPass employee* recibe la direccion de memoria del array a analizar
+* \param sizePass int recibe por valor el tamaño del array
+
+* \return int Retorna -1 si hubo un error en los parametros recibidos
+* 					  -2 si hubo un error en la interaccion con el usuario
+* 					  0 si pudo operar exitosamente
+*
+*
+*/
+int pass_cambiarPrecio(Passenger* listPass, int idCambio)
+{
+	int retorno;
+	float nuevoPrecio;
+	retorno = -1;
+	if(listPass != NULL)
+	{
+		retorno = -2;
+		if(!pass_pedirPrecio(&nuevoPrecio))
+		{
+			listPass[idCambio].price = nuevoPrecio;
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
+* \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido
+* 				y cambiar el dato en el campo typePassenger
+* \param listPass employee* recibe la direccion de memoria del array a analizar
+* \param sizePass int recibe por valor el tamaño del array
+
+* \return int Retorna -1 si hubo un error en los parametros recibidos
+* 					  -2 si hubo un error en la interaccion con el usuario
+* 					  0 si pudo operar exitosamente
+*
+*
+*/
+int pass_cambiarTipoPasajero(Passenger* listPass, int idCambio)
+{
+	int retorno;
+	int nuevoTipo;
+	retorno = -1;
+	if(listPass != NULL)
+	{
+		retorno = -2;
+		if(!pass_pedirTipoPasajero(&nuevoTipo))
+		{
+			listPass[idCambio].typePassenger = nuevoTipo;
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
+* \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido
+* 				y cambiar el dato en el campo flycode
+* \param listPass employee* recibe la direccion de memoria del array a analizar
+* \param sizePass int recibe por valor el tamaño del array
+
+* \return int Retorna -1 si hubo un error en los parametros recibidos
+* 					  -2 si hubo un error en la interaccion con el usuario
+* 					  0 si pudo operar exitosamente
+*
+*
+*/
+int pass_cambiarCodigoVuelo(Passenger* listPass, int idCambio)
+{
+	int retorno;
+	char nuevoCodigoVuelo[SIZE_CODE];
+	retorno = -1;
+	if(listPass != NULL)
+	{
+		retorno = -2;
+		if(!pass_pedirApellido(nuevoCodigoVuelo, SIZE_STR))
+		{
+			strncpy(listPass[idCambio].flycode, nuevoCodigoVuelo, SIZE_CODE);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
 ////////////////////////***************GETTERS***************////////////////////////
 /*
  * \brief interactua con el usuario para solicitar el nombre del cliente
@@ -333,7 +501,7 @@ int pass_pedirCodigoVuelo(char* codigoVuelo, int sizeCodigoVuelo)
 	{
 		retorno=-2;
 		if( !utn_getAlfaNumerica(auxCodigoVuelo, sizeCodigoVuelo, "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS)
-			&& !arrayChar_convertirStringMayuscula(codigoVuelo, sizeCodigoVuelo))
+			&& !arrayChar_convertirStringMayuscula(auxCodigoVuelo, sizeCodigoVuelo))
 		{
 			strncpy(codigoVuelo, auxCodigoVuelo, sizeCodigoVuelo);
 			retorno = 0;
@@ -363,6 +531,7 @@ int pass_pedirEstadoVuelo(int* estadoVuelo)
 		if( !utn_GetNumeroInt(&auxEstadoVuelo, "Estado de vuelo: ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
 		{
 			*estadoVuelo = auxEstadoVuelo;
+			printf("**DEBUG** estadoAux: %d - estado:%d", auxEstadoVuelo, *estadoVuelo);
 		}
 	}
 
@@ -396,4 +565,48 @@ int pass_pedirTipoPasajero(int* tipoPasajero)
 }
 ////////////////////////***************GETTERS***************////////////////////////
 
+int pass_pedirIdConsulta(int idUltimo)
+{
+	int retorno;
+	int auxIdConsulta;
+	retorno = -1;
+	if( !utn_GetNumeroInt(&auxIdConsulta, "ingrese ID de cliente", "ingrese un ID valido", ID_INICIAL, ID_MAXIMO, REINTENTOS)
+		&& auxIdConsulta<= idUltimo)
+	{
+		retorno = auxIdConsulta;
+	}
+
+	return retorno;
+}
+
+/** \brief find a Passenger by Id and returns the index position in array.
+*
+* \param listPass Passenger* recibe la direccion de memoria del array sobre el cual va a trabajar
+* \param sizeListPass int Recibe por valor el tamaño del array
+* \param idConsulta int recive por valor el dato contra el cual compara
+* \return Return >=0 passenger index position
+* 				(-1) if [Invalid length or
+*				(-2) pointer received or passenger not found]
+*
+*/
+int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsulta)
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+	if(listPass!= NULL && sizePass>0)
+	{
+		retorno = -2;
+		for(i=0; i<sizePass; i++)
+		{
+			if(validacionesInt_sonIdenticos(listPass[i].id, idConsulta))
+			{
+				retorno = i;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
 

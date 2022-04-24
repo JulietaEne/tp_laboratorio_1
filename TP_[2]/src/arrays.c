@@ -637,6 +637,7 @@ int arrayChar_convertirStringMayuscula(char unString[], int sizeArray)
 		for(i=0; i<len; i++)
 		{
 			convertirAMayuscula(&unString[i]);
+			//printf("***DEBUG***mayus: %s", unString[i]);
 		}
 	}
 	return retorno;

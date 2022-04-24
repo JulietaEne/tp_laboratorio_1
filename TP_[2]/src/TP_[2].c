@@ -16,6 +16,7 @@
 #include "tp.h"
 
 #define ID_INICIAL 100
+
 #define QTY_PASS 10
 
 int main(void) {
@@ -24,21 +25,24 @@ int main(void) {
 	Passenger arrayPasajeros[QTY_PASS];
 	int menuPrincipal;
 	int clientesCargados;
+	int idConsulta;
+	int indexIdConsulta;
+	int menuSecundario;
 
 	idUltimo = ID_INICIAL;
 	clientesCargados = -1;
 	//pass_printArray(arrayPasajeros, QTY_PASS);
 	do{
-		menuPrincipal = tp_ImprimirMenuSeisOpciones("MENU", "1- ALTA DE CLIENTE", "2- MODIFICAR CLIENTE", "3- BAJA DE CLIENTE", "4- INFORMES", "5- SALIR", "");
+		menuPrincipal = tp_ImprimirMenuSeisOpciones("\nMENU", "1- ALTA DE CLIENTE", "2- MODIFICAR CLIENTE", "3- BAJA DE CLIENTE", "4- INFORMES", "5- SALIR", "");
 		switch (menuPrincipal)
 		{
 			case 1:
-				printf("ALTA DE CLIENTES");
+				printf("ALTA DE CLIENTES\n");
 				if(clientesCargados == -1)
 				{
 					pass_initArray(arrayPasajeros, QTY_PASS);
 					clientesCargados = 0;
-					printf("[DEBUG****]inicializamos OK!");
+					//printf("[DEBUG****]inicializamos OK!");
 				}
 				if(!pass_pedirNuevoPasajero(arrayPasajeros, QTY_PASS, idUltimo))
 				{
@@ -51,20 +55,105 @@ int main(void) {
 				}
 				else
 				{
-					tp_MensajeError("ERROR**** ha habido un error en la carga del cliente");
+					tp_MensajeError("ERROR**** ha habido un error en la carga del cliente\n");
 				}
 
 				break;
-			default:
+			case 2:
+				printf("MODIFICAR CLIENTE\n");
+				if(clientesCargados > 0)
+				{
+					idConsulta = pass_pedirIdConsulta(idUltimo);
+					indexIdConsulta= pass_encontrarPasajeroPorId(arrayPasajeros, QTY_PASS, idConsulta);
+
+					/////*********DEBUG*******///////
+					switch (indexIdConsulta)
+					{
+						case -1:
+							printf("DEBUG****** ERROR--- en los parametros");
+							break;
+						case -2:
+							printf("DEBUG****** ERROR--- no encontro coincidencias");
+							break;
+						default:
+							printf("DEBUG****** index: %d - cliente: %s", indexIdConsulta, arrayPasajeros[indexIdConsulta].name);
+							pass_printRotulo();
+							printf("cliente %d\n", idConsulta);
+							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
+							do
+							{
+								menuSecundario = tp_ImprimirMenuSeisOpciones("\n MODIFICAR - Indique el dato que desea modificar", "1- nombre", "2- apellido", "3- precio", "4- Tipo Pasajero", "5- Codigo Vuelo", "6- volver atras");
+								switch(menuSecundario)
+								{
+									case 1:
+										if(!pass_cambiarNombre(arrayPasajeros, indexIdConsulta))
+										{
+											pass_printOneIndice(arrayPasajeros, indexIdConsulta);
+										}
+										else
+										{
+											tp_MensajeError("ha habido un error al modificar el dato");
+										}
+										break;
+									case 2:
+										if(!pass_cambiarApellido(arrayPasajeros, indexIdConsulta))
+										{
+											pass_printOneIndice(arrayPasajeros, indexIdConsulta);
+										}
+										else
+										{
+											tp_MensajeError("ha habido un error al modificar el dato");
+										}
+										break;
+									case 3:
+										if(!pass_cambiarPrecio(arrayPasajeros, indexIdConsulta))
+										{
+											pass_printOneIndice(arrayPasajeros, indexIdConsulta);
+										}
+										else
+										{
+											tp_MensajeError("ha habido un error al modificar el dato");
+										}
+										break;
+									case 4:
+										if(!pass_cambiarTipoPasajero(arrayPasajeros, indexIdConsulta))
+										{
+											pass_printOneIndice(arrayPasajeros, indexIdConsulta);
+										}
+										else
+										{
+											tp_MensajeError("ha habido un error al modificar el dato");
+										}
+										break;
+									case 5:
+										if(!pass_cambiarCodigoVuelo(arrayPasajeros, indexIdConsulta))
+										{
+											pass_printOneIndice(arrayPasajeros, indexIdConsulta);
+										}
+										else
+										{
+											tp_MensajeError("ha habido un error al modificar el dato");
+										}
+										break;
+								}
+							}while(menuSecundario!= 6);
+							break;
+					}
+					/////*********DEBUG*******///////
+				}
+				else
+				{
+					tp_MensajeError("[**ERROR**]Primero debe ingresar al menos 1 cliente para poder modificar");
+				}
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
 				break;
 		}
 	}while(menuPrincipal<5);
-
-
-
-
-
-
 
 
 }

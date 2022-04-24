@@ -28,13 +28,20 @@ struct
 
 
 int pass_initArray(Passenger* listPass, int sizeListPass);
-int passenger_initAPossition(Passenger* listPass, int indice, int valorInicial);
+int pass_initAPossition(Passenger* listPass, int indice, int valorInicial);
 int pass_printArray(Passenger* listPass, int sizeListPass);
-int passenger_printOneIndice(Passenger* listPass, int indice);
+int pass_printOneIndice(Passenger* listPass, int indice);
+void pass_printRotulo(void);
 
 int pass_pedirNuevoPasajero(Passenger* listPass, int sizePass, int ultimoId);
 int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass);
 int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo);
+
+int pass_cambiarNombre(Passenger* listPass, int idCambio);
+int pass_cambiarApellido(Passenger* listPass, int idCambio);
+int pass_cambiarPrecio(Passenger* listPass, int idCambio);
+int pass_cambiarTipoPasajero(Passenger* listPass, int idCambio);
+int pass_cambiarCodigoVuelo(Passenger* listPass, int idCambio);
 
 int pass_pedirNombre(char* nombre, int sizeNombre);
 int pass_pedirApellido(char* apellido, int sizeApellido);
@@ -42,6 +49,9 @@ float pass_pedirPrecio(float* precio);
 int pass_pedirCodigoVuelo(char* codigoVuelo, int sizeCodigoVuelo);
 int pass_pedirEstadoVuelo(int* estadoVuelo);
 int pass_pedirTipoPasajero(int* tipoPasajero);
+
+int pass_pedirIdConsulta(int idUltimo);
+int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsulta);
 
 
 
