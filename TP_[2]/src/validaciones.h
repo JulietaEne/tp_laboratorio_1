@@ -9,5 +9,6 @@
 #define VALIDACIONES_H_
 
 int validaciones_esNombre(char unString[], int sizeString);
+int validacionesInt_sonIdenticos(int variable, int valor);
 
 #endif /* VALIDACIONES_H_ */

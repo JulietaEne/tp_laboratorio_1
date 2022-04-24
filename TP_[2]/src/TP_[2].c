@@ -15,11 +15,22 @@
 #include "arrays.h"
 
 #define ID_INICIAL 100
+#define QTY_PASS 10
 
 int main(void) {
 
-	int idUltimo;
-	idUltimo = ID_INICIAL;
+	//int idUltimo;
+	Passenger arrayPasajeros[QTY_PASS];
+
+	//pass_printArray(arrayPasajeros, QTY_PASS);
+	if(!pass_initArray(arrayPasajeros, QTY_PASS))
+	{
+		pass_printArray(arrayPasajeros, QTY_PASS);
+		printf("inicializamos!");
+	}
+
+
+	//idUltimo = ID_INICIAL;
 
 
 }

@@ -19,8 +19,103 @@
 #define MIN_PRECIO 10000
 #define MIN_ESTADO_VUELO 0
 #define MAX_ESTADO_VUELO 3
+#define IS_EMPTY 0
 
+/*
+ * \brief Recorre el array recibido para asignar valor inicial al campo isEmpty
+ * \param listPass recibe la direccion de memoria del array sobre el cual va a operar
+ * \param sizeListPass Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   retorna 0 si la operacion se realizo correctamente
+ *
+ */
+int pass_initArray(Passenger* listPass, int sizeListPass)
+{
+	int retorno;
+	int i;
 
+	retorno = -1;
+
+	if(listPass!= NULL && sizeListPass>0)
+	{
+		retorno = 0;
+		for(i=0; i<sizeListPass; i++)
+		{
+			passenger_initAPossition(listPass, i, IS_EMPTY);
+		}
+	}
+	return retorno;
+}
+
+/*
+ * \breif To assign a init value to array's a particular possition
+ * \param listPassenger ePassenger* receives the array which will be operated
+ * \param unaPosicion Recibe por valor el indice sobre el cual se asignara el dato
+ * \param valor Recibe por valor el dato que se asigna
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   retorna 0 si opero exitosamente
+ *
+*/
+int passenger_initAPossition(Passenger* listPass, int indice, int valorInicial)
+{
+	int retorno;
+	retorno = -1;
+
+	if(listPass!= NULL)
+	{
+		listPass[indice].isEmpty = valorInicial;
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+int pass_printArray(Passenger* listPass, int sizeListPass)
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+	if(listPass!= NULL && sizeListPass>0)
+	{
+		retorno = 0;
+		for(i=0; i<sizeListPass; i++)
+		{
+			if(!validacionesInt_sonIdenticos(listPass[i].isEmpty,IS_EMPTY))
+			{
+				if(i==0)
+				{
+					printf("\nID\tNOMBRE\t\tAPELLIDO\tPRECIO\t\tCODIGO VUELO\tTIPO PASAJERO\n");
+				}
+				//printf("DEBUG** print pasajeros\n");
+				passenger_printOneIndice(listPass, i);
+			}
+		}
+	}
+	return retorno;
+}
+
+int passenger_printOneIndice(Passenger* listPass, int indice)
+{
+	int retorno;
+	retorno = -1;
+
+	if(listPass!= NULL && indice >=0)
+	{
+		retorno = 0;
+
+		//printf("DEBUG*** print un pasajero\n");
+		printf("%d %13s %16s %15.2f %12s %11d\n",
+				listPass[indice].id,
+				listPass[indice].name,
+				listPass[indice].lastName,
+				listPass[indice].price,
+				listPass[indice].flycode,
+				listPass[indice].typePassenger);
+	}
+
+	return retorno;
+}
 
 
 ////////////////////////***************GETTERS***************////////////////////////
@@ -176,7 +271,7 @@ int pass_pedirTipoPasajero(int* tipoPasajero)
 	auxTipoPasajero = -1;
 	if(tipoPasajero!= NULL)
 	{
-		tipoPasajero=-2;
+		auxTipoPasajero=-2;
 		if( utn_GetNumeroInt(&auxTipoPasajero, "Estado de vuelo: ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
 		{
 			*tipoPasajero = auxTipoPasajero;

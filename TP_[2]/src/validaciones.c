@@ -134,7 +134,7 @@ int validaciones_esNombre(char unString[], int sizeString)
 			retorno =1;
 			eliminarEspaciosAdelante(unString, sizeString);
 			eliminarEspaciosExtra(unString, sizeString);
-			array_convertirStringMinuscula(unString, sizeString);
+			arrayChar_convertirStringMinuscula(unString, sizeString);
 			if(convertirASustantivoPropio(unString, sizeString)>3)
 			{
 				retorno=-2;
@@ -144,4 +144,23 @@ int validaciones_esNombre(char unString[], int sizeString)
 	return retorno;
 }
 
+
+/**
+ * \brief valida si la variable recibida contiene un valor identico al del segundo parámetro
+ * \param variable Recibe por valor la variable que sera analizada
+ * \param valor Recibe por valor el dato contra el cual se compara
+ * \return Retorna 0 si es falso
+ * 				   1 si es verdadero
+ *
+ */
+int validacionesInt_sonIdenticos(int variable, int valor)
+{
+	int retorno;
+	retorno = 0;
+	if(variable == valor)
+	{
+		retorno = 1;
+	}
+	return retorno;
+}
 
