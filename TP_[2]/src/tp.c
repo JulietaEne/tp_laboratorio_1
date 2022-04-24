@@ -11,7 +11,7 @@
 #include "utn.h"
 //____________________________:::::FUNCIONES tp 1:::::____________________________
 /**
- * \brief calcula un descuento segun los valores recibidos y retorna el resultado
+ * \brief Calcula un descuento segun los valores recibidos y retorna el resultado
  * \param numero Recibe por valor el dato sobre el cual se calculara
  * \param descuento Recibe por valor el dato que indique el descuento a realizar
  * \return Retorna > 0 si la operacion se realizo con exito (retorna el resultado de la operacion).
@@ -104,7 +104,7 @@ float tp_calcularDiferencia(float minuendo, float sustraendo)
 /**
 * \brief Interactua con el usuario para recibir una opcion del menu mostrado, retorna la opcion ingresada
 * \param descripcion y opciones Todos corresponden a la descripcion del menu
-* \return Retorna la opcion ingresada por el Usuario
+* \return Retorna int la opcion ingresada por el Usuario (entre 1 y 6)
 *
 */
 int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres, char* opcionCuatro, char* opcionCinco, char* opcionSeis)
@@ -118,7 +118,7 @@ int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionD
 
 /**
 * \brief Muestra a usuario un mensaje con el codigo del error
-* \param error Recibe por valor el codigo del error presentado
+* \param error int Recibe por valor el codigo del error presentado
 * \return void
 *
 */
@@ -129,7 +129,7 @@ void tp_MensajeErrorGenerico(int error)
 
 /**
 * \brief Muestra a usuario un mensaje de error
-* \param error Recibe el mensaje a imprimir
+* \param error char* Recibe el mensaje a imprimir
 * \return void
 *
 */
@@ -141,7 +141,7 @@ void tp_MensajeError(char* mensaje)
 /**
 * \brief Interactua con el usuario para recibir una opcion del menu mostrado, retorna la opcion ingresada
 * \param descripcion y opciones Todos corresponden a la descripcion del menu
-* \return Retorna la opcion ingresada por el Usuario
+* \return Retorna int la opcion ingresada por el Usuario
 *
 */
 int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres)
@@ -153,11 +153,11 @@ int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionD
     return opcionElegida;
 }
 
-/*
+/**
  * \breif muestra mensaje y recibe un caracter para corroborar que sea 'y'
  * \param *mensaje Recibe por referencia el literal a mostrar
  * \return retorna 1 si continua
- * 		   retorna 0 si no continua
+ * 		   0 si no continua
  *
  */
 int continuar(char* mensaje)
@@ -183,10 +183,10 @@ int continuar(char* mensaje)
 
 /**
  * \brief valida si el numero a analizar es distinto del numero con el que se compara
- * \param numeroAnalizar Recibe por valor el dato al cual analizara
- * \param inicialCompare Recibe por valor el dato contra el cual se compara
+ * \param numeroAnalizar int Recibe por valor el dato al cual analizara
+ * \param inicialCompare int Recibe por valor el dato contra el cual se compara
  * \return Retorna 0 si es falso
- * 				   1 si es verdadero
+ * 		   1 si es verdadero
  *
  */
 int esDistintoDeInicial(int numeroAnalizar, int inicialCompare)
@@ -200,6 +200,14 @@ int esDistintoDeInicial(int numeroAnalizar, int inicialCompare)
 	return retorno;
 }
 
+/**
+ * \brief realiza un intercambio entre los valores de las variables recibidas por parametro
+ * \param numero1 int* Recibe por referencia un valor int
+ * \param numero2 int* Recibe por referencia otro valor int
+ * \return Retorna -1 si hubo un error en las direcciones de memoria recibidas
+ * 		   0 si realizo la operacion exitosamente
+ *
+ */
 int swap(int* numero1, int* numero2)
 {
     int retorno;
@@ -208,14 +216,21 @@ int swap(int* numero1, int* numero2)
     retorno = -1;
     if(numero1!= NULL && numero2!= NULL)
     {
-        retorno=0;
         aux = *numero1;
         *numero1 = *numero2;
         *numero2 = aux;
+    	retorno=0;
     }
     return retorno;
 }
 
+/**
+ * \brief Recibe una cadena de caracteres y si sus componentes representan letras minusculas las sobreescribe por el mismo caracter en mayuscula
+ * \param caracter char* Recibe la direccion de memoria del array que analizara
+ * \return Retorna -1 si hubo un error en las direcciones de memoria recibidas
+ * 		   0 si realizo la operacion exitosamente
+ *
+ */
 int convertirAMayuscula(char* caracter)
 {
 	int retorno;
@@ -231,6 +246,13 @@ int convertirAMayuscula(char* caracter)
 	return retorno;
 }
 
+/**
+ * \brief Recibe una cadena de caracteres y si sus componentes representan letras mayusculas las sobreescribe por el mismo caracter en minuscula
+ * \param caracter char* Recibe la direccion de memoria del array que analizara
+ * \return Retorna -1 si hubo un error en las direcciones de memoria recibidas
+ * 		   0 si realizo la operacion exitosamente
+ *
+ */
 int convertirAMinuscula(char* caracter)
 {
 	int retorno;
@@ -249,9 +271,9 @@ int convertirAMinuscula(char* caracter)
 //____________________________________:::::FUNCIONES DE LOGICA:::::__________________________________
 /**
  * \brief valida si el numero recibido es mayor que cero
- * \param numero Recibe por valor el dato al cual analizara
+ * \param numeroint Recibe por valor el dato al cual analizara
  * \return Retorna 0 si es falso
- * 				   1 si es verdadero
+ * 		   1 si es verdadero
  *
  */
 int esPositivo(int numero)
@@ -269,7 +291,7 @@ int esPositivo(int numero)
  * \brief valida si el numero recibido es par
  * \param numero Recibe por valor el dato al cual analizara
  * \return Retorna 0 si es falso
- * 				   1 si es verdadero
+ * 		   1 si es verdadero
  *
  */
 int esPar(int numero)
@@ -284,15 +306,13 @@ int esPar(int numero)
     return retorno;
  }
 
-
-
 /**
  * \brief Compara los valores recibidos y si el primero es mayor, intercambia los valores para ordenar de menor a mayor
- * \param numeroA Recibe por referencia el valor a analizar
- * \param numeroB Recibe por referencia el valor contra el cual compara
+ * \param numeroA int* Recibe por referencia el valor a analizar
+ * \param numeroB int* Recibe por referencia el valor contra el cual compara
  * \return Retorna -1 si hubo un error en los parámetros
- * 				    0 si no hubo intercambio
- * 				    1 si se realizo un intercambio en los valores
+ * 		   -2 si no hubo intercambio
+ * 		    0 si se realizo un intercambio en los valores
  *
 
 int ordenarFormaCreciente(int* numeroA, int* numeroB)
@@ -301,11 +321,11 @@ int ordenarFormaCreciente(int* numeroA, int* numeroB)
 	retorno = -1;
 	if(numeroA!= NULL && numeroB != NULL)
 	{
-		retorno = 0;
+		retorno = -2;
 		if(*numeroA > *numeroB)
 		{
 			swap(&numeroA, &numeroB);
-			retorno = 1;
+			retorno = 0;
 		}
 	}
 	return retorno;
@@ -316,8 +336,8 @@ int ordenarFormaCreciente(int* numeroA, int* numeroB)
  * \param numeroA Recibe por referencia el valor a analizar
  * \param numeroB Recibe por referencia el valor contra el cual compara
  * \return Retorna -1 si hubo un error en los parámetros
- * 				    0 si no hubo intercambio
- * 				    1 si se realizo un intercambio en los valores
+ * 		   -2 si no hubo intercambio
+ * 		    0 si se realizo un intercambio en los valores
  *
 
 int ordenarFormaDecreciente(int* numeroA, int* numeroB)
