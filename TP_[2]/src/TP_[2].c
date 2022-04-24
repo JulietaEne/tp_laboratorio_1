@@ -66,23 +66,22 @@ int main(void) {
 					idConsulta = pass_pedirIdConsulta(idUltimo);
 					indexIdConsulta= pass_encontrarPasajeroPorId(arrayPasajeros, QTY_PASS, idConsulta);
 
-					/////*********DEBUG*******///////
 					switch (indexIdConsulta)
 					{
 						case -1:
 							printf("DEBUG****** ERROR--- en los parametros");
 							break;
 						case -2:
-							printf("DEBUG****** ERROR--- no encontro coincidencias");
+							printf("ERROR**** no encontro coincidencia. Intente nuevamente\n");
 							break;
 						default:
-							printf("DEBUG****** index: %d - cliente: %s", indexIdConsulta, arrayPasajeros[indexIdConsulta].name);
+							printf("\n\nCliente: %s - ID: %d\n", arrayPasajeros[indexIdConsulta].name, idConsulta);
 							pass_printRotulo();
-							printf("cliente %d\n", idConsulta);
+							//printf("cliente %d\n", idConsulta);
 							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
 							do
 							{
-								menuSecundario = tp_ImprimirMenuSeisOpciones("\n MODIFICAR - Indique el dato que desea modificar", "1- nombre", "2- apellido", "3- precio", "4- Tipo Pasajero", "5- Codigo Vuelo", "6- volver atras");
+								menuSecundario = tp_ImprimirMenuSeisOpciones("\nMODIFICAR - Indique el dato que desea modificar", "1- Nombre", "2- Apellido", "3- Precio", "4- Tipo Pasajero", "5- Codigo Vuelo", "6- Regresar atras");
 								switch(menuSecundario)
 								{
 									case 1:
@@ -92,7 +91,7 @@ int main(void) {
 										}
 										else
 										{
-											tp_MensajeError("ha habido un error al modificar el dato");
+											tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
 										}
 										break;
 									case 2:
@@ -139,7 +138,7 @@ int main(void) {
 							}while(menuSecundario!= 6);
 							break;
 					}
-					/////*********DEBUG*******///////
+
 				}
 				else
 				{

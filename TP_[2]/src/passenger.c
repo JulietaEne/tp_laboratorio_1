@@ -334,7 +334,7 @@ int pass_cambiarPrecio(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(!pass_pedirPrecio(&nuevoPrecio))
+		if(pass_pedirPrecio(&nuevoPrecio)>0)
 		{
 			listPass[idCambio].price = nuevoPrecio;
 			retorno = 0;
@@ -363,7 +363,7 @@ int pass_cambiarTipoPasajero(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(!pass_pedirTipoPasajero(&nuevoTipo))
+		if(pass_pedirTipoPasajero(&nuevoTipo)>0)
 		{
 			listPass[idCambio].typePassenger = nuevoTipo;
 			retorno = 0;
@@ -392,7 +392,7 @@ int pass_cambiarCodigoVuelo(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(!pass_pedirApellido(nuevoCodigoVuelo, SIZE_STR))
+		if(!pass_pedirCodigoVuelo(nuevoCodigoVuelo, SIZE_CODE))
 		{
 			strncpy(listPass[idCambio].flycode, nuevoCodigoVuelo, SIZE_CODE);
 			retorno = 0;
@@ -531,7 +531,7 @@ int pass_pedirEstadoVuelo(int* estadoVuelo)
 		if( !utn_GetNumeroInt(&auxEstadoVuelo, "Estado de vuelo: ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
 		{
 			*estadoVuelo = auxEstadoVuelo;
-			printf("**DEBUG** estadoAux: %d - estado:%d", auxEstadoVuelo, *estadoVuelo);
+			//printf("**DEBUG** estadoAux: %d - estado:%d", auxEstadoVuelo, *estadoVuelo);
 		}
 	}
 
@@ -570,7 +570,7 @@ int pass_pedirIdConsulta(int idUltimo)
 	int retorno;
 	int auxIdConsulta;
 	retorno = -1;
-	if( !utn_GetNumeroInt(&auxIdConsulta, "ingrese ID de cliente", "ingrese un ID valido", ID_INICIAL, ID_MAXIMO, REINTENTOS)
+	if( !utn_GetNumeroInt(&auxIdConsulta, "ingrese ID de cliente: ", "ingrese un ID valido", ID_INICIAL, ID_MAXIMO, REINTENTOS)
 		&& auxIdConsulta<= idUltimo)
 	{
 		retorno = auxIdConsulta;
