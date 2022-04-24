@@ -53,6 +53,8 @@ int pass_pedirTipoPasajero(int* tipoPasajero);
 int pass_pedirIdConsulta(int idUltimo);
 int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsulta);
 
+int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta);
+
 
 
 #define PASSENGER_H_

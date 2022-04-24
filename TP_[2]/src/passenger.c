@@ -21,6 +21,7 @@
 #define MAX_ESTADO_VUELO 3
 #define IS_EMPTY 0
 #define NOT_EMPTY 1
+#define DELETED -1
 #define SIZE_STR 51
 #define SIZE_CODE 10
 #define ID_INICIAL 100
@@ -95,7 +96,8 @@ int pass_printArray(Passenger* listPass, int sizeListPass) //printPassenger
 		retorno = 0;
 		for(i=0; i<sizeListPass; i++)
 		{
-			if(!validacionesInt_sonIdenticos(listPass[i].isEmpty,IS_EMPTY))
+			if( !validacionesInt_sonIdenticos(listPass[i].isEmpty,IS_EMPTY)
+				&& !validacionesInt_sonIdenticos(listPass[i].isEmpty,DELETED))
 			{
 				if(i==0)
 				{
@@ -206,6 +208,15 @@ int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass)
 			{
 				retorno=i;
 				break;
+			}
+			else
+			{
+				if(validacionesInt_sonIdenticos(listPass[i].isEmpty,DELETED))
+				{
+					retorno=i;
+					//printf("DEBUG*** entramos solo cuando ya no queda espacio libre, y tenemos que sobreescribir un cliente eliminado");
+					break;
+				}
 			}
 		}
 	}
@@ -610,3 +621,15 @@ int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsult
 	return retorno;
 }
 
+
+int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta)
+{
+	int retorno;
+	retorno = -1;
+	if( arrayPasajeros != NULL)
+	{
+		retorno = -2;
+		arrayPasajeros[indexIdConsulta].isEmpty=DELETED;
+	}
+	return retorno;
+}
