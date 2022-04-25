@@ -133,6 +133,7 @@ int main(void) {
 				//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
 				break;
 			case 5:
+				printf("Saliendo del programa. \nMuchas gracias. \nNakasone Julieta");
 				break;
 		}
 	}while(menuPrincipal<5);
