@@ -661,8 +661,13 @@ int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta)
 	retorno = -1;
 	if( arrayPasajeros != NULL && indexIdConsulta >=0)
 	{
-		arrayPasajeros[indexIdConsulta].isEmpty=DELETED;
-		retorno = 0;
+		retorno = -2;
+		if(arrayPasajeros[indexIdConsulta].isEmpty==NOT_EMPTY)
+		{
+			arrayPasajeros[indexIdConsulta].isEmpty=DELETED;
+			retorno = 0;
+		}
+
 	}
 	return retorno;
 }

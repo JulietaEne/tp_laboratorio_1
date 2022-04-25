@@ -61,6 +61,7 @@ int main(void) {
 				break;
 			case 2:
 				printf("\nMODIFICAR CLIENTE\n");
+				//printf("DEBUG*** contadoclientes: %d", contadorClientesCargados);
 				if(contadorClientesCargados > 0)
 				{
 					idConsulta = pass_pedirIdConsulta(idUltimo);
@@ -142,7 +143,7 @@ int main(void) {
 				}
 				else
 				{
-					tp_MensajeError("[**ERROR**]Primero debe ingresar al menos 1 cliente para poder modificar");
+					tp_MensajeError("[**ERROR**]No hay clientes cargados para modificar.");
 				}
 				break;
 			case 3:
@@ -165,12 +166,16 @@ int main(void) {
 							//printf("cliente %d\n", idConsulta);
 							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
 							if( continuar("\n¿Confirma que desea eliminar del sistema al cliente? (Y/N)")
-								&& pass_removerSegunId(arrayPasajeros, indexIdConsulta))
+								&& !pass_removerSegunId(arrayPasajeros, indexIdConsulta))
 							{
 								contadorClientesCargados--;
 								printf("El cliente %d se ha eliminado del sistema exitosamente\n", idConsulta);
 							}
 					}
+				}
+				else
+				{
+					tp_MensajeError("[**ERROR**]No hay clientes cargados.");
 				}
 				break;
 			case 4:
