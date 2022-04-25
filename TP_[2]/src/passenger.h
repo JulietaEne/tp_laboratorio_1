@@ -55,7 +55,13 @@ int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsult
 
 int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta);
 
-
+int pass_prepararArray(Passenger* pArray, int sizeArray, int clientesCargados);
+int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexConsulta);
+void pass_cambiarNombreEImprimir(Passenger* pArray, int index);
+void pass_cambiarApellidoEImprimir(Passenger* pArray, int index);
+void pass_cambiarPrecioEImprimir(Passenger* pArray, int index);
+void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index);
+void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index);
 
 #define PASSENGER_H_
 

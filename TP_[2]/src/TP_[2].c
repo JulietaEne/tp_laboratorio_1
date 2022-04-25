@@ -48,6 +48,7 @@ int main(void) {
 				{
 					idUltimo++;
 					contadorClientesCargados++;
+					printf("clientes cargados: %d\n", contadorClientesCargados);
 					if(continuar("\nDesea visualizar los clientes cargados? (Y/N)"))
 					{
 						pass_printArray(arrayPasajeros, QTY_PASS);
@@ -82,61 +83,10 @@ int main(void) {
 							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
 							do
 							{
-								menuSecundario = tp_ImprimirMenuSeisOpciones("\nMODIFICAR - Indique el dato que desea modificar", "1- Nombre", "2- Apellido", "3- Precio", "4- Tipo Pasajero", "5- Codigo Vuelo", "6- Regresar atras");
-								switch(menuSecundario)
-								{
-									case 1:
-									if(!pass_cambiarNombre(arrayPasajeros, indexIdConsulta))
-									{
-										pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-									}
-									else
-									{
-										tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
-									}
-										break;
-									case 2:
-									if(!pass_cambiarApellido(arrayPasajeros, indexIdConsulta))
-									{
-										pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-									}
-									else
-									{
-										tp_MensajeError("ha habido un error al modificar el dato");
-									}
-										break;
-									case 3:
-									if(!pass_cambiarPrecio(arrayPasajeros, indexIdConsulta))
-									{
-										pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-									}
-									else
-									{
-										tp_MensajeError("ha habido un error al modificar el dato");
-									}
-										break;
-									case 4:
-									if(!pass_cambiarTipoPasajero(arrayPasajeros, indexIdConsulta))
-									{
-										pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-									}
-									else
-									{
-										tp_MensajeError("ha habido un error al modificar el dato");
-									}
-										break;
-									case 5:
-									if(!pass_cambiarCodigoVuelo(arrayPasajeros, indexIdConsulta))
-									{
-										pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-									}
-									else
-									{
-										tp_MensajeError("ha habido un error al modificar el dato");
-									}
-										break;
-								}
+								menuSecundario=pass_interaccionMenuSecundario(arrayPasajeros, QTY_PASS, indexIdConsulta);
+								//printf("DEBUG**** menu segundario : %d", menuSecundario);
 							}while(menuSecundario!= 6);
+
 							break;
 					}
 
@@ -163,7 +113,6 @@ int main(void) {
 						default:
 							printf("\n\nCliente: %s - ID: %d\n", arrayPasajeros[indexIdConsulta].name, idConsulta);
 							pass_printRotulo();
-							//printf("cliente %d\n", idConsulta);
 							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
 							if( continuar("\n¿Confirma que desea eliminar del sistema al cliente? (Y/N)")
 								&& !pass_removerSegunId(arrayPasajeros, indexIdConsulta))
@@ -179,6 +128,9 @@ int main(void) {
 				}
 				break;
 			case 4:
+				//listado de pasajeros ordenados alfabeticamente
+				//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
+				//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
 				break;
 			case 5:
 				break;

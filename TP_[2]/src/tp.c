@@ -9,6 +9,7 @@
 #include <stdio_ext.h>
 #include "tp.h"
 #include "utn.h"
+#include "passenger.h"
 //____________________________:::::FUNCIONES tp 1:::::____________________________
 /**
  * \brief Calcula un descuento segun los valores recibidos y retorna el resultado
@@ -353,3 +354,6 @@ int ordenarFormaDecreciente(int* numeroA, int* numeroB)
 	}
 	return retorno;
 }*/
+
+
+

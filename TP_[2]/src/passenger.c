@@ -671,3 +671,170 @@ int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta)
 	}
 	return retorno;
 }
+
+/**
+ * recibe el array y su tamaño y un valor para que, en caso de que sea -1, invoque al initArray y retorne 0
+ *
+ */
+int pass_prepararArray(Passenger* pArray, int sizeArray, int clientesCargados)
+{
+	int retorno;
+	retorno = -1;
+	if(pArray!= NULL && sizeArray>0 && clientesCargados == -1)
+	{
+		pass_initArray(pArray, sizeArray);
+		retorno = 0;
+	}
+	return retorno;
+}
+
+/**
+ * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ */
+void pass_cambiarNombreEImprimir(Passenger* pArray, int index)
+{
+	if(pArray!= NULL)
+	{
+		if(!pass_cambiarNombre(pArray, index))
+		{
+			pass_printRotulo();
+			pass_printOneIndice(pArray, index);
+		}
+		else
+		{
+			tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
+		}
+	}
+	else
+	{
+		tp_MensajeErrorGenerico(-1);
+	}
+}
+
+/**
+ * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ */
+void pass_cambiarApellidoEImprimir(Passenger* pArray, int index)
+{
+	if(pArray!= NULL)
+	{
+		if(!pass_cambiarApellido(pArray, index))
+		{
+			pass_printRotulo();
+			pass_printOneIndice(pArray, index);
+		}
+		else
+		{
+			tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
+		}
+	}
+	else
+	{
+		tp_MensajeErrorGenerico(-1);
+	}
+}
+
+/**
+ * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ */
+void pass_cambiarPrecioEImprimir(Passenger* pArray, int index)
+{
+	if(pArray!= NULL)
+	{
+		if(!pass_cambiarPrecio(pArray, index))
+		{
+			pass_printRotulo();
+			pass_printOneIndice(pArray, index);
+		}
+		else
+		{
+			tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
+		}
+	}
+	else
+	{
+		tp_MensajeErrorGenerico(-1);
+	}
+}
+
+/**
+ * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ */
+void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index)
+{
+	if(pArray!= NULL)
+	{
+		if(!pass_cambiarTipoPasajero(pArray, index))
+		{
+			pass_printRotulo();
+			pass_printOneIndice(pArray, index);
+		}
+		else
+		{
+			tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
+		}
+	}
+	else
+	{
+		tp_MensajeErrorGenerico(-1);
+	}
+}
+
+/**
+ * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ */
+void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index)
+{
+	if(pArray!= NULL)
+	{
+		if(!pass_cambiarCodigoVuelo(pArray, index))
+		{
+			pass_printRotulo();
+			pass_printOneIndice(pArray, index);
+		}
+		else
+		{
+			tp_MensajeError("ERROR** Ha habido un error al modificar el dato. Vuelva a intentar\n");
+		}
+	}
+	else
+	{
+		tp_MensajeErrorGenerico(-1);
+	}
+}
+
+
+/**
+ * retorna el valor ingresado por teclado
+ *
+ */
+int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexConsulta)
+{
+	//int retorno;
+	int menu;
+	menu = -1;
+	if(pArray!= NULL && sizeArray>0 && indexConsulta>=0)
+	{
+		menu = tp_ImprimirMenuSeisOpciones("\nMODIFICAR - Indique el dato que desea modificar", "1- Nombre", "2- Apellido", "3- Precio", "4- Tipo Pasajero", "5- Codigo Vuelo", "6- Regresar atras");
+		switch(menu)
+		{
+			case 1:
+				pass_cambiarNombreEImprimir(pArray, indexConsulta);
+				break;
+			case 2:
+				pass_cambiarNombreEImprimir(pArray, indexConsulta);
+				break;
+			case 3:
+				pass_cambiarPrecioEImprimir(pArray, indexConsulta);
+				break;
+			case 4:
+				pass_cambiarTipoPasajeroEImprimir(pArray, indexConsulta);
+				break;
+			case 5:
+				pass_cambiarCodigoVueloEImprimir(pArray, indexConsulta);
+				break;
+		}
+	}
+	return menu;
+}
+
