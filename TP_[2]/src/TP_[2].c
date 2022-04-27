@@ -17,7 +17,7 @@
 
 #define ID_INICIAL 100
 
-#define QTY_PASS 2
+#define QTY_PASS 6
 
 int main(void) {
 
@@ -28,9 +28,22 @@ int main(void) {
 	int idConsulta;
 	int indexIdConsulta;
 	int menuSecundario;
+	int auxCriterio;
 
 	idUltimo = ID_INICIAL;
 	contadorClientesCargados = -1;
+//DEBUG HARDCODEO******************************************************************
+	if(!pass_initArray(arrayPasajeros, QTY_PASS))
+	{
+		printf("inicializado ok\n");
+	}
+	if(!pass_cargaForzadaDeDatos(arrayPasajeros, QTY_PASS))
+	{
+		pass_printArray(arrayPasajeros, QTY_PASS);
+		contadorClientesCargados=1;
+	}
+//******************************************************************DEBUG HARDCODEO
+
 	//pass_printArray(arrayPasajeros, QTY_PASS);
 	do{
 		menuPrincipal = tp_ImprimirMenuSeisOpciones("\nMENU", "1- ALTA DE CLIENTE", "2- MODIFICAR CLIENTE", "3- BAJA DE CLIENTE", "4- INFORMES", "5- SALIR", "");
@@ -128,7 +141,29 @@ int main(void) {
 				}
 				break;
 			case 4:
-				//listado de pasajeros ordenados alfabeticamente
+				printf("\nINFORMES\n");
+				do
+				{
+					menuSecundario=tp_ImprimirMenuSeisOpciones("Listados de pasajeros según:", "Orden alfabetico o por tipo", "Informe de total y promedio de precios", "Orden por codigo de vuelo y vuelos activos", "Volver al menu anterior", "", "");
+					//printf("DEBUG**** menu segundario : %d", menuSecundario);
+					switch(menuSecundario)
+					{
+					case 1:
+						utn_GetNumeroInt(&auxCriterio, "1- Forma ascendente \n2- Forma descendente", "ingrese un dato valido", 1, 2, REINTENTOS);
+						pass_ordenarArrayPorNombreOTipo(arrayPasajeros, QTY_PASS, auxCriterio);
+						pass_printArray(arrayPasajeros, QTY_PASS);
+						break;
+					case 2:
+						break;
+					case 3:
+						break;
+					case 4:
+						break;
+					}
+				}while(menuSecundario<5);
+				//Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
+
+
 				//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
 				//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
 				break;

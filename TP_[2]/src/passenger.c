@@ -551,7 +551,7 @@ int pass_pedirEstadoVuelo(int* estadoVuelo)
 	if(estadoVuelo!= NULL)
 	{
 		auxEstadoVuelo=-2;
-		if( !utn_GetNumeroInt(&auxEstadoVuelo, "Estado de vuelo: ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
+		if( !utn_GetNumeroInt(&auxEstadoVuelo, "Estado de vuelo(1 Activo, 2 Cancelado, 3 Demorado): ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
 		{
 			*estadoVuelo = auxEstadoVuelo;
 			//printf("**DEBUG** estadoAux: %d - estado:%d", auxEstadoVuelo, *estadoVuelo);
@@ -578,7 +578,7 @@ int pass_pedirTipoPasajero(int* tipoPasajero)
 	if(tipoPasajero!= NULL)
 	{
 		auxTipoPasajero=-2;
-		if(! utn_GetNumeroInt(&auxTipoPasajero, "Tipo de pasajero: ", "Ingrese un dato valido", 1, 3, REINTENTOS))
+		if(! utn_GetNumeroInt(&auxTipoPasajero, "Tipo de pasajero (1 infantes, 2 mujer, 3 hombre, 4 no binario: ", "Ingrese un dato valido", 1, 4, REINTENTOS))
 		{
 			*tipoPasajero = auxTipoPasajero;
 		}
@@ -837,4 +837,170 @@ int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexCo
 	}
 	return menu;
 }
+
+int pass_swap(Passenger* listPass, int index1, int index2)
+{
+	int retorno;
+	Passenger auxPass;
+	retorno = -1;
+	if(listPass!= NULL)
+	{
+		auxPass= listPass[index1];
+		listPass[index1]= listPass[index2];
+		listPass[index2]= auxPass;
+		retorno=0;
+	}
+	return retorno;
+}
+
+int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int criterio)//sortPassengers
+{
+	int retorno;
+	int i;
+	int strCompare;
+	int flagSwap;
+	int nuevoLimite;
+
+	//printf("DEBUG UN PASAJERO: %s", auxPass.lastName );
+	retorno = -1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		nuevoLimite = sizeArray-1;
+
+		do
+		{
+			flagSwap = 0;
+			for(i=0; i<nuevoLimite; i++)
+			{
+				strCompare=strncmp(listPass[i].lastName, listPass[i+1].lastName, SIZE_STR);
+				printf("\nDEBUG*** %s - %s = %d", listPass[i].lastName, listPass[i+1].lastName, strCompare);
+				switch (criterio)
+				{
+					case 1:
+						if(strCompare>0)
+						{
+							/*printf("\nDEBUG*** %d > 0 => cambio el orden", strCompare);
+							if(!pass_swap(listPass, i, i+1))
+							{
+								printf("CAMBIO OK\n");
+							}*/
+							pass_swap(listPass, i, i+1)
+							flagSwap = 1;
+						}
+						else
+						{
+							if(strCompare == 0 && listPass[i].typePassenger > listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+							{
+								/*printf("\nDEBUG*** %d == 0 y tipo[%d]=%d < tipo[%d]=%d", strCompare, i,listPass[i].typePassenger , i+1, listPass[i+1].typePassenger );
+								if(!pass_swap(listPass, i, i+1))
+								{
+									printf("CAMBIO OK\n");
+								}*/
+								pass_swap(listPass, i, i+1);
+								flagSwap = 1;
+							}
+						}
+						break;
+					case 2:
+						if(strCompare<0)
+						{
+							pass_swap(listPass, i, i+1);
+							flagSwap = 1;
+						}
+						else
+						{
+							if(strCompare == 0 && listPass[i].typePassenger < listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+							{
+								pass_swap(listPass, i, i+1);
+								flagSwap = 1;
+							}
+						}
+						break;
+				}
+			}
+			nuevoLimite--;
+		}while(flagSwap);
+	}
+	retorno = 0;
+	return retorno;
+}
+
+//Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
+/**
+ * recorrer el array de pasajeros
+ * 	-ordenar alfabeticamente
+ * 	 tengo un indice y indice+1
+ * 	 strncmp < 0 --> intercambio el contenido del array en el indice indicado
+ * 		-strncmp == 0 --> ordenar por tipo de pasajero
+ * 		 comparo array[i] y array[i+1] si el primero es menor, intercambio el contendio del array en el indice indicado
+ *
+ */
+
+//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
+
+
+/**
+ * total de los precios
+		recorro el array en el campo price y hago un acumulador de los valores + un contador de los campos recorridos (que tengan carga)
+		calculo acumulador/contador para obtener el promedio
+		Muestro el total de los precios ++ el promedio de los precios
+		recorro nuevamente para guardar los index de los .price > promedio y mostrar sus datos
+ */
+
+
+//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
+
+/**
+ * total de los precios
+ * 		recorro el array en el campo price y hago un acumulador de los valores + un contador de los campos recorridos (que tengan carga)
+ *		calculo acumulador/contador para obtener el promedio
+ *		Muestro el total de los precios ++ el promedio de los precios
+ *		recorro nuevamente para guardar los index de los .price > promedio y mostrar sus datos
+ *
+ */
+
+
+int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray)
+{
+	int retorno;
+	int i;
+	Passenger cargaPasajeros[] = {
+								{101, "julieta", "nakasone", 15006, "dsj109", 1, 2, NOT_EMPTY},
+								{102, "amalia", "nakasone", 15004, "dsj18", 2, 2, NOT_EMPTY},
+								{103, "Habib", "Gramondi", 15012, "dfa9", 3, 1, NOT_EMPTY},
+								{104, "Lautaro", "Almafuerte", 15015, "dsj239", 1, 1, NOT_EMPTY},
+								{105, "Micaela", "Juarez", 15000, "dsj159", 1, 2, NOT_EMPTY}
+							};
+	retorno = -1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		retorno = -2;
+		for(i=0; i<5; i++)
+		{
+			listPass[i]= cargaPasajeros[i];
+		}
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

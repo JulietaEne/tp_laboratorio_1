@@ -27,15 +27,15 @@ struct
 #define IS_EMPTY 0
 
 
-int pass_initArray(Passenger* listPass, int sizeListPass);
+int pass_initArray(Passenger* listPass, int sizeListPass); //initPassengers
 int pass_initAPossition(Passenger* listPass, int indice, int valorInicial);
-int pass_printArray(Passenger* listPass, int sizeListPass);
+int pass_printArray(Passenger* listPass, int sizeListPass); //printPassenger
 int pass_printOneIndice(Passenger* listPass, int indice);
 void pass_printRotulo(void);
 
 int pass_pedirNuevoPasajero(Passenger* listPass, int sizePass, int ultimoId);
 int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass);
-int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo);
+int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo); //addPassenger (le agregue parametro para el estado del vuelo)
 
 int pass_cambiarNombre(Passenger* listPass, int idCambio);
 int pass_cambiarApellido(Passenger* listPass, int idCambio);
@@ -51,9 +51,9 @@ int pass_pedirEstadoVuelo(int* estadoVuelo);
 int pass_pedirTipoPasajero(int* tipoPasajero);
 
 int pass_pedirIdConsulta(int idUltimo);
-int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsulta);
+int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsulta); //findPassengerById
 
-int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta);
+int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta); //removePassenger !!!!!!!!!! refactorizar para que quede lis, len, id
 
 int pass_prepararArray(Passenger* pArray, int sizeArray, int clientesCargados);
 int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexConsulta);
@@ -62,6 +62,12 @@ void pass_cambiarApellidoEImprimir(Passenger* pArray, int index);
 void pass_cambiarPrecioEImprimir(Passenger* pArray, int index);
 void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index);
 void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index);
+
+int pass_swap(Passenger* listPass, int index1, int index2);
+int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int criterio);//sortPassengers
+int pass_ordenarArrayPorCodigo(Passenger* listPass, int sizeArray, int criterio);//sortPassengersByCode
+
+int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray);
 
 #define PASSENGER_H_
 
