@@ -65,9 +65,14 @@ void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index);
 
 int pass_swap(Passenger* listPass, int index1, int index2);
 int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int criterio);//sortPassengers
+int pass_acumuladorTotalPreciosCargados(Passenger* listPass, int sizeArray, float* acumuladorPrecios);
+int pass_contadorPreciosSuperanPromedio(Passenger* listPass, int sizeArray, float promedio);
 int pass_ordenarArrayPorCodigo(Passenger* listPass, int sizeArray, int criterio);//sortPassengersByCode
 
 int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray);
+
+int pass_consignaCuatroUno(Passenger* listPass, int sizeArray);
+int pass_consignaCuatroDos(Passenger* listPass, int sizeArray);
 
 #define PASSENGER_H_
 

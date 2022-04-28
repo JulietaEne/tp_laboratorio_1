@@ -17,7 +17,7 @@
 
 #define ID_INICIAL 100
 
-#define QTY_PASS 6
+#define QTY_PASS 2000
 
 int main(void) {
 
@@ -28,7 +28,7 @@ int main(void) {
 	int idConsulta;
 	int indexIdConsulta;
 	int menuSecundario;
-	int auxCriterio;
+	//int auxCriterio;
 
 	idUltimo = ID_INICIAL;
 	contadorClientesCargados = -1;
@@ -142,25 +142,29 @@ int main(void) {
 				break;
 			case 4:
 				printf("\nINFORMES\n");
-				do
+				//4if(contadorClientesCargados > 0)
 				{
-					menuSecundario=tp_ImprimirMenuSeisOpciones("Listados de pasajeros según:", "Orden alfabetico o por tipo", "Informe de total y promedio de precios", "Orden por codigo de vuelo y vuelos activos", "Volver al menu anterior", "", "");
-					//printf("DEBUG**** menu segundario : %d", menuSecundario);
-					switch(menuSecundario)
+					do
 					{
-					case 1:
-						utn_GetNumeroInt(&auxCriterio, "1- Forma ascendente \n2- Forma descendente", "ingrese un dato valido", 1, 2, REINTENTOS);
-						pass_ordenarArrayPorNombreOTipo(arrayPasajeros, QTY_PASS, auxCriterio);
-						pass_printArray(arrayPasajeros, QTY_PASS);
-						break;
-					case 2:
-						break;
-					case 3:
-						break;
-					case 4:
-						break;
-					}
-				}while(menuSecundario<5);
+						menuSecundario=tp_ImprimirMenuSeisOpciones("Listados de pasajeros según:", "1- Orden alfabetico o por tipo", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
+						printf("DEBUG**** menu segundario : %d", menuSecundario);
+						switch(menuSecundario)
+						{
+						case 1:
+							pass_consignaCuatroUno(arrayPasajeros, QTY_PASS);
+							break;
+						case 2:
+							printf("DEBUG*** entramos al 4-2");
+							pass_consignaCuatroDos(arrayPasajeros, QTY_PASS);
+							break;
+						case 3:
+							break;
+						case 4:
+							break;
+						}
+					}while(menuSecundario<5);
+				}
+
 				//Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
 
 

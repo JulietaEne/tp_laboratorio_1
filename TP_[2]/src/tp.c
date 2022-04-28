@@ -113,7 +113,7 @@ int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionD
     int opcionElegida;
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s", descripcion, opcionUno, opcionDos, opcionTres, opcionCuatro, opcionCinco, opcionSeis);
     utn_GetNumeroInt(&opcionElegida, "\nIngresar opcion: ", "por favor, ingrese una opcion valida", 1, 6, 1);
-
+    printf("DEBUG*** opc elegida: %d\n\n",opcionElegida);
     return opcionElegida;
 }
 
@@ -242,6 +242,7 @@ int convertirAMayuscula(char* caracter)
 		if(*caracter>96 && *caracter<123)
 		{
 			*caracter=*caracter-32;
+			//printf("DEBUG**** caracter %c en mayus", *caracter);
 		}
 	}
 	return retorno;
@@ -355,5 +356,16 @@ int ordenarFormaDecreciente(int* numeroA, int* numeroB)
 	return retorno;
 }*/
 
+
+float tp_calcularPromedio(float acumulador, int total)
+{
+	float promedio;
+	promedio = -1;
+	if(total!= 0)
+	{
+		promedio = acumulador/total;
+	}
+	return promedio;
+}
 
 

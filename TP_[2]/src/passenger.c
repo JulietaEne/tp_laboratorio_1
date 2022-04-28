@@ -648,11 +648,11 @@ int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsult
 }
 
 /** 
-* \brief Asigna valor -2 en campo .isEmpty del array recibido, segun el index indicado por parametro
+* \brief Asigna valor -2(removido) en campo .isEmpty del array recibido, segun el index indicado por parametro
 * \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
 * \param indexIdConsulta int Recibe por valor el index en el cual se hara la asignacion
 * \return Return 0 si opero correctamente
-* 		(-1) si hubo un error en los parametros recibidos
+* 				(-1) si hubo un error en los parametros recibidos
 *
 */
 int pass_removerSegunId(Passenger* arrayPasajeros, int indexIdConsulta)
@@ -838,6 +838,15 @@ int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexCo
 	return menu;
 }
 
+/**
+* \brief intercambia el contenido de dos variables tipo Passenger
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param index1 int Recibe por valor el index en el que se encuentra la variable a intercambiar
+* \param index2 int Recibe por valor el index en el que se encuentra la variable por la cual se intercambiara
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_swap(Passenger* listPass, int index1, int index2)
 {
 	int retorno;
@@ -853,6 +862,15 @@ int pass_swap(Passenger* listPass, int index1, int index2)
 	return retorno;
 }
 
+/**
+* \brief muestra el listado de pasajeros ordenado alfabeticamente y por tipo de pasajero (si tienen el mismo apellido, muestra primero el pasajero de clase mas alta)
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \param criterio int Recibe por valor el indicador del criterio con el cual se hara el ordenamiento
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int criterio)//sortPassengers
 {
 	int retorno;
@@ -872,26 +890,27 @@ int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int crit
 			flagSwap = 0;
 			for(i=0; i<nuevoLimite; i++)
 			{
-				strCompare=strncmp(listPass[i].lastName, listPass[i+1].lastName, SIZE_STR);
-				printf("\nDEBUG*** %s - %s = %d", listPass[i].lastName, listPass[i+1].lastName, strCompare);
-				switch (criterio)
+				if(listPass[i].isEmpty == NOT_EMPTY && listPass[i+1].isEmpty == NOT_EMPTY )
 				{
-					case 1:
-						if(strCompare>0)
-						{
-							/*printf("\nDEBUG*** %d > 0 => cambio el orden", strCompare);
-							if(!pass_swap(listPass, i, i+1))
+					if( !arrayChar_convertirStringMayuscula(listPass[i].lastName, strlen(listPass[i].lastName))
+						&&	!arrayChar_convertirStringMayuscula(listPass[i+1].lastName, strlen(listPass[i+1].lastName)))
+					{
+						strCompare=strncmp(listPass[i].lastName, listPass[i+1].lastName, SIZE_STR);
+						arrayChar_convertirASustantivoPropio(listPass[i].lastName, strlen(listPass[i].lastName));
+						arrayChar_convertirASustantivoPropio(listPass[i+1].lastName, strlen(listPass[i+1].lastName));
+					}
+						//printf("DEBUG***** transformamos a camelcase?");
+					else
+					{
+						printf("[ERROR***] Ha habido un error en el analisis de los datos");
+					}
+					//printf("\nDEBUG*** %s - %s = %d", listPass[i].lastName, listPass[i+1].lastName, strCompare);
+					switch (criterio)
+					{
+						case 1:
+							if(strCompare>0)
 							{
-								printf("CAMBIO OK\n");
-							}*/
-							pass_swap(listPass, i, i+1)
-							flagSwap = 1;
-						}
-						else
-						{
-							if(strCompare == 0 && listPass[i].typePassenger > listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
-							{
-								/*printf("\nDEBUG*** %d == 0 y tipo[%d]=%d < tipo[%d]=%d", strCompare, i,listPass[i].typePassenger , i+1, listPass[i+1].typePassenger );
+								/*printf("\nDEBUG*** %d > 0 => cambio el orden", strCompare);
 								if(!pass_swap(listPass, i, i+1))
 								{
 									printf("CAMBIO OK\n");
@@ -899,67 +918,55 @@ int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int crit
 								pass_swap(listPass, i, i+1);
 								flagSwap = 1;
 							}
-						}
-						break;
-					case 2:
-						if(strCompare<0)
-						{
-							pass_swap(listPass, i, i+1);
-							flagSwap = 1;
-						}
-						else
-						{
-							if(strCompare == 0 && listPass[i].typePassenger < listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+							else
+							{
+								if(strCompare == 0 && listPass[i].typePassenger > listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+								{
+									/*printf("\nDEBUG*** %d == 0 y tipo[%d]=%d < tipo[%d]=%d", strCompare, i,listPass[i].typePassenger , i+1, listPass[i+1].typePassenger );
+									if(!pass_swap(listPass, i, i+1))
+									{
+										printf("CAMBIO OK\n");
+									}*/
+									pass_swap(listPass, i, i+1);
+									flagSwap = 1;
+								}
+							}
+							break;
+						case 2:
+							if(strCompare<0)
 							{
 								pass_swap(listPass, i, i+1);
 								flagSwap = 1;
 							}
-						}
-						break;
+							else
+							{
+								if(strCompare == 0 && listPass[i].typePassenger > listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+								{
+									pass_swap(listPass, i, i+1);
+									flagSwap = 1;
+								}
+							}
+							break;
+					}
 				}
 			}
 			nuevoLimite--;
 		}while(flagSwap);
+		retorno = 0;
 	}
-	retorno = 0;
+
 	return retorno;
 }
 
-//Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
-/**
- * recorrer el array de pasajeros
- * 	-ordenar alfabeticamente
- * 	 tengo un indice y indice+1
- * 	 strncmp < 0 --> intercambio el contenido del array en el indice indicado
- * 		-strncmp == 0 --> ordenar por tipo de pasajero
- * 		 comparo array[i] y array[i+1] si el primero es menor, intercambio el contendio del array en el indice indicado
- *
- */
-
-//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
-
 
 /**
- * total de los precios
-		recorro el array en el campo price y hago un acumulador de los valores + un contador de los campos recorridos (que tengan carga)
-		calculo acumulador/contador para obtener el promedio
-		Muestro el total de los precios ++ el promedio de los precios
-		recorro nuevamente para guardar los index de los .price > promedio y mostrar sus datos
- */
-
-
-//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
-
-/**
- * total de los precios
- * 		recorro el array en el campo price y hago un acumulador de los valores + un contador de los campos recorridos (que tengan carga)
- *		calculo acumulador/contador para obtener el promedio
- *		Muestro el total de los precios ++ el promedio de los precios
- *		recorro nuevamente para guardar los index de los .price > promedio y mostrar sus datos
- *
- */
-
-
+* \brief realiza un hardcodeo de 5 elementos a cargar en el array de tipo Passenger
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray)
 {
 	int retorno;
@@ -985,22 +992,164 @@ int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray)
 	return retorno;
 }
 
+/**
+* \brief pide un criterio de ordenamiento para enlistar el array recibido
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
+int pass_consignaCuatroUno(Passenger* listPass, int sizeArray)
+{
+	int retorno;
+	int criterio;
+	retorno = -1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		retorno = 0;
+		if(!utn_GetNumeroInt(&criterio, "1- Forma ascendente \n2- Forma descendente", "ingrese un dato valido", 1, 2, REINTENTOS)
+			&& !pass_ordenarArrayPorNombreOTipo(listPass, sizeArray, criterio))
+		{
+			pass_printArray(listPass, sizeArray);
+		}
+		else
+		{
+			tp_MensajeError("Ha habido un error");
+		}
+
+	}
+	return retorno;
+}
+//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
+/**
+ * total de los precios
+		recorro el array en el campo price y hago un acumulador de los valores + un contador de los campos recorridos (que tengan carga)
+		calculo acumulador/contador para obtener el promedio
+		Muestro el total de los precios ++ el promedio de los precios
+		recorro nuevamente para guardar los index de los .price > promedio y mostrar sus datos
+ */
+
+
+//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
+
+
+/**
+* \brief Calcula el total y el promedio de los precios de pasajeros e informa:
+* 							total de precios de los pasajes
+* 							promedio de precios de los pasajes
+* 							cantidad de pasajeros que superan el precio promedio
+*
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \return Return  0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
+int pass_consignaCuatroDos(Passenger* listPass, int sizeArray)
+{
+	int retorno;
+	float preciosAcumulado;
+	int contadorPrecios;
+	float promedio;
+	int superanPromedio;
+	retorno =-1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		contadorPrecios= pass_acumuladorTotalPreciosCargados(listPass, sizeArray, &preciosAcumulado);
+		printf("DEBUG******* contador: %d", contadorPrecios);
+		if(contadorPrecios)
+		{
+			printf("DEBUG******* acumulador: %.2f / contador precios: %d", preciosAcumulado, contadorPrecios);
+			promedio= tp_calcularPromedio(preciosAcumulado, contadorPrecios);
+			superanPromedio = pass_contadorPreciosSuperanPromedio(listPass, sizeArray, promedio);
+
+			printf("Total de precios de pasajes: %.2f \nPromedio de precios de pasajes: %.2f\nCantidad de pasajeros que superan el precio promedio: %d",
+						preciosAcumulado, promedio, superanPromedio);
+		}
+		else
+		{
+			tp_MensajeErrorGenerico(contadorPrecios);
+		}
+
+		retorno =0;
+	}
+	return retorno;
+}
+
+/**
+* \brief recorre el array en el campo .price para acumular los precios de los elementos cargados como NOT EMPTY e indica la cantidad
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \param acumuladorPrecios *float Recibe una direccion de memoria donde guardar el valor acumulado de precios
+* \return Return >0 si encontro elementos(retorna la cantidad de elementos encontrados)
+* 				  0 si opero correctamente pero no encontro elementos
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
+int pass_acumuladorTotalPreciosCargados(Passenger* listPass, int sizeArray, float* acumuladorPrecios)
+{
+	int contador;
+	int i;
+
+	contador =-1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		contador =0;
+		acumuladorPrecios = 0;
+		for(i=0; i<sizeArray; i++)
+		{
+			if(listPass[i].isEmpty == NOT_EMPTY)
+			{
+				*acumuladorPrecios = *acumuladorPrecios + listPass[i].price;
+				contador++;
+			}
+		}
+	}
+	return contador;
+}
 
 
 
+int pass_ordenarArrayPorCodigo(Passenger* listPass, int sizeArray, int criterio)//sortPassengersByCode
+{
+	int retorno;
+	retorno =-1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		retorno =0;
+	}
+	return retorno;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+/**
+* \brief recorre el array para comprar los valores de .price que sean mayor al promedio recibido y contarlos
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \param promedio float Recibe por valor el dato contra el cual compara
+* \return Return >0 si encontro elementos(retorna la cantidad de elementos encontrados)
+* 				  0 si opero correctamente pero no encontro elementos
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
+int pass_contadorPreciosSuperanPromedio(Passenger* listPass, int sizeArray, float promedio)
+{
+	int contador;
+	int i;
+	contador =-1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		contador =0;
+		for(i=0; i<sizeArray; i++)
+		{
+			if(listPass[i].isEmpty == NOT_EMPTY && listPass[i].price<promedio)
+			{
+				contador ++;
+			}
+		}
+	}
+	return contador;
+}
 
 
 

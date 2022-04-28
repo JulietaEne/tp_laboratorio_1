@@ -681,6 +681,40 @@ int arrayChar_visualizarApellidoNombre(char nombre[], char apellido[], char apel
 	return retorno;
 }
 
+/*
+ * \brief Recibe un array para analizar la estructura y devolver los primeros caracteres a mayuscula
+ * \param unString char[] Recibe la direccion de memoria del array a analizar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		    0 si no realizo cambios
+ *		    >0 si opero en mas de 1 palabra(el valor que retorne sera la cantidad de palabras que encontro)
+ */
+int arrayChar_convertirASustantivoPropio(char unString[], int sizeString)
+{
+	int retorno;
+	int i;
+	retorno = -1;
+	if(unString != NULL && sizeString >0)
+	{
+		retorno =0;
+		for(i = 0; i < sizeString; i++)
+		{
+			convertirAMinuscula(&unString[i]);
+			if(i==0)
+			{
+				convertirAMayuscula(&unString[i]);
+				retorno=1;
+			}
+			if(unString[i] == ' ')
+			{
+				convertirAMayuscula(&unString[i+1]);
+				retorno++;
+			}
+		}
+	}
+	return retorno;
+}
+
 int arrayChar_eliminarTodosLosEspacios(char unString[], int sizeString)
 {
 	int retorno;

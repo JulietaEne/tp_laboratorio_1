@@ -17,7 +17,7 @@
 
 static int eliminarEspaciosAdelante(char unString[], int sizeString);
 static int eliminarEspaciosExtra(char unString[], int sizeString);
-static int convertirASustantivoPropio(char unString[], int sizeString);
+//static int convertirASustantivoPropio(char unString[], int sizeString);
 
 /*
  * \brief Analiza el array recibido y en caso de encontrar espacios antes del primer caracter, los sobreexcribe con los caracteres correspondientes
@@ -90,38 +90,6 @@ static int eliminarEspaciosExtra(char unString[], int sizeString)
 	return retorno;
 }
 
-/*
- * \brief Recibe un array para analizar la estructura y devolver los primeros caracteres a mayuscula
- * \param unString char[] Recibe la direccion de memoria del array a analizar
- * \param sizeListPass int Recibe por valor el tamaño del array
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		    0 si no realizo cambios
- *		    >0 si opero en mas de 1 palabra(el valor que retorne sera la cantidad de palabras que encontro)
- */
-static int convertirASustantivoPropio(char unString[], int sizeString)
-{
-	int retorno;
-	int i;
-	retorno = -1;
-	if(unString != NULL && sizeString >0)
-	{
-		retorno =0;
-		for(i = 0; i < sizeString; i++)
-		{
-			if(i==0)
-			{
-				convertirAMayuscula(&unString[i]);
-				retorno=1;
-			}
-			if(unString[i] == ' ')
-			{
-				convertirAMayuscula(&unString[i+1]);
-				retorno++;
-			}
-		}
-	}
-	return retorno;
-}
 
 /*
  *
@@ -151,7 +119,7 @@ int validaciones_esNombre(char unString[], int sizeString)
 			eliminarEspaciosAdelante(unString, sizeString);
 			eliminarEspaciosExtra(unString, sizeString);
 			arrayChar_convertirStringMinuscula(unString, sizeString);
-			if(convertirASustantivoPropio(unString, sizeString)>3)
+			if(arrayChar_convertirASustantivoPropio(unString, sizeString)>3)
 			{
 				retorno=-3;
 			}

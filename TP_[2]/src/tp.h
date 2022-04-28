@@ -35,7 +35,7 @@ int esPositivo(int numero);
 int esPar(int numero);
 int esDistintoDeInicial(int numeroAnalizar, int inicialCompare);
 //____________________________________:::::::::FUNCIONES TP2::::::::__________________________________
-
+float tp_calcularPromedio(float acumulador, int total);
 
 
 //int intercambiarValor(int* a, int* b);
