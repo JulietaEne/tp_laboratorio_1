@@ -113,7 +113,7 @@ int tp_ImprimirMenuSeisOpciones(char* descripcion,char* opcionUno, char* opcionD
     int opcionElegida;
     printf("%s\n%s\n%s\n%s\n%s\n%s\n%s", descripcion, opcionUno, opcionDos, opcionTres, opcionCuatro, opcionCinco, opcionSeis);
     utn_GetNumeroInt(&opcionElegida, "\nIngresar opcion: ", "por favor, ingrese una opcion valida", 1, 6, 1);
-    printf("DEBUG*** opc elegida: %d\n\n",opcionElegida);
+    //printf("DEBUG*** opc elegida: %d\n\n",opcionElegida);
     return opcionElegida;
 }
 

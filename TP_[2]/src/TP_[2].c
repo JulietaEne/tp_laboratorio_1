@@ -143,24 +143,26 @@ int main(void) {
 			case 4:
 				printf("\nINFORMES\n");
 				//4if(contadorClientesCargados > 0)
+				//pass_consignaCuatroDos(arrayPasajeros, QTY_PASS);
+
 				{
 					do
 					{
 						menuSecundario=tp_ImprimirMenuSeisOpciones("Listados de pasajeros según:", "1- Orden alfabetico o por tipo", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
-						printf("DEBUG**** menu segundario : %d", menuSecundario);
+						//printf("DEBUG**** menu segundario : %d\n\n", menuSecundario);
 						switch(menuSecundario)
 						{
-						case 1:
-							pass_consignaCuatroUno(arrayPasajeros, QTY_PASS);
-							break;
-						case 2:
-							printf("DEBUG*** entramos al 4-2");
-							pass_consignaCuatroDos(arrayPasajeros, QTY_PASS);
-							break;
-						case 3:
-							break;
-						case 4:
-							break;
+							case 1:
+								pass_consignaCuatroUno(arrayPasajeros, QTY_PASS);
+								break;
+							case 2:
+								//printf("DEBUG*** entramos al 4-2");
+								pass_consignaCuatroDos(arrayPasajeros, QTY_PASS);
+								break;
+							case 3:
+								break;
+							case 4:
+								break;
 						}
 					}while(menuSecundario<5);
 				}

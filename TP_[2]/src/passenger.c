@@ -1054,17 +1054,19 @@ int pass_consignaCuatroDos(Passenger* listPass, int sizeArray)
 	float promedio;
 	int superanPromedio;
 	retorno =-1;
+
 	if(listPass!= NULL && sizeArray>0)
 	{
+		printf("\n\nInformes acerca de los precios: ");
 		contadorPrecios= pass_acumuladorTotalPreciosCargados(listPass, sizeArray, &preciosAcumulado);
-		printf("DEBUG******* contador: %d", contadorPrecios);
+		//printf("DEBUG******* contador: %d", contadorPrecios);
 		if(contadorPrecios)
 		{
-			printf("DEBUG******* acumulador: %.2f / contador precios: %d", preciosAcumulado, contadorPrecios);
+			//printf("DEBUG******* acumulador: %.2f / contador precios: %d", preciosAcumulado, contadorPrecios);
 			promedio= tp_calcularPromedio(preciosAcumulado, contadorPrecios);
 			superanPromedio = pass_contadorPreciosSuperanPromedio(listPass, sizeArray, promedio);
 
-			printf("Total de precios de pasajes: %.2f \nPromedio de precios de pasajes: %.2f\nCantidad de pasajeros que superan el precio promedio: %d",
+			printf("a) Total de precios de pasajes: %.2f \nb) Promedio de precios de pasajes: %.2f\nc) Cantidad de pasajeros que superan el precio promedio: %d\n\n",
 						preciosAcumulado, promedio, superanPromedio);
 		}
 		else
@@ -1095,12 +1097,14 @@ int pass_acumuladorTotalPreciosCargados(Passenger* listPass, int sizeArray, floa
 	contador =-1;
 	if(listPass!= NULL && sizeArray>0)
 	{
+		//printf("entre en el if");
 		contador =0;
-		acumuladorPrecios = 0;
+		*acumuladorPrecios = 0;
 		for(i=0; i<sizeArray; i++)
 		{
 			if(listPass[i].isEmpty == NOT_EMPTY)
 			{
+				//printf("estoy en el not empty");
 				*acumuladorPrecios = *acumuladorPrecios + listPass[i].price;
 				contador++;
 			}
