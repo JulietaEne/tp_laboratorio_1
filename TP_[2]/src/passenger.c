@@ -13,6 +13,7 @@
 #include "arrays.h"
 #include "validaciones.h"
 #include "passenger.h"
+#include "fly.h"
 
 #define REINTENTOS 2
 #define MAX_PRECIO 200000
@@ -1022,17 +1023,9 @@ int pass_consignaCuatroUno(Passenger* listPass, int sizeArray)
 	}
 	return retorno;
 }
-//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
-/**
- * total de los precios
-		recorro el array en el campo price y hago un acumulador de los valores + un contador de los campos recorridos (que tengan carga)
-		calculo acumulador/contador para obtener el promedio
-		Muestro el total de los precios ++ el promedio de los precios
-		recorro nuevamente para guardar los index de los .price > promedio y mostrar sus datos
- */
 
 
-//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
+
 
 
 /**
@@ -1116,16 +1109,7 @@ int pass_acumuladorTotalPreciosCargados(Passenger* listPass, int sizeArray, floa
 
 
 
-int pass_ordenarArrayPorCodigo(Passenger* listPass, int sizeArray, int criterio)//sortPassengersByCode
-{
-	int retorno;
-	retorno =-1;
-	if(listPass!= NULL && sizeArray>0)
-	{
-		retorno =0;
-	}
-	return retorno;
-}
+
 
 /**
 * \brief recorre el array para comprar los valores de .price que sean mayor al promedio recibido y contarlos
