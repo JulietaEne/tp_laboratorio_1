@@ -30,17 +30,27 @@ int main(void) {
 	int menuSecundario;
 	//int auxCriterio;
 
-	idUltimo = ID_INICIAL;
-	contadorClientesCargados = -1;
+	//idUltimo = pass_encontrarMayorId(arrayPasajeros, QTY_PASS);
+	//contadorClientesCargados = pass_contadorClientesCargados(arrayPasajeros, QTY_PASS);
+	pass_contadorClientesCargados(arrayPasajeros, QTY_PASS, &contadorClientesCargados);
 //DEBUG HARDCODEO******************************************************************
 	if(!pass_initArray(arrayPasajeros, QTY_PASS))
 	{
+		//pass_printArray(arrayPasajeros, QTY_PASS);
 		printf("inicializado ok\n");
+		//printf("1) contador clientes: %d\n", contadorClientesCargados);
+
 	}
 	if(!pass_cargaForzadaDeDatos(arrayPasajeros, QTY_PASS))
 	{
 		pass_printArray(arrayPasajeros, QTY_PASS);
-		contadorClientesCargados=1;
+		//contadorClientesCargados = pass_contadorClientesCargados(arrayPasajeros, QTY_PASS);
+		pass_contadorClientesCargados(arrayPasajeros, QTY_PASS, &contadorClientesCargados);
+
+		printf("2) contador clientes: %d\n", contadorClientesCargados);
+		pass_encontrarMayorId(arrayPasajeros, QTY_PASS, &idUltimo);
+
+		//contadorClientesCargados=1;
 	}
 //******************************************************************DEBUG HARDCODEO
 
@@ -54,13 +64,17 @@ int main(void) {
 				if(contadorClientesCargados == -1)
 				{
 					pass_initArray(arrayPasajeros, QTY_PASS);
-					contadorClientesCargados = 0;
+					//contadorClientesCargados = 0;
+					pass_encontrarMayorId(arrayPasajeros, QTY_PASS, &idUltimo);
+					printf("ultimo ID: %d", idUltimo);
 					//printf("[DEBUG****]inicializamos OK!");
 				}
 				if(pass_pedirNuevoPasajero(arrayPasajeros, QTY_PASS, idUltimo)>=0)
 				{
-					idUltimo++;
-					contadorClientesCargados++;
+					//idUltimo++;
+
+					//contadorClientesCargados++;
+
 					printf("clientes cargados: %d\n", contadorClientesCargados);
 					if(continuar("\nDesea visualizar los clientes cargados? (Y/N)"))
 					{
@@ -141,14 +155,10 @@ int main(void) {
 				}
 				break;
 			case 4:
-				printf("\nINFORMES\n");
-				//4if(contadorClientesCargados > 0)
-				//pass_consignaCuatroDos(arrayPasajeros, QTY_PASS);
-
 				{
 					do
 					{
-						menuSecundario=tp_ImprimirMenuSeisOpciones("Listados de pasajeros según:", "1- Orden alfabetico o por tipo", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
+						menuSecundario=tp_ImprimirMenuSeisOpciones("\nINFORMES\nListados de pasajeros según:", "1- Orden alfabetico o por tipo", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
 						//printf("DEBUG**** menu segundario : %d\n\n", menuSecundario);
 						switch(menuSecundario)
 						{
@@ -177,7 +187,7 @@ int main(void) {
 				printf("Saliendo del programa. \nMuchas gracias. \nNakasone Julieta");
 				break;
 		}
-	}while(menuPrincipal<5);
+	}while(menuPrincipal<4);
 
 
 }

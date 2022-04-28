@@ -74,6 +74,8 @@ int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray);
 int pass_consignaCuatroUno(Passenger* listPass, int sizeArray);
 int pass_consignaCuatroDos(Passenger* listPass, int sizeArray);
 
+int pass_encontrarMayorId(Passenger* listPass, int sizeArray, int* ultimoId);
+int pass_contadorClientesCargados(Passenger* listPass, int sizeArray, int* contador);
 #define PASSENGER_H_
 
 #endif /* PASSENGER_H_ */

@@ -603,6 +603,7 @@ int pass_pedirIdConsulta(int idUltimo)
 	int auxIdConsulta;
 	retorno = -1;
 	utn_GetNumeroInt(&auxIdConsulta, "ingrese ID de cliente: ", "ingrese un ID valido", ID_INICIAL, ID_MAXIMO, REINTENTOS);
+	//printf("\nDEBUG****** idUltimo: %d\n", idUltimo);
 	if(auxIdConsulta<= idUltimo)
 	{
 		retorno = auxIdConsulta;
@@ -1036,9 +1037,9 @@ int pass_consignaCuatroUno(Passenger* listPass, int sizeArray)
 
 /**
 * \brief Calcula el total y el promedio de los precios de pasajeros e informa:
-* 							total de precios de los pasajes
-* 							promedio de precios de los pasajes
-* 							cantidad de pasajeros que superan el precio promedio
+* 		  - total de precios de los pasajes
+* 		  - promedio de precios de los pasajes
+* 		  - cantidad de pasajeros que superan el precio promedio
 *
 * \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
 * \param sizeArray int Recibe por valor tamaño de la lista
@@ -1057,7 +1058,7 @@ int pass_consignaCuatroDos(Passenger* listPass, int sizeArray)
 
 	if(listPass!= NULL && sizeArray>0)
 	{
-		printf("\n\nInformes acerca de los precios: ");
+		printf("\n\nInformes acerca de los precios:\n ");
 		contadorPrecios= pass_acumuladorTotalPreciosCargados(listPass, sizeArray, &preciosAcumulado);
 		//printf("DEBUG******* contador: %d", contadorPrecios);
 		if(contadorPrecios)
@@ -1154,6 +1155,54 @@ int pass_contadorPreciosSuperanPromedio(Passenger* listPass, int sizeArray, floa
 	}
 	return contador;
 }
+int pass_encontrarMayorId(Passenger* listPass, int sizeArray, int* ultimoId)
+{
+	int retorno;
+	//int ultimoId;
+	retorno =-1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		retorno=0;
+		for(int i=0; i<sizeArray; i++)
+		{
+			if(listPass[i].isEmpty== NOT_EMPTY)
+			{
+				if(i==0)
+				{
+					*ultimoId=ID_INICIAL;
+				}
+				else
+				{
+					if(listPass[i].id>*ultimoId)
+					{
+						*ultimoId=listPass[i].id;
+					}
+				}
+			}
+		}
+		*ultimoId= *ultimoId+1;
 
+	}
+	return retorno;
+}
 
+int pass_contadorClientesCargados(Passenger* listPass, int sizeArray, int* contador)
+{
+	int retorno;
+	retorno =-1;
+	if(listPass!= NULL && sizeArray>0)
+	{
+		retorno =0;
+		*contador = 0;
+		for(int i=0; i<sizeArray; i++)
+		{
+			if(listPass[i].isEmpty== NOT_EMPTY)
+			{
+				//printf("i = %d - id: %d", i, listPass[i].id);
+				*contador= *contador+1;
+			}
+		}
+	}
+	return retorno;
+}
 
