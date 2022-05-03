@@ -115,7 +115,7 @@ int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* can
  * 						0 si la operacion se realizo correctamente
  *
  */
-int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista)
+int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eGenero* listaGenero, int sizeGenero)
 {
 	int retorno;
 	int i;
@@ -132,6 +132,7 @@ int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita
 			{
 				alb_printPosicion(listaAlbum, i);
 				art_printNombreArtista(listaArtita, sizeListaArtista, listaAlbum[i].artistaFk);
+				genero_printDescripcGenero(listaGenero, sizeGenero, listaAlbum[i].generoFk);
 			}
 		}
 	}
@@ -334,6 +335,25 @@ int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista
 	return retorno;
 }
 
+int alb_getGenero(eGenero* listaGenero, int sizeListaGenero, int* idGenero)
+{
+	int retorno;
+	int auxGenero;
+	retorno=-1;
+	if(listaGenero!= NULL && sizeListaGenero>0 && idGenero!= NULL)
+	{
+		retorno=-2;
+		auxGenero = genero_pedirGenero(listaGenero, sizeListaGenero);
+		if(auxGenero>0)
+		{
+			*idGenero = auxGenero;
+			//printf("un artista: %d", *idArtista);
+			retorno =0;
+		}
+	}
+	return retorno;
+}
+
 /**
 * \brief Recibe un array de estructuras para recorrerlo en el campo isEmpty hasta encontrar el valor 0,
 * 		 retornando el valor del indice hayado
@@ -386,13 +406,14 @@ int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum)
 *					  (0) if Ok
 *
 */
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista)
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eGenero* listaGeneros, int sizeGeneros)
 {
 	int retorno;
 	int idArtistaAlbum;
 	eFecha unaFechaAlbum;
 	float importeAlbum;
 	char tituloAlbum[STR_SIZE];
+	int idGenero;
 
 	retorno = -1;
 	if(listaAlbum!= NULL && sizeListaAlbum >0 && listaArtista != NULL && sizeListaArtista >0)
@@ -402,8 +423,9 @@ int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArt
 		alb_getFecha(&unaFechaAlbum);
 		alb_getImporte(&importeAlbum);
 		alb_getArtista(listaArtista, sizeListaArtista, &idArtistaAlbum);
+		alb_getGenero(listaGeneros, sizeGeneros, &idGenero);
 
-		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum))
+		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, idGenero))
 		{
 			retorno=0;
 		}
@@ -411,7 +433,7 @@ int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArt
 	return retorno;
 }
 
-int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum)
+int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int idGenero)
 {
 	int retorno;
 	//int qtyAlbumCargados;
@@ -437,6 +459,7 @@ int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha
 			listaAlbum[indexCarga].isEmpty=NOT_EMPTY;
 			listaAlbum[indexCarga].artistaFk=idArtistaAlbum;
 			strncpy(listaAlbum[indexCarga].titulo,tituloAlbum, STR_SIZE);
+			listaAlbum[indexCarga].generoFk=idGenero;
 			retorno=0;
 		}
 

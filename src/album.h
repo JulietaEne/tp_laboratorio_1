@@ -33,7 +33,7 @@ struct{
 	eFecha fecha;
 	float importe;
 	int artistaFk; //solicitado en el 5-H
-	//int generoFk; no se solicita explicitamente
+	int generoFk;// no se solicita explicitamente
 	int isEmpty;
 }typedef eAlbum;
 
@@ -41,7 +41,7 @@ int alb_initLista(eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_initPosicion(eAlbum* listaAlbum, int indice, int valorInicial);
 int alb_indicarUltimoId(eAlbum* listaAlbum, int sizeListaAlbum, int* ultimoId);
 int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* cantidadCargados);
-int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista);
+int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eGenero* listaGenero, int sizeGenero);
 int alb_printPosicion(eAlbum* listaAlbum, int indiceAlbum);
 int alb_printPosicionConArtista(eAlbum* listaAlbum, int indiceAlbum, eArtista* listaArtita, int indiceArtista);
 void alb_printEncabezado(void);
@@ -51,9 +51,10 @@ int alb_getTitulo(char* titulo, int sizeTitulo);
 int alb_getImporte(float* importe);
 int alb_getFecha(eFecha* fechaAlbum);
 int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista);
+int alb_getGenero(eGenero* listaGenero, int sizeListaGenero, int* idGenero);
 int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum);
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista);
-int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum);
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eGenero* listaGeneros, int sizeGeneros);
+int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int idGenero);
 int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum);
 

@@ -20,6 +20,7 @@
 #define NOT_EMPTY 1
 #define ID_ART_INICIAL 1
 #define QTY_ARTIST 10
+#define QTY_GENERO 4
 
 struct
 {
@@ -30,6 +31,14 @@ struct
 
 }typedef eArtista;
 
+struct
+{
+	int idGenero;
+	char descripcion[51];
+	int isEmpty;
+
+}typedef eGenero;
+
 
 int art_idUltimoArtista(eArtista* listaArtistas, int sizeListaArtista);
 int art_pedirArtista(eArtista* listaArtistas, int sizeListaArtista);
@@ -39,6 +48,13 @@ int art_printPosicion(eArtista* listaArtistas, int indice);
 int art_findArtistaPorId(eArtista* listaArtistas, int sizeListaArtista, int idConsulta);
 void art_printEncabezado(void);
 int art_cargaForzadaDeDatos(eArtista* listaArtistas, int sizeListaArtista);
+
+int genero_pedirGenero(eGenero* listaGeneros, int sizeGeneros);
+int genero_printListaGeneros(eGenero* listaGeneros, int sizeGeneros);
+int genero_printPosicion(eGenero* listaGeneros, int indice);
+int genero_cargaForzadaDeDatos(eGenero* listaGeneros, int sizeGeneros);
+int genero_idUltimo(eGenero* listaGeneros, int sizeGeneros);
+int genero_printDescripcGenero(eGenero* listaGenero, int sizeGenero, int idGenero);
 
 
 #endif /* ARTISTA_H_ */

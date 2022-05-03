@@ -25,6 +25,7 @@ int main(void) {
 	eAlbum listAlbum[QTY_ALBUM];
 	int ultimoId;
 	eArtista listArtista[QTY_ARTIST];
+	eGenero listaGeneros[QTY_GENERO];
 	int auxCodigo;
 	int auxIndex;
 	int menuSecundario;
@@ -34,6 +35,7 @@ int main(void) {
 	printf("Alumna: NAKASONE JULIETA\n\nPrograma para Administrar albumes de artistas musicales ");
 	alb_initLista(listAlbum, QTY_ALBUM);
 	alb_cargaForzadaDeDatos(listAlbum, QTY_ALBUM);
+	genero_cargaForzadaDeDatos(listaGeneros,QTY_GENERO);
 
 	do
 	{
@@ -51,9 +53,9 @@ int main(void) {
 					art_cargaForzadaDeDatos(listArtista, QTY_ARTIST);
 
 				}
-				if(!alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST))
+				if(!alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaGeneros, QTY_GENERO))
 				{
-					alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM);
+					alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM, listaGeneros, QTY_GENERO);
 				}
 				else
 				{
@@ -117,7 +119,7 @@ int main(void) {
 						if(respContinuar && !alb_removerAlbum(listAlbum, auxIndex))
 						{
 							printf("se ha eliminado exitosamente");
-							alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM);
+							alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM, listaGeneros, QTY_GENERO);
 						}
 						else
 						{
