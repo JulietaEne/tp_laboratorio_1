@@ -147,3 +147,30 @@ int validacionesInt_sonIdenticos(int variable, int valor)
 	}
 	return retorno;
 }
+
+int validaciones_EsCodigoTresLetrasYNumero(char unString[], int sizeString)
+{
+	int retorno;
+	//int j;
+	//int cuenta;
+
+	retorno = -1;
+//	printf("es codigo letra y numero");
+	if(unString != NULL && sizeString > 0)
+	{
+		retorno =-2;
+		if(strlen(unString)>=LEN_MINIMO_NOMBRE)
+		{
+
+			eliminarEspaciosAdelante(unString, sizeString);
+			eliminarEspaciosExtra(unString, sizeString);
+			arrayChar_convertirStringMinuscula(unString, sizeString);
+			if(!arrayChar_plusInt(unString, sizeString))
+			{
+				retorno =0;
+				//printf("hola");
+			}
+		}
+	}
+	return retorno;
+}

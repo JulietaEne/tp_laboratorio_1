@@ -37,6 +37,7 @@ int array_floatIdentificarMenorNumero(float unArray[], int sizeArray, float* men
 int arrayChar_convertirStringMayuscula(char unString[], int sizeArray);
 int arrayChar_convertirStringMinuscula(char unString[], int sizeArray);
 int arrayChar_visualizarApellidoNombre(char nombre[], char apellido[], char apellidoNombre[], int lenApellidoNombre);
+int arrayChar_plusInt(char unString[], int sizeString);
 int arrayChar_convertirASustantivoPropio(char unString[], int sizeString);
 int arrayChar_eliminarTodosLosEspacios(char unString[], int sizeString);
 

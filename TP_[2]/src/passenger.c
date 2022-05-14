@@ -9,24 +9,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utn.h"
-#include "tp.h"
+
 #include "arrays.h"
 #include "validaciones.h"
 #include "passenger.h"
-#include "fly.h"
+#include "tp.h"
+//#include "typePass.h"
 
-#define REINTENTOS 2
-#define MAX_PRECIO 200000
-#define MIN_PRECIO 10000
-#define MIN_ESTADO_VUELO 0
-#define MAX_ESTADO_VUELO 3
-#define IS_EMPTY 0
-#define NOT_EMPTY 1
-#define DELETED -1
-#define SIZE_STR 51
-#define SIZE_CODE 10
-#define ID_INICIAL 100
-#define ID_MAXIMO 2200
 
 
 /**
@@ -77,6 +66,67 @@ int pass_initAPossition(Passenger* listPass, int indice, int valorInicial)
 	return retorno;
 }
 
+
+/*
+ * \brief Recorre el array recibido para analizar el campo id y encontrar el id Mayor.
+ * \param listPass Passenger* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 			           >=ID_INICIAL si la operacion se realizo correctamente
+ *
+ */
+int pass_indicarUltimoId(Passenger* listPass, int sizeListPass)//, int* ultimoId)
+{
+	int auxMayorId;
+	int i;
+	auxMayorId = -1;
+	if(listPass!= NULL && sizeListPass >0 )//&& ultimoId != NULL)
+	{
+		auxMayorId=ID_INICIAL;
+		for (i=0; i<sizeListPass; i++)
+		{
+			if(listPass[i].isEmpty== NOT_EMPTY && listPass[i].id>auxMayorId)
+			{
+				auxMayorId=listPass[i].id;
+			}
+		}
+		//*ultimoId = auxMayorId;
+		//printf("\nULTIMO ID: %d\n", *ultimoId);
+	}
+
+	return auxMayorId;
+}
+
+/*
+ * \brief Recorre el array recibido para analizar si el campo isEmpty está usado, y si lo está los contabiliza
+ * \param listPass Passenger* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \param cantidadCargados int* Recibe la direccion de memoria de una variable donde alojar el resultado
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 					   0 si no contabilizó pasajeros cargados
+ * 					   >0 si encontro pasajeros cargados(retorna la cantidad contabilizada)
+ *
+ */
+int pass_contadorPasajerosCargados(Passenger* listPass, int sizeListPass, int* cantidadCargados)
+{
+	int i;
+	int contador;
+	contador=-1;
+	if(listPass!= NULL && sizeListPass>0) //&& cantidadCargados!= NULL)
+	{
+		contador=0;
+		for(i=0; i<sizeListPass; i++)
+		{
+			if(listPass[i].isEmpty == NOT_EMPTY)
+			{
+				contador++;
+			}
+		}
+		*cantidadCargados=contador;
+	}
+	return contador;
+}
+
 /*
  * \brief Recorre el array recibido para imprimir los indices que estan cargados
  * \param listPass Passenger* Recibe la direccion de memoria del array sobre el cual va a trabajar
@@ -94,15 +144,12 @@ int pass_printArray(Passenger* listPass, int sizeListPass) //printPassenger
 	if(listPass!= NULL && sizeListPass>0)
 	{
 		retorno = 0;
+		pass_printRotulo();
 		for(i=0; i<sizeListPass; i++)
 		{
-			if( !validacionesInt_sonIdenticos(listPass[i].isEmpty,IS_EMPTY)
-				&& !validacionesInt_sonIdenticos(listPass[i].isEmpty,DELETED))
+			if( listPass[i].isEmpty != IS_EMPTY
+				&& listPass[i].isEmpty != DELETED)
 			{
-				if(i==0)
-				{
-					pass_printRotulo();
-				}
 				//printf("DEBUG** print pasajeros\n");
 				pass_printOneIndice(listPass, i);
 			}
@@ -111,18 +158,46 @@ int pass_printArray(Passenger* listPass, int sizeListPass) //printPassenger
 	return retorno;
 }
 
+/*
+ * \brief Recorre el array recibido para imprimir los indices que estan cargados
+ * \param listPass Passenger* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListPass int Recibe por valor el tamaño del array
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 			0 si la operacion se realizo correctamente
+ *
+ */
+int pass_printArrayConTipoPasajero(Passenger* listPass, int sizeListPass, typePass* listaTipoPasajeros, int sizeTipoPasajeros) //printPassenger
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+	if(listPass!= NULL && sizeListPass>0)
+	{
+		retorno = 0;
+		pass_printRotulo();
+		for(i=0; i<sizeListPass; i++)
+		{
+			if( listPass[i].isEmpty != IS_EMPTY
+				&& listPass[i].isEmpty != DELETED)
+			{
+				//printf("DEBUG** print pasajeros\n");
+				pass_printOneIndice(listPass, i);
+				typePass_printTipoPasajeroSegunId(listaTipoPasajeros, sizeTipoPasajeros, listPass[i].idTypePass);
+			}
+		}
+	}
+	return retorno;
+}
+
 /**
  * \brief Imprime el encabezado de la planilla
-<<<<<<< HEAD
  * \return void
-=======
- * \return void 
->>>>>>> ae67d6a9b59e92cc10463595ea46956c7abffa70
  *
  */
 void pass_printRotulo(void)
 {
-	printf("\nID\tNOMBRE\t\tAPELLIDO\tPRECIO\t\tCODIGO VUELO\tTIPO PASAJERO\tESTADO VUELO\n");
+	printf("\nID\tNOMBRE\t\tAPELLIDO\tPRECIO\t\tCODIGO VUELO\tESTADO VUELO\tTIPO PASAJERO\n");
 }
 
 /**
@@ -143,71 +218,201 @@ int pass_printOneIndice(Passenger* listPass, int indice)
 		retorno = 0;
 
 		//printf("DEBUG*** print un pasajero\n");
-		printf("%d %13s %16s %15.2f %12s %11d %12d\n",
+		printf("%d %13s %16s %15.2f %12s %12d\t\t",
 				listPass[indice].id,
 				listPass[indice].name,
 				listPass[indice].lastName,
 				listPass[indice].price,
 				listPass[indice].flycode,
-				listPass[indice].typePassenger,
+				//listPass[indice].typePassenger,
 				listPass[indice].statusFlight);
 	}
 
 	return retorno;
 }
 
+////////////////////////***************GETTERS***************////////////////////////
 /**
-* \brief add in a existing list of passenger the values received as parameters in the first empty position(with pass_agregarPasajeroAlArray)
-* \param listPass Passenger* receives the list where will write the struct
-* \param sizePass int to indicate array size
-* \param ultimoId int receives by value that data that will assigned in .id
-<<<<<<< HEAD
-* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
-=======
-* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space] 
->>>>>>> ae67d6a9b59e92cc10463595ea46956c7abffa70
-*			(0) if Ok
-*
-*/
-int pass_pedirNuevoPasajero(Passenger* listPass, int sizePass, int ultimoId)
+ * \brief interactua con el usuario para solicitar el nombre del cliente
+ * \param nombre char* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \param sizeNombre int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ * 		   0 si la operacion se realizo correctamente
+ *
+ */
+int pass_getNombre(char* nombre, int sizeNombre)
 {
 	int retorno;
-	char nombre[SIZE_STR];
-	char apellido[SIZE_STR];
-	float precio;
-	char codigoVuelo[SIZE_CODE];
-	int tipoPasajero;
-	int estadoVuelo;
+	char auxNombre[sizeNombre];
+	//int flagNombre;
 
-	int cargarCliente;
-
-	retorno =-1;
-	if(listPass != NULL && sizePass >0 && ultimoId >= 0)
+	//flagNombre =0;
+	retorno = -1;
+	if(nombre!= NULL && sizeNombre >0)
 	{
-		cargarCliente= pass_encontrarPrimerIndiceIsEmpty(listPass, sizePass);
-		if(cargarCliente < 0)
+		retorno=-2;
+		/*do //aca tendria que ver como hacer para que se valide por si sola
 		{
-			//printf("[ERROR] Imposible ");
-			tp_MensajeErrorGenerico(cargarCliente);
-			retorno = -2;
+		    utn_ingresarAlfabetica(auxNombre, sizeNombre, "Nombre: ", "Ingrese un dato valido", REINTENTOS);
+		    if(!validaciones_esNombre(auxNombre, sizeNombre))
+
+		}while(!flagNombre)*/
+
+		if( !utn_ingresarAlfabetica(auxNombre, sizeNombre, "Nombre: ", "Ingrese un dato valido", REINTENTOS)
+			&& !validaciones_esNombre(auxNombre, sizeNombre))
+		{
+			strncpy(nombre, auxNombre, sizeNombre);
+			retorno = 0;
 		}
-		else
+	}
+
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el apellido del cliente
+ * \param apellido char* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \param sizeApellido int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ * 		   0 si la operacion se realizo correctamente
+ *
+ */
+int pass_getApellido(char* apellido, int sizeApellido)
+{
+	int retorno;
+	char auxApellido[sizeApellido];
+	retorno = -1;
+	if(apellido!= NULL && sizeApellido >0)
+	{
+		retorno=-2;
+		if( !utn_ingresarAlfabetica(auxApellido, sizeApellido, "Apellido: ", "Ingrese un dato valido", REINTENTOS)
+			&& !validaciones_esNombre(auxApellido, sizeApellido))
 		{
-			if( !pass_pedirNombre(nombre, SIZE_STR)
-				&& !pass_pedirApellido(apellido, SIZE_STR)
-				&& pass_pedirPrecio(&precio)>0
-				&& !pass_pedirCodigoVuelo(codigoVuelo, SIZE_CODE)
-				&& pass_pedirTipoPasajero(&tipoPasajero)>0
-				&& pass_pedirEstadoVuelo(&estadoVuelo)>0)
+			strncpy(apellido, auxApellido, sizeApellido);
+			retorno = 0;
+		}
+	}
+
+	return retorno;
+}
+
+/*
+ * \brief interactua con el usuario para solicitar el precio
+ * \param precio float* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
+ * \param sizeApellido Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ * 		   >0 si la operacion se realizo correctamente
+ *
+ */
+float pass_getPrecio(float* precio)
+{
+	//int retorno;
+	float auxPrecio;
+	auxPrecio = -1;
+	if(precio!= NULL)
+	{
+		auxPrecio=-2;
+		if( !utn_GetNumeroFloat(&auxPrecio, "ingrese el precio: ", "ingrese un dato valido", MIN_PRECIO, MAX_PRECIO, REINTENTOS))
+		{
+			*precio = auxPrecio;
+		}
+	}
+
+	return auxPrecio;
+}
+
+/*
+ * \brief interactua con el usuario para solicitar el codigo del vuelo
+ * \param codigoVuelo char* recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \param sizeCodigoVuelo int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ * 		   0 si la operacion se realizo correctamente
+ *
+ */
+int pass_getCodigoVuelo(char* codigoVuelo, int sizeCodigoVuelo)
+{
+	int retorno;
+	char auxCodigoVuelo[sizeCodigoVuelo];
+	retorno = -1;
+	if(codigoVuelo!= NULL && sizeCodigoVuelo >0)
+	{
+		retorno=-2;
+		do{
+			utn_getAlfaNumerica(auxCodigoVuelo, sizeCodigoVuelo, "Codigo de vuelo(3 letras + numeros): ", "Ingrese un dato valido", REINTENTOS);
+			if(!validaciones_EsCodigoTresLetrasYNumero(auxCodigoVuelo, sizeCodigoVuelo))
 			{
-				pass_agregarPasajeroAlArray(listPass, sizePass, ultimoId, nombre, apellido, precio, codigoVuelo, tipoPasajero, estadoVuelo);
+				strncpy(codigoVuelo, auxCodigoVuelo, sizeCodigoVuelo);
 				retorno = 0;
 			}
-		}
 
+		}while(retorno);
+		//if( !utn_getAlfaNumerica(auxCodigoVuelo, sizeCodigoVuelo, "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS)
+		//	&& !validaciones_EsCodigoTresLetrasYNumero(auxCodigoVuelo, sizeCodigoVuelo))
+		//{
+		//	strncpy(codigoVuelo, auxCodigoVuelo, sizeCodigoVuelo);
+		//	retorno = 0;
+		//}
 	}
 	return retorno;
 }
+
+/*
+ * \brief interactua con el usuario para solicitar el estado del vuelo
+ * \param estadoVuelo char* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ * 		   >0 si la operacion se realizo correctamente
+ *
+ */
+int pass_getEstadoVuelo(int* estadoVuelo)
+{
+	//int retorno;
+	int auxEstadoVuelo;
+	auxEstadoVuelo = -1;
+	if(estadoVuelo!= NULL)
+	{
+		auxEstadoVuelo=-2;
+		if( !utn_GetNumeroInt(&auxEstadoVuelo, "Estado de vuelo(1 Activo, 2 Cancelado, 3 Demorado): ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
+		{
+			*estadoVuelo = auxEstadoVuelo;
+			//printf("**DEBUG** estadoAux: %d - estado:%d", auxEstadoVuelo, *estadoVuelo);
+		}
+	}
+
+	return auxEstadoVuelo;
+}
+
+
+/*
+ * \brief interactua con el usuario para solicitar el tipo de pasajero del cliente
+ * \param tipoPasajero int* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   -2 si hubo un error en la interaccion con el usuario
+ * 		   >0 si la operacion se realizo correctamente
+ *
+ */
+int pass_getTipoPasajero(int* tipoPasajero, typePass* listaTipoPasajeros, int sizeTipoPasajeros)
+{
+	//int retorno;
+	int auxTipoPasajero;
+	auxTipoPasajero = -1;
+	if(tipoPasajero!= NULL && listaTipoPasajeros != NULL && sizeTipoPasajeros > 0)
+	{
+		auxTipoPasajero = typePass_getTipoPasajero(listaTipoPasajeros, sizeTipoPasajeros);
+		if(auxTipoPasajero > 0)
+		{
+			*tipoPasajero = auxTipoPasajero;
+		}
+	}
+	return auxTipoPasajero;
+}
+
+
+///////////////////////////////////
 
 /**
 * \brief Recibe un array de estructuras para recorrerlo en el campo isEmpty hasta encontrar el valor 0,
@@ -253,6 +458,44 @@ int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass)
 }
 
 /**
+* \brief add in a existing list of passenger the values received as parameters in the first empty position(with pass_agregarPasajeroAlArray)
+* \param listPass Passenger* receives the list where will write the struct
+* \param sizePass int to indicate array size
+* \param ultimoId int receives by value that data that will assigned in .id
+* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
+*			(0) if Ok
+*
+*/
+int pass_getNuevoPasajero(Passenger* listPass, int sizePass, int ultimoId, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
+{
+	int retorno;
+	char nombre[SIZE_STR];
+	char apellido[SIZE_STR];
+	float precio;
+	char codigoVuelo[SIZE_CODE];
+	int tipoPasajero;
+	int estadoVuelo;
+
+	//int cargarCliente;
+
+	retorno =-1;
+	if(listPass != NULL && sizePass >0 && ultimoId >= 0)
+	{
+		pass_getNombre(nombre, SIZE_STR);
+		pass_getApellido(apellido, SIZE_STR);
+		pass_getPrecio(&precio);
+		pass_getCodigoVuelo(codigoVuelo, SIZE_CODE);
+		pass_getTipoPasajero(&tipoPasajero, listaTipoPasajeros, sizeListaTipoPasajeros);
+	    pass_getEstadoVuelo(&estadoVuelo);
+		if(!pass_agregarPasajeroAlArray(listPass, sizePass, nombre, apellido, precio, codigoVuelo, tipoPasajero, estadoVuelo))
+		{
+		    retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
 * \brief Recibe un array de estructuras el cual sera analizado para cargar en un indice determinado los datos de las variables recibidas por parametro
 * \param listPass employee* recibe la direccion de memoria del array a analizar
 * \param sizePass int recibe por valor el tamaño del array
@@ -269,32 +512,82 @@ int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass)
 *
 */
 //addPassenger
-int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo)
+int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, char* nombre, char* apellido, float precio, char* codigoVuelo, int tipoPasajero, int estadoVuelo)
 {
 	int retorno;
-	int primerIndiceLibre;
+	int ultimoId;
+	int indexCarga;
 
 	retorno = -1;
 	if(listPass!= NULL && sizePass>0 && nombre!= NULL && apellido!= NULL && codigoVuelo!= NULL)
 	{
 		retorno = -2;
-		primerIndiceLibre= pass_encontrarPrimerIndiceIsEmpty(listPass, sizePass);
-		if(primerIndiceLibre >= 0)
+		ultimoId = pass_indicarUltimoId(listPass, sizePass);
+		ultimoId = ultimoId+1;
+
+		indexCarga = pass_encontrarPrimerIndiceIsEmpty(listPass, sizePass);
+
+		if(indexCarga >= 0)
 		{
-			strncpy(listPass[primerIndiceLibre].name, nombre, SIZE_STR);
-			strncpy(listPass[primerIndiceLibre].lastName, apellido, SIZE_STR);
-			listPass[primerIndiceLibre].id = ultimoId;//este id proviene de una variable autoincremental
-			listPass[primerIndiceLibre].price = precio;
-			listPass[primerIndiceLibre].typePassenger = tipoPasajero;
-			strncpy(listPass[primerIndiceLibre].flycode, codigoVuelo, SIZE_CODE);
-			listPass[primerIndiceLibre].statusFlight = estadoVuelo;
-			listPass[primerIndiceLibre].isEmpty = NOT_EMPTY;
+			strncpy(listPass[indexCarga].name, nombre, SIZE_STR);
+			strncpy(listPass[indexCarga].lastName, apellido, SIZE_STR);
+			listPass[indexCarga].id = ultimoId;//este id proviene de una variable autoincremental
+			listPass[indexCarga].price = precio;
+			listPass[indexCarga].idTypePass = tipoPasajero;
+			strncpy(listPass[indexCarga].flycode, codigoVuelo, SIZE_CODE);
+			listPass[indexCarga].statusFlight = estadoVuelo;
+			listPass[indexCarga].isEmpty = NOT_EMPTY;
 			retorno=0;
 		}
 
 	}
 	return retorno;
 }
+
+
+/**
+* \brief Interactua con el usuario para solicitar un id y validar que contenga datos, si lo hace, lo retorna
+* \param idUltimo int Recibe por valor el dato contra el cual compara para validar el dato ingresado
+* \return Return >=0 si opero correctamente
+* 				(-1) si hubo un error en el dato ingresado
+*				(-2) si el id no corresponde a un cliente valido
+*
+*/
+int pass_pedirIdConsulta(int* idConsulta, Passenger* listPass, int sizeListPass, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
+{
+	int retorno;
+	int auxIdConsulta;
+	int ultimoId;
+
+	retorno = -1;
+
+	if(idConsulta != NULL && listPass != NULL && sizeListPass >0)
+	{
+	    retorno = 0;
+	    utn_GetNumeroInt(&auxIdConsulta, "ingrese ID de cliente: ", "ingrese un ID valido", ID_INICIAL, ID_MAXIMO, REINTENTOS);
+        ultimoId = pass_indicarUltimoId(listPass, sizeListPass);
+        if( auxIdConsulta <= ultimoId)
+        {
+            *idConsulta = auxIdConsulta;
+        }
+        else
+        {
+            printf("ingrese el codigo de un album existente");
+            pass_printArrayConTipoPasajero(listPass, sizeListPass, listaTipoPasajeros, sizeListaTipoPasajeros);
+        }
+	}
+	return retorno;
+}
+//*****************************************carga forzada de datos *************************************/////////
+int alb_cargaForzadaDeDatos( Passenger* listPass, int sizeListPass)
+{
+    int retorno;
+    retorno = -1;
+
+    return retorno;
+}
+//*****************************************carga forzada de datos *************************************/////////
+
 
 /**
 * \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido y cambiar el dato en el campo .name
@@ -306,7 +599,7 @@ int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, int ultimoId,
 *
 *
 */
-int pass_cambiarNombre(Passenger* listPass, int idCambio)
+int pass_setNombre(Passenger* listPass, int indexCambio)
 {
 	int retorno;
 	char nuevoNombre[SIZE_STR];
@@ -314,9 +607,9 @@ int pass_cambiarNombre(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(!pass_pedirNombre(nuevoNombre, SIZE_STR))
+		if(!pass_getNombre(nuevoNombre, SIZE_STR))
 		{
-			strncpy(listPass[idCambio].name, nuevoNombre, SIZE_STR);
+			strncpy(listPass[indexCambio].name, nuevoNombre, SIZE_STR);
 			retorno = 0;
 		}
 	}
@@ -332,7 +625,7 @@ int pass_cambiarNombre(Passenger* listPass, int idCambio)
 * 		       0 si pudo operar exitosamente
 *
 */
-int pass_cambiarApellido(Passenger* listPass, int idCambio)
+int pass_setApellido(Passenger* listPass, int indexCambio)
 {
 	int retorno;
 	char nuevoApellido[SIZE_STR];
@@ -340,9 +633,9 @@ int pass_cambiarApellido(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(!pass_pedirApellido(nuevoApellido, SIZE_STR))
+		if(!pass_getApellido(nuevoApellido, SIZE_STR))
 		{
-			strncpy(listPass[idCambio].lastName, nuevoApellido, SIZE_STR);
+			strncpy(listPass[indexCambio].lastName, nuevoApellido, SIZE_STR);
 			retorno = 0;
 		}
 	}
@@ -358,7 +651,7 @@ int pass_cambiarApellido(Passenger* listPass, int idCambio)
 * 		       0 si pudo operar exitosamente
 *
 */
-int pass_cambiarPrecio(Passenger* listPass, int idCambio)
+int pass_setPrecio(Passenger* listPass, int indexCambio)
 {
 	int retorno;
 	float nuevoPrecio;
@@ -366,9 +659,9 @@ int pass_cambiarPrecio(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(pass_pedirPrecio(&nuevoPrecio)>0)
+		if(pass_getPrecio(&nuevoPrecio)>0)
 		{
-			listPass[idCambio].price = nuevoPrecio;
+			listPass[indexCambio].price = nuevoPrecio;
 			retorno = 0;
 		}
 	}
@@ -384,7 +677,7 @@ int pass_cambiarPrecio(Passenger* listPass, int idCambio)
 * 		       0 si pudo operar exitosamente
 *
 */
-int pass_cambiarTipoPasajero(Passenger* listPass, int idCambio)
+int pass_setTipoPasajero(Passenger* listPass, int indexCambio, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
 	int retorno;
 	int nuevoTipo;
@@ -392,9 +685,9 @@ int pass_cambiarTipoPasajero(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(pass_pedirTipoPasajero(&nuevoTipo)>0)
+		if(pass_getTipoPasajero(&nuevoTipo, listaTipoPasajeros, sizeListaTipoPasajeros)>0)
 		{
-			listPass[idCambio].typePassenger = nuevoTipo;
+			listPass[indexCambio].idTypePass = nuevoTipo;
 			retorno = 0;
 		}
 	}
@@ -410,7 +703,7 @@ int pass_cambiarTipoPasajero(Passenger* listPass, int idCambio)
 * 		       0 si pudo operar exitosamente
 *
 */
-int pass_cambiarCodigoVuelo(Passenger* listPass, int idCambio)
+int pass_setCodigoVuelo(Passenger* listPass, int indexCambio)
 {
 	int retorno;
 	char nuevoCodigoVuelo[SIZE_CODE];
@@ -418,205 +711,15 @@ int pass_cambiarCodigoVuelo(Passenger* listPass, int idCambio)
 	if(listPass != NULL)
 	{
 		retorno = -2;
-		if(!pass_pedirCodigoVuelo(nuevoCodigoVuelo, SIZE_CODE))
+		if(!pass_getCodigoVuelo(nuevoCodigoVuelo, SIZE_CODE))
 		{
-			strncpy(listPass[idCambio].flycode, nuevoCodigoVuelo, SIZE_CODE);
-			retorno = 0;
-		}
-	}
-	return retorno;
-}
-////////////////////////***************GETTERS***************////////////////////////
-/**
- * \brief interactua con el usuario para solicitar el nombre del cliente
- * \param nombre char* Recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \param sizeNombre int Recibe por valor el tamaño del array
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   -2 si hubo un error en la interaccion con el usuario
- * 		   0 si la operacion se realizo correctamente
- *
- */
-int pass_pedirNombre(char* nombre, int sizeNombre)
-{
-	int retorno;
-	char auxNombre[sizeNombre];
-	retorno = -1;
-	if(nombre!= NULL && sizeNombre >0)
-	{
-		retorno=-2;
-		if( !utn_ingresarAlfabetica(auxNombre, sizeNombre, "Nombre: ", "Ingrese un dato valido", REINTENTOS)
-			&& !validaciones_esNombre(auxNombre, sizeNombre))
-		{
-			strncpy(nombre, auxNombre, sizeNombre);
-			retorno = 0;
-		}
-	}
-
-	return retorno;
-}
-
-/**
- * \brief interactua con el usuario para solicitar el apellido del cliente
- * \param apellido char* Recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \param sizeApellido int Recibe por valor el tamaño del array
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   -2 si hubo un error en la interaccion con el usuario
- * 		   0 si la operacion se realizo correctamente
- *
- */
-int pass_pedirApellido(char* apellido, int sizeApellido)
-{
-	int retorno;
-	char auxApellido[sizeApellido];
-	retorno = -1;
-	if(apellido!= NULL && sizeApellido >0)
-	{
-		retorno=-2;
-		if( !utn_ingresarAlfabetica(auxApellido, sizeApellido, "Apellido: ", "Ingrese un dato valido", REINTENTOS)
-			&& !validaciones_esNombre(auxApellido, sizeApellido))
-		{
-			strncpy(apellido, auxApellido, sizeApellido);
-			retorno = 0;
-		}
-	}
-
-	return retorno;
-}
-
-/*
- * \brief interactua con el usuario para solicitar el precio
- * \param precio float* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
- * \param sizeApellido Recibe por valor el tamaño del array
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   -2 si hubo un error en la interaccion con el usuario
- * 		   >0 si la operacion se realizo correctamente
- *
- */
-float pass_pedirPrecio(float* precio)
-{
-	//int retorno;
-	float auxPrecio;
-	auxPrecio = -1;
-	if(precio!= NULL)
-	{
-		auxPrecio=-2;
-		if( !utn_GetNumeroFloat(&auxPrecio, "ingrese el precio: ", "ingrese un dato valido", MIN_PRECIO, MAX_PRECIO, REINTENTOS))
-		{
-			*precio = auxPrecio;
-		}
-	}
-
-	return auxPrecio;
-}
-
-/*
- * \brief interactua con el usuario para solicitar el codigo del vuelo
- * \param codigoVuelo char* recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \param sizeCodigoVuelo int Recibe por valor el tamaño del array
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   -2 si hubo un error en la interaccion con el usuario
- * 		   0 si la operacion se realizo correctamente
- *
- */
-int pass_pedirCodigoVuelo(char* codigoVuelo, int sizeCodigoVuelo)
-{
-	int retorno;
-	char auxCodigoVuelo[sizeCodigoVuelo];
-	retorno = -1;
-	if(codigoVuelo!= NULL && sizeCodigoVuelo >0)
-	{
-		retorno=-2;
-		if( !utn_getAlfaNumerica(auxCodigoVuelo, sizeCodigoVuelo, "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS)
-			&& !arrayChar_convertirStringMayuscula(auxCodigoVuelo, sizeCodigoVuelo))
-		{
-			strncpy(codigoVuelo, auxCodigoVuelo, sizeCodigoVuelo);
+			strncpy(listPass[indexCambio].flycode, nuevoCodigoVuelo, SIZE_CODE);
 			retorno = 0;
 		}
 	}
 	return retorno;
 }
 
-/*
- * \brief interactua con el usuario para solicitar el estado del vuelo
- * \param estadoVuelo char* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   -2 si hubo un error en la interaccion con el usuario
- * 		   >0 si la operacion se realizo correctamente
- *
- */
-int pass_pedirEstadoVuelo(int* estadoVuelo)
-{
-	//int retorno;
-	int auxEstadoVuelo;
-	auxEstadoVuelo = -1;
-	if(estadoVuelo!= NULL)
-	{
-		auxEstadoVuelo=-2;
-		if( !utn_GetNumeroInt(&auxEstadoVuelo, "Estado de vuelo(1 Activo, 2 Cancelado, 3 Demorado): ", "Ingrese un dato valido", MIN_ESTADO_VUELO, MAX_ESTADO_VUELO, REINTENTOS))
-		{
-			*estadoVuelo = auxEstadoVuelo;
-			//printf("**DEBUG** estadoAux: %d - estado:%d", auxEstadoVuelo, *estadoVuelo);
-		}
-	}
-
-	return auxEstadoVuelo;
-}
-
-
-/*
- * \brief interactua con el usuario para solicitar el tipo de pasajero del cliente
- * \param tipoPasajero int* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   -2 si hubo un error en la interaccion con el usuario
- * 		   >0 si la operacion se realizo correctamente
- *
- */
-int pass_pedirTipoPasajero(int* tipoPasajero)
-{
-	//int retorno;
-	int auxTipoPasajero;
-	auxTipoPasajero = -1;
-	if(tipoPasajero!= NULL)
-	{
-		auxTipoPasajero=-2;
-		if(! utn_GetNumeroInt(&auxTipoPasajero, "Tipo de pasajero (1 infantes, 2 mujer, 3 hombre, 4 no binario: ", "Ingrese un dato valido", 1, 4, REINTENTOS))
-		{
-			*tipoPasajero = auxTipoPasajero;
-		}
-	}
-
-	return auxTipoPasajero;
-}
-////////////////////////***************GETTERS***************////////////////////////
-
-
-/** 
-* \brief Interactua con el usuario para solicitar un id y validar que contenga datos, si lo hace, lo retorna
-* \param idUltimo int Recibe por valor el dato contra el cual compara para validar el dato ingresado
-* \return Return >=0 si opero correctamente
-* 				(-1) si hubo un error en el dato ingresado
-*				(-2) si el id no corresponde a un cliente valido
-*
-*/
-int pass_pedirIdConsulta(int idUltimo)
-{
-	int retorno;
-	int auxIdConsulta;
-	retorno = -1;
-	utn_GetNumeroInt(&auxIdConsulta, "ingrese ID de cliente: ", "ingrese un ID valido", ID_INICIAL, ID_MAXIMO, REINTENTOS);
-	//printf("\nDEBUG****** idUltimo: %d\n", idUltimo);
-	if(auxIdConsulta<= idUltimo)
-	{
-		retorno = auxIdConsulta;
-	}
-	else
-	{
-		retorno = -2;
-		printf("El dato ingresado no corresponde a un cliente valido");
-	}
-
-	return retorno;
-}
 
 /** 
 * \brief find a Passenger by Id and returns the index position in array.
@@ -628,25 +731,53 @@ int pass_pedirIdConsulta(int idUltimo)
 *		(-2) if passenger not found
 *
 */
-int pass_encontrarPasajeroPorId(Passenger* listPass, int sizePass, int idConsulta)
+int pass_findIndexSegunId(Passenger* listPass, int sizePass, int idConsulta)
 {
-	int retorno;
+	int indexPosition;
 	int i;
 
-	retorno = -1;
+	indexPosition = -1;
 	if(listPass!= NULL && sizePass>0)
 	{
-		retorno = -2;
+		indexPosition = -2;
 		for(i=0; i<sizePass; i++)
 		{
 			if(validacionesInt_sonIdenticos(listPass[i].id, idConsulta))
 			{
-				retorno = i;
+				indexPosition = i;
 				break;
 			}
 		}
 	}
-	return retorno;
+	return indexPosition;
+}
+
+/**
+* \brief interactua con el usuario para pedir un id, si es valido busca el index que ocupa
+* \param listPass Passenger* Recibe la direccion de memoria del primer elemento del array que analiza
+* \param sizePass int Recibe por valor el tamaño del array
+* \return Return >=0 si opero correctamente (el index hayado)
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
+int pass_pedirIdYDevolverIndex(Passenger* listPass, int sizePass, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
+{
+    int retorno;
+    int idConsulta;
+    int indexConsulta;
+
+    retorno = -1;
+    if(listPass != NULL && sizePass >0)
+    {
+        pass_pedirIdConsulta(&idConsulta,listPass, sizePass, listaTipoPasajeros, sizeListaTipoPasajeros);
+        if(idConsulta >0)
+        {
+            indexConsulta = pass_findIndexSegunId(listPass, sizePass, idConsulta);
+            ///pass_printOneIndice(listPass, indexConsulta);
+            retorno = indexConsulta;
+        }
+    }
+    return retorno;
 }
 
 /** 
@@ -697,7 +828,7 @@ void pass_cambiarNombreEImprimir(Passenger* pArray, int index)
 {
 	if(pArray!= NULL)
 	{
-		if(!pass_cambiarNombre(pArray, index))
+		if(!pass_setNombre(pArray, index))
 		{
 			pass_printRotulo();
 			pass_printOneIndice(pArray, index);
@@ -720,7 +851,7 @@ void pass_cambiarApellidoEImprimir(Passenger* pArray, int index)
 {
 	if(pArray!= NULL)
 	{
-		if(!pass_cambiarApellido(pArray, index))
+		if(!pass_setApellido(pArray, index))
 		{
 			pass_printRotulo();
 			pass_printOneIndice(pArray, index);
@@ -743,7 +874,7 @@ void pass_cambiarPrecioEImprimir(Passenger* pArray, int index)
 {
 	if(pArray!= NULL)
 	{
-		if(!pass_cambiarPrecio(pArray, index))
+		if(!pass_setPrecio(pArray, index))
 		{
 			pass_printRotulo();
 			pass_printOneIndice(pArray, index);
@@ -762,11 +893,11 @@ void pass_cambiarPrecioEImprimir(Passenger* pArray, int index)
 /**
  * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
  */
-void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index)
+void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
 	if(pArray!= NULL)
 	{
-		if(!pass_cambiarTipoPasajero(pArray, index))
+		if(!pass_setTipoPasajero(pArray, index, listaTipoPasajeros, sizeListaTipoPasajeros))
 		{
 			pass_printRotulo();
 			pass_printOneIndice(pArray, index);
@@ -789,7 +920,7 @@ void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index)
 {
 	if(pArray!= NULL)
 	{
-		if(!pass_cambiarCodigoVuelo(pArray, index))
+		if(!pass_setCodigoVuelo(pArray, index))
 		{
 			pass_printRotulo();
 			pass_printOneIndice(pArray, index);
@@ -810,7 +941,7 @@ void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index)
  * retorna el valor ingresado por teclado
  *
  */
-int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexConsulta)
+int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexConsulta, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
 	//int retorno;
 	int menu;
@@ -830,7 +961,7 @@ int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexCo
 				pass_cambiarPrecioEImprimir(pArray, indexConsulta);
 				break;
 			case 4:
-				pass_cambiarTipoPasajeroEImprimir(pArray, indexConsulta);
+				pass_cambiarTipoPasajeroEImprimir(pArray, indexConsulta, listaTipoPasajeros, sizeListaTipoPasajeros);
 				break;
 			case 5:
 				pass_cambiarCodigoVueloEImprimir(pArray, indexConsulta);
@@ -860,6 +991,64 @@ int pass_swap(Passenger* listPass, int index1, int index2)
 		listPass[index1]= listPass[index2];
 		listPass[index2]= auxPass;
 		retorno=0;
+	}
+	return retorno;
+}
+
+int pass_ordenarVuelosActivos(Passenger* listPass, int sizeArray, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
+{
+	int retorno;
+	int i;
+	retorno = -1;
+	if(listPass!= NULL && sizeArray >0)
+	{
+		retorno = 0;
+		pass_ordenarArrayPorCodigoVuelo(listPass, sizeArray);
+		printf("VUELOS ACTIVOS Ordenados por codigo de vuelo\n");
+		for(i=0; i<sizeArray; i++)
+		{
+			if(listPass[i].isEmpty == NOT_EMPTY && listPass[i].statusFlight == 1)
+			{
+				pass_printOneIndice(listPass, i);
+				printf("\n");
+			}
+		}
+
+	}
+	return retorno;
+}
+
+
+int pass_ordenarArrayPorCodigoVuelo(Passenger* listPass, int sizeArray)
+{
+	int retorno;
+	int nuevoLimite;
+	int flagSwap;
+	int i;
+	int strCompare;
+
+	retorno = -1;
+	if(listPass!= NULL && sizeArray >0 )
+	{
+		nuevoLimite = sizeArray -1;
+		do
+		{
+			flagSwap = 0;
+			for(i=0; i<nuevoLimite; i++)
+			{
+				if(	listPass[i].isEmpty == NOT_EMPTY && listPass[i+1].isEmpty == NOT_EMPTY)
+				{
+					strCompare=strncmp(listPass[i].lastName, listPass[i+1].lastName, SIZE_STR);
+					if(strCompare < 0)
+					{
+						pass_swap(listPass, i, i+1);
+						flagSwap = 1;
+					}
+				}
+			}
+			nuevoLimite --;
+		}while(flagSwap);
+		retorno = 0;
 	}
 	return retorno;
 }
@@ -922,7 +1111,7 @@ int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int crit
 							}
 							else
 							{
-								if(strCompare == 0 && listPass[i].typePassenger > listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+								if(strCompare == 0 && listPass[i].idTypePass > listPass[i+1].idTypePass)//mostrar primero el tipo de pasajero con idTypo menor
 								{
 									/*printf("\nDEBUG*** %d == 0 y tipo[%d]=%d < tipo[%d]=%d", strCompare, i,listPass[i].typePassenger , i+1, listPass[i+1].typePassenger );
 									if(!pass_swap(listPass, i, i+1))
@@ -942,7 +1131,7 @@ int pass_ordenarArrayPorNombreOTipo(Passenger* listPass, int sizeArray, int crit
 							}
 							else
 							{
-								if(strCompare == 0 && listPass[i].typePassenger > listPass[i+1].typePassenger)//mostrar primero el tipo de pasajero con idTypo menor
+								if(strCompare == 0 && listPass[i].idTypePass > listPass[i+1].idTypePass)//mostrar primero el tipo de pasajero con idTypo menor
 								{
 									pass_swap(listPass, i, i+1);
 									flagSwap = 1;
@@ -974,11 +1163,11 @@ int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray)
 	int retorno;
 	int i;
 	Passenger cargaPasajeros[] = {
-								{101, "julieta", "nakasone", 15006, "dsj109", 1, 2, NOT_EMPTY},
-								{102, "amalia", "nakasone", 15004, "dsj18", 2, 2, NOT_EMPTY},
-								{103, "Habib", "Gramondi", 15012, "dfa9", 3, 1, NOT_EMPTY},
-								{104, "Lautaro", "Almafuerte", 15015, "dsj239", 1, 1, NOT_EMPTY},
-								{105, "Micaela", "Juarez", 15000, "dsj159", 1, 2, NOT_EMPTY}
+								{101, "Julieta", "Nakasone", 15006, "DHJ109", 1, 2, NOT_EMPTY},
+								{102, "Amalia", "Nakasone", 15004, "ASD18", 2, 2, NOT_EMPTY},
+								{103, "Habib", "Gramondi", 15012, "ASJ9", 3, 1, NOT_EMPTY},
+								{104, "Lautaro", "Almafuerte", 15015, "XCZ239", 1, 1, NOT_EMPTY},
+								{105, "Micaela", "Juarez", 15000, "ZXC159", 1, 2, NOT_EMPTY}
 							};
 	retorno = -1;
 	if(listPass!= NULL && sizeArray>0)
@@ -1002,7 +1191,7 @@ int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray)
 * 				(-1) si hubo un error en los parametros recibidos
 *
 */
-int pass_consignaCuatroUno(Passenger* listPass, int sizeArray)
+int pass_consignaCuatroUno(Passenger* listPass, int sizeArray, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
 	int retorno;
 	int criterio;
@@ -1013,7 +1202,7 @@ int pass_consignaCuatroUno(Passenger* listPass, int sizeArray)
 		if(!utn_GetNumeroInt(&criterio, "1- Forma ascendente \n2- Forma descendente", "ingrese un dato valido", 1, 2, REINTENTOS)
 			&& !pass_ordenarArrayPorNombreOTipo(listPass, sizeArray, criterio))
 		{
-			pass_printArray(listPass, sizeArray);
+			pass_printArrayConTipoPasajero(listPass, sizeArray, listaTipoPasajeros, sizeListaTipoPasajeros);
 		}
 		else
 		{
@@ -1189,4 +1378,3 @@ int pass_contadorClientesCargados(Passenger* listPass, int sizeArray, int* conta
 	}
 	return retorno;
 }
-

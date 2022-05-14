@@ -18,178 +18,117 @@
 #define ID_INICIAL 100
 
 #define QTY_PASS 2000
+#define QTY_TYPEPASS 3
 
 int main(void) {
 
-	int idUltimo;
-	Passenger arrayPasajeros[QTY_PASS];
-	int menuPrincipal;
-	int contadorClientesCargados;
-	int idConsulta;
-	int indexIdConsulta;
-	int menuSecundario;
-	//int auxCriterio;
+    int menuPrincipal;
+    int contadorPass;
+    Passenger listaPasajeros[QTY_PASS];
+    typePass listaTipoPasajeros[QTY_TYPEPASS];
+    int ultimoIdPass;
+    //int auxId;
+    int auxIndex;
+    int menuSecundario;
+   // int respContinuar;
 
-	//idUltimo = pass_encontrarMayorId(arrayPasajeros, QTY_PASS);
-	//contadorClientesCargados = pass_contadorClientesCargados(arrayPasajeros, QTY_PASS);
-	pass_contadorClientesCargados(arrayPasajeros, QTY_PASS, &contadorClientesCargados);
-//DEBUG HARDCODEO******************************************************************
-	if(!pass_initArray(arrayPasajeros, QTY_PASS))
+    contadorPass = -1;
+    //***CARGA FORZADA DE DATOS***///
+    if(contadorPass == -1)
 	{
-		//pass_printArray(arrayPasajeros, QTY_PASS);
-		printf("inicializado ok\n");
-		//printf("1) contador clientes: %d\n", contadorClientesCargados);
-
+		//inicializo
+		pass_initArray(listaPasajeros, QTY_PASS);
+		typePass_cargaForzadaDatos(listaTipoPasajeros, QTY_TYPEPASS);
+		ultimoIdPass= pass_indicarUltimoId(listaPasajeros, QTY_PASS);
 	}
-	if(!pass_cargaForzadaDeDatos(arrayPasajeros, QTY_PASS))
-	{
-		pass_printArray(arrayPasajeros, QTY_PASS);
-		//contadorClientesCargados = pass_contadorClientesCargados(arrayPasajeros, QTY_PASS);
-		pass_contadorClientesCargados(arrayPasajeros, QTY_PASS, &contadorClientesCargados);
+    ////////////////////////////////
+    do
+    {
+        menuPrincipal = tp_ImprimirMenuSeisOpciones("\nMENU", "1- ALTA DE CLIENTE", "2- MODIFICAR CLIENTE", "3- BAJA DE CLIENTE", "4- INFORMES", "5- CARGA FORZADA", "6- SALIR");
 
-		printf("2) contador clientes: %d\n", contadorClientesCargados);
-		pass_encontrarMayorId(arrayPasajeros, QTY_PASS, &idUltimo);
+        switch(menuPrincipal)
+        {
+            case 1:
+                printf("\nALTA DE CLIENTES\n");
+                if(!pass_getNuevoPasajero(listaPasajeros, QTY_PASS, ultimoIdPass, listaTipoPasajeros, QTY_TYPEPASS))
+                {
+                    pass_printArrayConTipoPasajero(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
+                }
+                else
+                {
+                    tp_MensajeError("\nNo se ha podido ingresar correctamente el pasajero");
+                }
+            break;
 
-		//contadorClientesCargados=1;
-	}
-//******************************************************************DEBUG HARDCODEO
+            case 2:
+                printf("\nMODIFICAR CLIENTE\n");
+                pass_contadorPasajerosCargados(listaPasajeros, QTY_PASS, &contadorPass);
+                if(contadorPass>0)
+                {
+                    //solicito id de cliente para modificarlo
+                    auxIndex = pass_pedirIdYDevolverIndex(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
+                    pass_interaccionMenuSecundario(listaPasajeros, QTY_PASS, auxIndex, listaTipoPasajeros, QTY_TYPEPASS);
+                }
+                else
+                {
+                    tp_MensajeError("ERROR*** No hay pasajeros ingresados. Ingrese un pasajero para continuar. \n\n");
+                }
+            break;
 
-	//pass_printArray(arrayPasajeros, QTY_PASS);
-	do{
-		menuPrincipal = tp_ImprimirMenuSeisOpciones("\nMENU", "1- ALTA DE CLIENTE", "2- MODIFICAR CLIENTE", "3- BAJA DE CLIENTE", "4- INFORMES", "5- SALIR", "");
-		switch (menuPrincipal)
-		{
-			case 1:
-				printf("\nALTA DE CLIENTES\n");
-				if(contadorClientesCargados == -1)
+            case 3:
+                printf("\nELIMINAR CLIENTE\n");
+                pass_contadorPasajerosCargados(listaPasajeros, QTY_PASS, &contadorPass);
+				if(contadorPass>0)
+                {
+                    //solicito id de cliente para modificarlo
+                    auxIndex = pass_pedirIdYDevolverIndex(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
+                    if(!pass_removerSegunId(listaPasajeros, auxIndex))
+                    {
+                        printf("el pasajero nº%d se ha eliminado correctamente", listaPasajeros[auxIndex].id);
+                    }
+                }
+                else
+                {
+                    //primero hay que cargar clientes
+                	tp_MensajeError("ERROR*** No hay pasajeros ingresados. Ingrese un pasajero para continuar. \n\n");
+                }
+            break;
+
+            case 4:
+                do
 				{
-					pass_initArray(arrayPasajeros, QTY_PASS);
-					//contadorClientesCargados = 0;
-					pass_encontrarMayorId(arrayPasajeros, QTY_PASS, &idUltimo);
-					printf("ultimo ID: %d", idUltimo);
-					//printf("[DEBUG****]inicializamos OK!");
-				}
-				if(pass_pedirNuevoPasajero(arrayPasajeros, QTY_PASS, idUltimo)>=0)
-				{
-					//idUltimo++;
-
-					//contadorClientesCargados++;
-
-					printf("clientes cargados: %d\n", contadorClientesCargados);
-					if(continuar("\nDesea visualizar los clientes cargados? (Y/N)"))
+					menuSecundario=tp_ImprimirMenuSeisOpciones("\nINFORMES\nListados de pasajeros según:", "1- Orden alfabetico (apellidos) o por tipo de pasajero", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
+					//printf("DEBUG**** menu segundario : %d\n\n", menuSecundario);
+					switch(menuSecundario)
 					{
-						pass_printArray(arrayPasajeros, QTY_PASS);
-					}
-				}
-				else
-				{
-					tp_MensajeError("[ERROR**ALTA DE CLIENTES] Ha habido un error en la carga del cliente\n");
-				}
-
-				break;
-			case 2:
-				printf("\nMODIFICAR CLIENTE\n");
-				//printf("DEBUG*** contadoclientes: %d", contadorClientesCargados);
-				if(contadorClientesCargados > 0)
-				{
-					idConsulta = pass_pedirIdConsulta(idUltimo);
-					indexIdConsulta= pass_encontrarPasajeroPorId(arrayPasajeros, QTY_PASS, idConsulta);
-
-					switch (indexIdConsulta)
-					{
-						case -1:
-							printf("DEBUG****** ERROR--- en los parametros");
+					    case 1:
+					        //orden alfabetico o por tipo
+							pass_consignaCuatroUno(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
 							break;
-						case -2:
-							printf("ERROR**** no encontro coincidencia. Intente nuevamente\n");
+						case 2:
+							//Informe de total y promedio de precios
+							pass_consignaCuatroDos(listaPasajeros, QTY_PASS);
 							break;
-						default:
-							printf("\n\nCliente: %s - ID: %d\n", arrayPasajeros[indexIdConsulta].name, idConsulta);
-							pass_printRotulo();
-							//printf("cliente %d\n", idConsulta);
-							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-							do
-							{
-								menuSecundario=pass_interaccionMenuSecundario(arrayPasajeros, QTY_PASS, indexIdConsulta);
-								//printf("DEBUG**** menu segundario : %d", menuSecundario);
-							}while(menuSecundario!= 6);
-
+						case 3:
+						    //Orden por codigo de vuelo y vuelos activos
+							pass_ordenarVuelosActivos(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
 							break;
 					}
+				}while(menuSecundario<4);
+            break;
 
-				}
-				else
-				{
-					tp_MensajeError("[**ERROR**]No hay clientes cargados para modificar.");
-				}
-				break;
-			case 3:
-				printf("\nELIMINAR CLIENTE\n");
-				if(contadorClientesCargados > 0)
-				{
-					idConsulta = pass_pedirIdConsulta(idUltimo);
-					indexIdConsulta= pass_encontrarPasajeroPorId(arrayPasajeros, QTY_PASS, idConsulta);
-					switch (indexIdConsulta)
-					{
-						case -1:
-							printf("DEBUG****** ERROR--- en los parametros");
-							break;
-						case -2:
-							printf("ERROR**** no encontro coincidencia. Intente nuevamente\n");
-							break;
-						default:
-							printf("\n\nCliente: %s - ID: %d\n", arrayPasajeros[indexIdConsulta].name, idConsulta);
-							pass_printRotulo();
-							pass_printOneIndice(arrayPasajeros, indexIdConsulta);
-							if( continuar("\n¿Confirma que desea eliminar del sistema al cliente? (Y/N)")
-								&& !pass_removerSegunId(arrayPasajeros, indexIdConsulta))
-							{
-								contadorClientesCargados--;
-								printf("El cliente %d se ha eliminado del sistema exitosamente\n", idConsulta);
-							}
-					}
-				}
-				else
-				{
-					tp_MensajeError("[**ERROR**]No hay clientes cargados.");
-				}
-				break;
-			case 4:
-				{
-					do
-					{
-						menuSecundario=tp_ImprimirMenuSeisOpciones("\nINFORMES\nListados de pasajeros según:", "1- Orden alfabetico o por tipo", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
-						//printf("DEBUG**** menu segundario : %d\n\n", menuSecundario);
-						switch(menuSecundario)
-						{
-							case 1:
-								pass_consignaCuatroUno(arrayPasajeros, QTY_PASS);
-								break;
-							case 2:
-								//printf("DEBUG*** entramos al 4-2");
-								pass_consignaCuatroDos(arrayPasajeros, QTY_PASS);
-								break;
-							case 3:
-								break;
-							case 4:
-								break;
-						}
-					}while(menuSecundario<5);
-				}
+            case 5:
+            	pass_cargaForzadaDeDatos(listaPasajeros, QTY_PASS);
+            	pass_printArrayConTipoPasajero(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
+            break;
 
-				//Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
-
-
-				//Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio	promedio.
-				//Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
-				break;
-			case 5:
+            case 6:
 				printf("Saliendo del programa. \nMuchas gracias. \nNakasone Julieta");
-				break;
-		}
-	}while(menuPrincipal<4);
+			break;
+        }
+    }while(menuPrincipal<6);
 
-
+    return EXIT_SUCCESS;
 }
 /*
 if(!pass_initArray(arrayPasajeros, QTY_PASS))

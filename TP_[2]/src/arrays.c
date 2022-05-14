@@ -681,6 +681,47 @@ int arrayChar_visualizarApellidoNombre(char nombre[], char apellido[], char apel
 	return retorno;
 }
 
+int arrayChar_plusInt(char unString[], int sizeString)
+{
+	int retorno;
+	int i;
+	retorno = -1;
+	if(unString != NULL && sizeString >0)
+	{
+		retorno =0;
+		//printf("\n%d size", sizeString);
+
+		arrayChar_convertirStringMayuscula(unString, sizeString);
+		//printf("%s", unString);
+		for(i = 0; i < strlen(unString); i++)
+		{
+			//printf("estoy en el for");
+			//convertirAMayuscula(&unString[i]);
+			//printf("\n%c", unString[i]);
+			if(i<3 && (unString[i]<'A' || unString[i]>'Z'))
+			{
+				retorno = -2;//error: requiere 3 caracteres alfabeticos
+				//printf("ERROR -2 error en: ' %c '", unString[i]);
+				break;
+			}
+			else
+			{
+				//printf("i= %d\n", i);
+				if(i>2 && (unString[i]<'0' || unString[i]>'9'))
+				{
+					//printf(" i= %d  - ' %d ' <0 o ' %d ' >9??", i, unString[i], unString[i]);
+					retorno = -3;//error: requiere al menos 1 numero
+					//printf("ERROR -3 error en: ' %c '", unString[i]);
+					break;
+				}
+			}
+
+		}
+	}
+	return retorno;
+}
+
+
 /*
  * \brief Recibe un array para analizar la estructura y devolver los primeros caracteres a mayuscula
  * \param unString char[] Recibe la direccion de memoria del array a analizar

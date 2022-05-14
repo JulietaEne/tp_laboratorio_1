@@ -8,6 +8,7 @@ C_SRCS += \
 ../src/arrays.c \
 ../src/passenger.c \
 ../src/tp.c \
+../src/typePass.c \
 ../src/utn.c \
 ../src/validaciones.c 
 
@@ -16,6 +17,7 @@ OBJS += \
 ./src/arrays.o \
 ./src/passenger.o \
 ./src/tp.o \
+./src/typePass.o \
 ./src/utn.o \
 ./src/validaciones.o 
 
@@ -24,6 +26,7 @@ C_DEPS += \
 ./src/arrays.d \
 ./src/passenger.d \
 ./src/tp.d \
+./src/typePass.d \
 ./src/utn.d \
 ./src/validaciones.d 
 
