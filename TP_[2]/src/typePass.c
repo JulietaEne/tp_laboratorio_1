@@ -14,6 +14,14 @@
 #include "tp.h"
 #include "typePass.h"
 
+/**
+* \brief realiza un hardcodeo de 3 elementos a cargar en el array de tipo typePass
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeTipoPasajeros int Recibe por valor tamaño de la lista
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int typePass_cargaForzadaDatos(typePass* listaTipoPasajeros, int sizeTipoPasajeros)
 {
   int retorno;
@@ -35,6 +43,14 @@ int typePass_cargaForzadaDatos(typePass* listaTipoPasajeros, int sizeTipoPasajer
   return retorno;
 }
 
+/*
+ * \brief Recorre el array recibido para imprimir los indices que estan cargados
+ * \param listaTipoPasajeros typePass* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeTipoPasajeros int Recibe por valor el tamaño del array
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 			0 si la operacion se realizo correctamente
+ *
+ */
 int typePass_printListaTiposPasajeros(typePass* listaTipoPasajeros, int sizeTipoPasajeros)
 {
     int retorno;
@@ -54,6 +70,14 @@ int typePass_printListaTiposPasajeros(typePass* listaTipoPasajeros, int sizeTipo
     return retorno;
 }
 
+/**
+ * \brief Recibe un array de estructuras e imprime una estructura segun el indice recibido
+ * \param listaTipoPasajeros *typePass recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param indice int Recibe por valor la posicion del array del cual imprimira los valores de sus campos
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 			0 si la operacion se realizo correctamente
+ *
+ */
 int typePass_printPosicion(typePass* listaTipoPasajeros, int indice)
 {
     int retorno;
@@ -66,6 +90,15 @@ int typePass_printPosicion(typePass* listaTipoPasajeros, int indice)
     return retorno;
 }
 
+/**
+ * \brief Recibe una lista de tipo typePass y un ID. Recorre la lista en el campo .idTypePass e imprime cuando encuentra coincidencia
+ * \param listaTipoPasajeros *typePass recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeTipoPasajeros recibe por valor el tamaño del array
+ * \param indice int Recibe por valor la posicion del array del cual imprimira los valores de sus campos
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 			0 si la operacion se realizo correctamente
+ *
+ */
 int typePass_printTipoPasajeroSegunId(typePass* listaTipoPasajeros, int sizeTipoPasajeros, int idTipoPasajero)
 {
 	int retorno;
@@ -86,6 +119,14 @@ int typePass_printTipoPasajeroSegunId(typePass* listaTipoPasajeros, int sizeTipo
 	return retorno;
 }
 
+/*
+ * \brief interactua con el usuario para solicitar el tipo de pasajero del cliente
+ * \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista con la cual trabajara
+ * \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   			0 si la operacion se realizo correctamente
+ *
+ */
 int typePass_getTipoPasajero(typePass* listaTipoPasajeros, int sizeTipoPasajeros)
 {
 	int unTipo;

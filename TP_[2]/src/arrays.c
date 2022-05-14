@@ -643,6 +643,12 @@ int arrayChar_convertirStringMayuscula(char unString[], int sizeArray)
 	return retorno;
 }
 
+/* \brief Recibe una cadena y convierte todos sus caracteres a minuscula, si representan una letra
+ * \param unString char[] recibe la dirección de memoria del array al cual analizara
+ * \param sizeArray int Tamaño del arreglo recibido
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
 int arrayChar_convertirStringMinuscula(char unString[], int sizeArray)
 {
 	int retorno;
@@ -663,6 +669,14 @@ int arrayChar_convertirStringMinuscula(char unString[], int sizeArray)
 	return retorno;
 }
 
+/* \brief Recibe dos cadenas y las concatena en una nueva variable agregando una coma
+ * \param nombre char[] recibe una cadena nombre
+ * \param apellido char[] recibe una cadena apellido
+ * \param apellidoNombre char[] recibe una direccion de memoria donde almacenar las cadenas concatenadas
+ * \param lenApellidoNombre int recibe por valor el tamaño maximo para la variable de salida
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
 int arrayChar_visualizarApellidoNombre(char nombre[], char apellido[], char apellidoNombre[], int lenApellidoNombre)
 {
 	int retorno;
@@ -681,6 +695,15 @@ int arrayChar_visualizarApellidoNombre(char nombre[], char apellido[], char apel
 	return retorno;
 }
 
+/* \brief recibe una cadena y valida que contenga letras y numeros
+ * \param unString char[] recibe la dirección de memoria del array al cual analizara
+ * \param sizeArray int Tamaño del arreglo recibido
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] -
+ * 					  (0) if Ok
+ * 					  (-2) si no cuenta con al menos 3 caracteres alfabeticos
+ * 					  (-3) si no cuenta con al menos 1 caracter numerico
+ *
+ */
 int arrayChar_plusInt(char unString[], int sizeString)
 {
 	int retorno;
@@ -756,6 +779,12 @@ int arrayChar_convertirASustantivoPropio(char unString[], int sizeString)
 	return retorno;
 }
 
+/* \brief Recibe una cadena y elimina los espacios
+ * \param unString char[] recibe la dirección de memoria del array al cual analizara
+ * \param sizeArray int Tamaño del arreglo recibido
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
 int arrayChar_eliminarTodosLosEspacios(char unString[], int sizeString)
 {
 	int retorno;

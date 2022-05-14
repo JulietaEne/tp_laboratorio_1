@@ -33,7 +33,7 @@ int main(void) {
    // int respContinuar;
 
     contadorPass = -1;
-    //***CARGA FORZADA DE DATOS***///
+    //******///
     if(contadorPass == -1)
 	{
 		//inicializo
@@ -84,7 +84,7 @@ int main(void) {
                     auxIndex = pass_pedirIdYDevolverIndex(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
                     if(!pass_removerSegunId(listaPasajeros, auxIndex))
                     {
-                        printf("el pasajero nº%d se ha eliminado correctamente", listaPasajeros[auxIndex].id);
+                        printf("el pasajero nº%d se ha eliminado correctamente\n\n", listaPasajeros[auxIndex].id);
                     }
                 }
                 else
@@ -95,26 +95,35 @@ int main(void) {
             break;
 
             case 4:
-                do
+            	pass_contadorPasajerosCargados(listaPasajeros, QTY_PASS, &contadorPass);
+				if(contadorPass>0)
 				{
-					menuSecundario=tp_ImprimirMenuSeisOpciones("\nINFORMES\nListados de pasajeros según:", "1- Orden alfabetico (apellidos) o por tipo de pasajero", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
-					//printf("DEBUG**** menu segundario : %d\n\n", menuSecundario);
-					switch(menuSecundario)
+					do
 					{
-					    case 1:
-					        //orden alfabetico o por tipo
-							pass_consignaCuatroUno(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
-							break;
-						case 2:
-							//Informe de total y promedio de precios
-							pass_consignaCuatroDos(listaPasajeros, QTY_PASS);
-							break;
-						case 3:
-						    //Orden por codigo de vuelo y vuelos activos
-							pass_ordenarVuelosActivos(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
-							break;
-					}
-				}while(menuSecundario<4);
+						menuSecundario=tp_ImprimirMenuSeisOpciones("\nINFORMES\nListados de pasajeros según:", "1- Orden alfabetico (apellidos) o por tipo de pasajero", "2- Informe de total y promedio de precios", "3- Orden por codigo de vuelo y vuelos activos", "4- Volver al menu anterior", "", "");
+						//printf("DEBUG**** menu segundario : %d\n\n", menuSecundario);
+						switch(menuSecundario)
+						{
+							case 1:
+								//orden alfabetico o por tipo
+								pass_consignaCuatroUno(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
+								break;
+							case 2:
+								//Informe de total y promedio de precios
+								pass_consignaCuatroDos(listaPasajeros, QTY_PASS);
+								break;
+							case 3:
+								//Orden por codigo de vuelo y vuelos activos
+								pass_ordenarVuelosActivos(listaPasajeros, QTY_PASS, listaTipoPasajeros, QTY_TYPEPASS);
+								break;
+						}
+					}while(menuSecundario<4);
+				}
+				 else
+				{
+					//primero hay que cargar clientes
+					tp_MensajeError("ERROR*** No hay pasajeros ingresados. Ingrese un pasajero para continuar. \n\n");
+				}
             break;
 
             case 5:

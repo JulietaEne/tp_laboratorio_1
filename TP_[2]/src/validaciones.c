@@ -148,6 +148,12 @@ int validacionesInt_sonIdenticos(int variable, int valor)
 	return retorno;
 }
 
+/* \brief Recibe una cadena y valida que contenga al menos 3 caracteres alfabeticos y al menos 1 caracter numerico
+ * \param unString char[] recibe la dirección de memoria del array al cual analizara
+ * \param sizeArray int Tamaño del arreglo recibido
+ * \return int Return (-1) if Error [Invalid length or NULL pointer] - (0) if Ok
+ *
+ */
 int validaciones_EsCodigoTresLetrasYNumero(char unString[], int sizeString)
 {
 	int retorno;

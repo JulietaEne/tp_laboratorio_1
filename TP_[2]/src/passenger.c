@@ -162,6 +162,8 @@ int pass_printArray(Passenger* listPass, int sizeListPass) //printPassenger
  * \brief Recorre el array recibido para imprimir los indices que estan cargados
  * \param listPass Passenger* Recibe la direccion de memoria del array sobre el cual va a trabajar
  * \param sizeListPass int Recibe por valor el tamaño del array
+ * \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+ * \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
  * \return retorna int -1 si hubo un error en los parametros recibidos
  * 			0 si la operacion se realizo correctamente
  *
@@ -390,6 +392,8 @@ int pass_getEstadoVuelo(int* estadoVuelo)
 /*
  * \brief interactua con el usuario para solicitar el tipo de pasajero del cliente
  * \param tipoPasajero int* Recibe la direccion de memoria de la variable donde se guardara el dato ingresado
+ * \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista con la cual trabajara
+ * \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista
  * \return retorna -1 si hubo un error en los parametros recibidos
  * 		   -2 si hubo un error en la interaccion con el usuario
  * 		   >0 si la operacion se realizo correctamente
@@ -462,6 +466,8 @@ int pass_encontrarPrimerIndiceIsEmpty(Passenger* listPass, int sizePass)
 * \param listPass Passenger* receives the list where will write the struct
 * \param sizePass int to indicate array size
 * \param ultimoId int receives by value that data that will assigned in .id
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+* \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
 * \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
 *			(0) if Ok
 *
@@ -547,7 +553,11 @@ int pass_agregarPasajeroAlArray(Passenger* listPass, int sizePass, char* nombre,
 
 /**
 * \brief Interactua con el usuario para solicitar un id y validar que contenga datos, si lo hace, lo retorna
-* \param idUltimo int Recibe por valor el dato contra el cual compara para validar el dato ingresado
+* \param idConsulta int* Recibe por valor el dato contra el cual compara para validar el dato ingresado
+* \param listPass Passenger* Recibe la direccion de memoria de la lista principal a analizar
+* \param sizeListPass int Recibe por valor el tamaño de la lista principal
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+* \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
 * \return Return >=0 si opero correctamente
 * 				(-1) si hubo un error en el dato ingresado
 *				(-2) si el id no corresponde a un cliente valido
@@ -578,15 +588,8 @@ int pass_pedirIdConsulta(int* idConsulta, Passenger* listPass, int sizeListPass,
 	}
 	return retorno;
 }
-//*****************************************carga forzada de datos *************************************/////////
-int alb_cargaForzadaDeDatos( Passenger* listPass, int sizeListPass)
-{
-    int retorno;
-    retorno = -1;
 
-    return retorno;
-}
-//*****************************************carga forzada de datos *************************************/////////
+
 
 
 /**
@@ -672,6 +675,8 @@ int pass_setPrecio(Passenger* listPass, int indexCambio)
 * \brief Recibe un array de estructuras para ingresar a la posicion indicada por el parametro recibido y cambiar el dato en el campo .typePassenger
 * \param listPass employee* recibe la direccion de memoria del array a analizar
 * \param indexCambio int recibe por valor la posicion del array en la que se realiza el cambio
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+* \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
 * \return int Retorna -1 si hubo un error en los parametros recibidos
 * 		      -2 si hubo un error en la interaccion con el usuario
 * 		       0 si pudo operar exitosamente
@@ -756,6 +761,8 @@ int pass_findIndexSegunId(Passenger* listPass, int sizePass, int idConsulta)
 * \brief interactua con el usuario para pedir un id, si es valido busca el index que ocupa
 * \param listPass Passenger* Recibe la direccion de memoria del primer elemento del array que analiza
 * \param sizePass int Recibe por valor el tamaño del array
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+* \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
 * \return Return >=0 si opero correctamente (el index hayado)
 * 				(-1) si hubo un error en los parametros recibidos
 *
@@ -823,6 +830,9 @@ int pass_prepararArray(Passenger* pArray, int sizeArray, int clientesCargados)
 
 /**
  * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ * \param pArray Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+ * \param index int Recibe por valor el index en el cual se hara la asignacion
+ * \return void
  */
 void pass_cambiarNombreEImprimir(Passenger* pArray, int index)
 {
@@ -846,6 +856,9 @@ void pass_cambiarNombreEImprimir(Passenger* pArray, int index)
 
 /**
  * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ * \param pArray Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+ * \param index int Recibe por valor el index en el cual se hara la asignacion
+ * \return void
  */
 void pass_cambiarApellidoEImprimir(Passenger* pArray, int index)
 {
@@ -869,6 +882,9 @@ void pass_cambiarApellidoEImprimir(Passenger* pArray, int index)
 
 /**
  * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ * \param pArray Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+ * \param index int Recibe por valor el index en el cual se hara la asignacion
+ * \return void
  */
 void pass_cambiarPrecioEImprimir(Passenger* pArray, int index)
 {
@@ -892,6 +908,11 @@ void pass_cambiarPrecioEImprimir(Passenger* pArray, int index)
 
 /**
  * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ * \param pArray Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+ * \param index int Recibe por valor el index en el cual se hara la asignacion
+ * \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+ * \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
+ * \return void
  */
 void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
@@ -915,6 +936,9 @@ void pass_cambiarTipoPasajeroEImprimir(Passenger* pArray, int index, typePass* l
 
 /**
  * llama a la funcion cambiar el nombre para interactuar con el usuario y luego imprime los datos del cliente con los cambios
+ * \param pArray Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+ * \param index int Recibe por valor el index en el cual se hara la asignacion
+ * \return void
  */
 void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index)
 {
@@ -939,7 +963,13 @@ void pass_cambiarCodigoVueloEImprimir(Passenger* pArray, int index)
 
 /**
  * retorna el valor ingresado por teclado
- *
+ * \param pArray Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+ * \param sizeArray int Recibe por valor el tamaño de la lista
+ * \param indexConsulta int Recibe por valor el index en el cual se hara la asignacion
+ * \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+ * \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
+ * \return Return -1 si hubo un error en los parametros
+ * 				  >0 si opero correctamente (retorna el valor ingresado por teclado)
  */
 int pass_interaccionMenuSecundario(Passenger* pArray, int sizeArray, int indexConsulta, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
@@ -995,6 +1025,16 @@ int pass_swap(Passenger* listPass, int index1, int index2)
 	return retorno;
 }
 
+/**
+* \brief ordena la lista recibida alfabeticamente segun el codigo del vuelo y muestra los correspondientes a VUELOS ACTIVOS
+* \param listPass Passenger* Recibe la direccion de memoria de la lista con la que operara
+* \param sizeArray int Recibe por valor el tamaño de la lista
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria con la que tiene que operar
+* \param sizeListaTipoPasajeros int Recibe por valor el tamaño de la lista lista secundaria
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_ordenarVuelosActivos(Passenger* listPass, int sizeArray, typePass* listaTipoPasajeros, int sizeListaTipoPasajeros)
 {
 	int retorno;
@@ -1004,7 +1044,7 @@ int pass_ordenarVuelosActivos(Passenger* listPass, int sizeArray, typePass* list
 	{
 		retorno = 0;
 		pass_ordenarArrayPorCodigoVuelo(listPass, sizeArray);
-		printf("VUELOS ACTIVOS Ordenados por codigo de vuelo\n");
+		printf("\nVUELOS ACTIVOS Ordenados por codigo de vuelo\n");
 		for(i=0; i<sizeArray; i++)
 		{
 			if(listPass[i].isEmpty == NOT_EMPTY && listPass[i].statusFlight == 1)
@@ -1018,7 +1058,14 @@ int pass_ordenarVuelosActivos(Passenger* listPass, int sizeArray, typePass* list
 	return retorno;
 }
 
-
+/**
+* \brief ordena la lista recibida alfabeticamente segun el codigo del vuelo
+* \param listPass Passenger* Recibe la direccion de memoria de la lista con la que operara
+* \param sizeArray int Recibe por valor el tamaño de la lista
+* \return Return 0 si opero correctamente
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_ordenarArrayPorCodigoVuelo(Passenger* listPass, int sizeArray)
 {
 	int retorno;
@@ -1187,6 +1234,8 @@ int pass_cargaForzadaDeDatos(Passenger* listPass, int sizeArray)
 * \brief pide un criterio de ordenamiento para enlistar el array recibido
 * \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
 * \param sizeArray int Recibe por valor tamaño de la lista
+* \param listaTipoPasajeros typePass* Recibe la direccion de memoria de la lista secundaria
+* \param sizeTipoPasajeros int Recibe por valor el tamaño de la lista secundaria
 * \return Return 0 si opero correctamente
 * 				(-1) si hubo un error en los parametros recibidos
 *
@@ -1297,9 +1346,6 @@ int pass_acumuladorTotalPreciosCargados(Passenger* listPass, int sizeArray, floa
 }
 
 
-
-
-
 /**
 * \brief recorre el array para comprar los valores de .price que sean mayor al promedio recibido y contarlos
 * \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
@@ -1328,6 +1374,17 @@ int pass_contadorPreciosSuperanPromedio(Passenger* listPass, int sizeArray, floa
 	}
 	return contador;
 }
+
+/**
+* \brief recorre la lista recibida en el campo .id para analizar sus valores y devolver el mayor numero encontrado
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \param ultimoId int* Recibe por la direccion de memoria donde alojara el valor hallado
+* \return Return >0 si encontro elementos(retorna la cantidad de elementos encontrados)
+* 				  0 si opero correctamente pero no encontro elementos
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_encontrarMayorId(Passenger* listPass, int sizeArray, int* ultimoId)
 {
 	int retorno;
@@ -1359,6 +1416,16 @@ int pass_encontrarMayorId(Passenger* listPass, int sizeArray, int* ultimoId)
 	return retorno;
 }
 
+/**
+* \brief recorre la lista recibida y contabiliza las posiciones que han sido cargadas
+* \param arrayPasajeros Passenger* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeArray int Recibe por valor tamaño de la lista
+* \param contador int* Recibe por la direccion de memoria donde alojara la cantidad contabilizada
+* \return Return >0 si encontro elementos(retorna la cantidad de elementos encontrados)
+* 				  0 si opero correctamente pero no encontro elementos
+* 				(-1) si hubo un error en los parametros recibidos
+*
+*/
 int pass_contadorClientesCargados(Passenger* listPass, int sizeArray, int* contador)
 {
 	int retorno;
