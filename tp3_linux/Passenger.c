@@ -35,7 +35,7 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
 		if(this != NULL)
 		{
 			Passenger_setIdStr(this, idStr);
-			Passenger_setNombreStr(this, nombreStr);
+			Passenger_setNombre(this, nombreStr);
 			Passenger_setTipoPasajeroStr(this, tipoPasajeroStr);
 		}
 	}
@@ -59,9 +59,9 @@ ePassenger* Passenger_newParametros(int* id,char* nombre,int* tipoPasajero)
 		this = Passenger_new();
 		if(this != NULL)
 		{
-			Passenger_setId(this, id);
+			Passenger_setId(this, *id);
 			Passenger_setNombre(this, nombre);
-			Passenger_setTipoPasajero(this, tipoPasajero);
+			Passenger_setTipoPasajero(this, *tipoPasajero);
 		}
 	}
 	return this;
@@ -101,21 +101,20 @@ int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, int* t
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_setId(ePassenger* this,int id);
+int Passenger_setId(ePassenger* this,int id)
 {
 	int retorno;
-	int aux;
+	///int auxId;
 	retorno =-1;
 
-	if(this != NULL && id != NULL && validaciones_esNumeroInt(idStr, strlen(idStr)))
+	if(this != NULL)
 	{
-		auxId = atoi(idStr);
-		 this->id=auxId;
-		 retorno=0;
-		 if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
+		this->id=id;
+		retorno=0;
+		 if(/*auxId > ID_MAX ||*/ id < ID_MIN)
 		 {
 			 retorno = -2;
-			 printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d\n", auxId);
+			 printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d\n", id);
 		 }
 	}
 	return retorno;
@@ -178,7 +177,7 @@ int Passenger_getId(ePassenger* this,int* id)
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_setNombreStr(ePassenger* this,char* nombre)
+int Passenger_setNombre(ePassenger* this,char* nombre)
 {
 	int retorno;
 	int lenString;
@@ -240,6 +239,35 @@ int Passenger_setTipoPasajeroStr(ePassenger* this,char* tipoPasajero)
 		{
 			retorno = -2;
 			printf("\n[DEBUG] ***WARNING*** el valor recibido esta fuera de los parametros esperados para un TipoPasajero. Valor: %d\n", auxTipoPasajero);
+		}
+	}
+	return retorno;
+}
+
+
+/** \brief valida el valor recibido por parametro y lo setea en this, dentro de su campo tipoPasajero
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+ * \param char* tipoPasajero recibe la referencia de la cadena a la cual se validara como Tipo Pasajero para setearla en el campo correspondiente
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						-2 si el valor recibido como tipo Pasajero no corresponde al rango esperado
+ * 						0 si realizo la operacion correctamente
+ *
+ */
+int Passenger_setTipoPasajero(ePassenger* this,int tipoPasajero)
+{
+	int retorno;
+	//int auxTipoPasajero;
+	retorno =-1;
+	if(this != NULL)
+	{
+		//auxTipoPasajero = atoi(tipoPasajero);
+		this->tipoPasajero=tipoPasajero;
+		retorno=0;
+		if(tipoPasajero > PASS_TYPE_MAX || tipoPasajero < PASS_TYPE_MIN)
+		{
+			retorno = -2;
+			printf("\n[DEBUG] ***WARNING*** el valor recibido esta fuera de los parametros esperados para un TipoPasajero. Valor: %d\n", tipoPasajero);
 		}
 	}
 	return retorno;
