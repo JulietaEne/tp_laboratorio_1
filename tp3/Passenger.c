@@ -85,9 +85,12 @@ int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* 
 	if(id!= NULL && nombre != NULL && typePasajero != NULL && this != NULL)
 	{
 		retorno = 0;
-		Passenger_getId(this, id);
+		*id= Passenger_getId(this/*, &id*/);
+		//printf("[GETTER ID] this.id: %d -- id: %d\n", this->id,*id);
 		Passenger_getNombre(this, nombre);
+		//printf("[GETTER NAME] this.name: %s -- name: %s\n", this->nombre,nombre);
 		Passenger_getTipoPasajero(this, typePasajero);
+		//printf("[GETTER TYPE] this.tipo: %s -- typePass: %s\n", this->tipoPasajero,typePasajero);
 	}
 
 	return retorno;
@@ -161,14 +164,14 @@ int Passenger_setIdStr(ePassenger* this,char* idStr)
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_getId(ePassenger* this,int* id)
+int Passenger_getId(ePassenger* this/*,int* id*/)
 {
 	int retorno;
 	retorno =-1;
-	if(this!= NULL && id != NULL)
+	if(this!= NULL /*&& id != NULL*/)
 	{
-		*id=this->id;
-		retorno =0;
+
+		retorno =this->id;
 	}
 	return retorno;
 }
@@ -208,13 +211,14 @@ int Passenger_setNombre(ePassenger* this,char* nombre)
 int Passenger_getNombre(ePassenger* this,char* nombre)
 {
 	int retorno;
-	int lenString;
+	//int lenString;
 
-	lenString=strlen(this->nombre);
+	//lenString=strlen(this->nombre);
+	//printf("****name previo: %s - len: %d - campo nombre: %s\n", nombre, lenString, this->nombre);
 	retorno =-1;
 	if(this!= NULL && nombre != NULL)
 	{
-		strncpy(nombre, this->nombre, lenString);
+		strcpy(nombre, this->nombre);
 		retorno =0;
 	}
 	return retorno;
