@@ -115,10 +115,10 @@ int Passenger_setId(ePassenger* this,int id)
 	{
 		this->id=id;
 		retorno=0;
-		 if(/*auxId > ID_MAX ||*/ id < ID_MIN)
+		 if(/*auxId > ID_MAX ||*/ id <ID_MIN)
 		 {
 			 retorno = -2;
-			 printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d\n", id);
+			 printf("\n[DEBUG SET ID] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d<%d\n", id, ID_MIN);
 		 }
 	}
 	return retorno;
@@ -147,7 +147,7 @@ int Passenger_setIdStr(ePassenger* this,char* idStr)
 		this->id=auxId;
 		//printf("3-1-1 ****setId id-> %d --- this.id->%d\n\n", auxId, this->id);
 		retorno=0;
-		if(/*auxId > ID_MAX ||*/ auxId > ID_MIN)
+		if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
 		{
 			retorno = -2;
 			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d\n", auxId);
@@ -191,8 +191,10 @@ int Passenger_setNombre(ePassenger* this,char* nombre)
 
 	lenString=strlen(nombre);
 	retorno =-1;
+	//printf("puntero nombre: %s", nombre);
 	if(this != NULL && nombre != NULL && !validaciones_esNombre(nombre, lenString))
 	{
+		//printf("**********estamos en nombre\n");
 		strncpy(this->nombre, nombre, lenString);
 		retorno=0;
 	}
@@ -218,7 +220,7 @@ int Passenger_getNombre(ePassenger* this,char* nombre)
 	retorno =-1;
 	if(this!= NULL && nombre != NULL)
 	{
-		strcpy(nombre, this->nombre);
+		strcpy(nombre, this->nombre); //aca con strNcpy me copia muchas cosas de mas y no se por que :(
 		retorno =0;
 	}
 	return retorno;
@@ -236,13 +238,14 @@ int Passenger_getNombre(ePassenger* this,char* nombre)
 int Passenger_setTipoPasajero(ePassenger* this,char* tipoPasajero)
 {
 	int retorno;
-	int lenString;
+	//int lenString;
 	retorno =-1;
-	lenString = sizeof(tipoPasajero);
-
-	if(this != NULL && tipoPasajero != NULL && lenString >0)
+	//lenString = sizeof(tipoPasajero);
+	printf("*********\nauxTipoPasajero: %s\n", tipoPasajero);
+	if(this != NULL && tipoPasajero != NULL)
 	{
-		strncpy(this->tipoPasajero, tipoPasajero, lenString);
+		strcpy(this->tipoPasajero, tipoPasajero);//aca uso strNcpy y tengo error porq se copia menos de lo que debe. Pero sin eso, se copian muchas letras al final :(
+		printf("tipoPasajero en estructura: %s\n*************\n",this->tipoPasajero);
 		retorno=0;
 	}
 	return retorno;
@@ -290,13 +293,13 @@ int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero)
 	int retorno;
 	retorno =-1;
 
-	int lenString;
+	//int lenString;
 
-	lenString=strlen(this->tipoPasajero);
+	//lenString=strlen(tipoPasajero);
 	retorno =-1;
 	if(this!= NULL && tipoPasajero != NULL)
 	{
-		strncpy(tipoPasajero, this->tipoPasajero, lenString);
+		strcpy(tipoPasajero, this->tipoPasajero);//si uso el strNcpy me copia mal
 		retorno =0;
 	}
 	return retorno;

@@ -31,6 +31,7 @@ int main()
 		FILE* pFile;
 
 
+
 		do{
 				option = tp_ImprimirMenuDiezOpciones("[MENU]\n", "1- Abrir archivo de texto"
 															, "2- Abrir archivo binario"
@@ -47,17 +48,17 @@ int main()
 				case 1:
 					//retornoFuncion = controller_loadFromText("data.csv",listaPasajeros);
 					//printf("[DEBUG]retorno : %d\n", retornoFuncion);
-					printf("A- abriendo archivo\n");
+					//printf("A- abriendo archivo\n");
 					pFile = fopen("data.csv", "r");//load from text
 
 					if(pFile != NULL)
 					{
-
+						printf("abriendo archivo....");
 						//aca tiene que ir algo que guarde de memoria a archivo
 						parser_PassengerFromText(pFile, listaPasajeros);
-						printf("\n\nB-archivo abierto\n");
+						//printf("\n\nB-archivo abierto\n");
 						fclose(pFile);
-						printf("C- retorno = 0");
+						//printf("C- retorno = 0");
 					}
 					else
 					{
@@ -68,7 +69,9 @@ int main()
 					break;
 			    case 2:
 					//cargar de modo binario
+			    	printf("1- se abre el archivo\n");
 					controller_loadFromBinary("data-procesado.bin", listaPasajeros);
+					printf("2- se abrió el archivo\n");
 					break;/*
 				case 3:
 					// alta de empleado
@@ -92,7 +95,7 @@ int main()
 					break;*/
 				case 8:
 					//guardar en modo texto
-					controller_saveAsText("data-procesado.csv", listaPasajeros);
+					controller_saveAsText("data-procesado.scv", listaPasajeros);
 					break;
 				case 9:
 					//guardar en modo binario

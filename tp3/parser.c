@@ -23,7 +23,8 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	char auxId[SIZE_INT];
 	char auxNombre[SIZE_STR];
 	char auxApellido[SIZE_STR];
-	char auxPrice[SIZE_INT];
+	char auxPrice[SIZE_STR];
+	char auxFlyCode[SIZE_STR];
 	char auxTipoPasajero[SIZE_STR];
 	char auxStatusFlight[SIZE_STR];
 	int i;
@@ -36,41 +37,42 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 		retorno =0;
 		//lectura fantasma
 		//printf("2- hacemos lectura fantasma \n");
-		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxTipoPasajero, auxStatusFlight);
-		printf("%s, %s, %s, %s, %s, %s", auxId, auxNombre, auxApellido,auxPrice, auxTipoPasajero, auxStatusFlight);
+		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+		//printf("%s, %s, %s, %s, %s, %s, %s", auxId, auxNombre, auxApellido,auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
 		//guarda los datos y parsea el ID, NOMBRE, TIPO PASAJERO
 		while(!feof(pFile))
 		{
-			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxTipoPasajero, auxStatusFlight);
+			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
 			pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);//acá ya tendría un pasajero en la lista de punteros
-			/**********DEBUG**********
-			if(i>100&&i<150)
+			/**********DEBUG*********
+			if(i>=0&&i<10)
 			{
-				printf("%d- %s - %s \n",pAuxPasajero->id, pAuxPasajero->nombre,pAuxPasajero->tipoPasajero);
-				printf("3- creamos un espacio de memoria para los datos leidos hasta la linea %d\n", i);
+				printf("en memoria => auxId: %s - auxNombre: %s - auxTipoPasajero: %s \n",auxId, auxNombre,auxTipoPasajero);
+				printf("en la estructura => %d- %s - %s \n",pAuxPasajero->id, pAuxPasajero->nombre,pAuxPasajero->tipoPasajero);
+				//printf("3- creamos un espacio de memoria para los datos leidos hasta la linea %d\n", i);
 			}
-			**********DEBUG**********/
+			*********DEBUG**********/
 			if(pAuxPasajero != NULL)
 			{
 				ll_add(pArrayListPassenger, pAuxPasajero);//guarda en la lista linkedList cada elemento
-				///**********DEBUG**********///
+				/**********DEBUG**********
 				if(i>1000 && i <2000)
 				{
 
 					printf("4- agregamos a la linkedList %d\n", i);
 					break;
 				}
-				///**********DEBUG**********///
+				**********DEBUG**********/
 			}
 			i++;
 		}
 		retorno = i;
-		printf("5- retorno funcion pasaje a memoria: %d", i);
+		//printf("5- retorno funcion pasaje a memoria: %d", i);
 	}
     return retorno;
 }
 
-/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo binario).
+/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.bin (modo binario).
  *
  * \param path char*
  * \param pArrayListPassenger LinkedList*
@@ -85,6 +87,7 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 	int auxId;
 	char auxNombre[SIZE_STR];
 	char auxTipoPasajero[SIZE_STR];
+/**debug**/int contador=0;
 
 	retorno =-1;
 	lectura = 1;
@@ -93,6 +96,17 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 		if(lectura==1)
 		{
 			pAuxPasajero = Passenger_newParametros(&auxId, auxNombre, auxTipoPasajero);
+			/**debug**/
+			contador ++;
+			printf("contador: %d", contador);
+			if(contador ==2)
+			{
+				printf("pasajero.id%d -- pasajero.nombre %s -- pasajero.tipoPasajero %s",
+														pAuxPasajero->id,
+														pAuxPasajero->nombre,
+														pAuxPasajero->tipoPasajero);
+			}
+			/**debug**/
 		}
 	}while(lectura);
 	retorno =0;
@@ -167,7 +181,7 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 			{
 				this=ll_get(pArrayListPassenger, i);
 				Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxTipoPasajero);
-				printf("%d) %d - %s - %s\n", i, auxId, auxNombre, auxTipoPasajero);
+				//printf("%d) %d - %s - %s\n", i, auxId, auxNombre, auxTipoPasajero);
 				fprintf(pFile, "%d,%s,%s\n", auxId, auxNombre, auxTipoPasajero);
 			}
 		}

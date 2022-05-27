@@ -46,8 +46,10 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 	{
 		retorno = 0;
 		pFile = fopen(path, "rb");
+		printf("1A- puntero archivo nulo");
 		if(pFile != NULL)
 		{
+			printf("1B- abrimos el archivo");
 			retorno = parser_PassengerFromBinary(pFile, pArrayListPassenger);
 		}
 	}

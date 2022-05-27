@@ -13,8 +13,8 @@
 #include <string.h>
 #include "src/validaciones.h"
 
-#define ID_MAX 1
-#define ID_MIN 1100
+#define ID_MAX 1100
+#define ID_MIN 1
 #define PASS_TYPE_MIN 1
 #define PASS_TYPE_MAX 5
 
