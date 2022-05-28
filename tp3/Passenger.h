@@ -32,7 +32,7 @@ typedef struct
 
 ePassenger* Passenger_new();
 ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipoPasajeroStr);
-ePassenger* Passenger_newParametros(int* id,char* nombre,char* tipoPasajero);
+ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero);
 int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
 void Passenger_delete();
 

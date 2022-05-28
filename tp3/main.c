@@ -28,7 +28,6 @@ int main()
 		//int retornoFuncion;
 
 		LinkedList* listaPasajeros = ll_newLinkedList();
-		FILE* pFile;
 
 
 
@@ -46,32 +45,13 @@ int main()
 			switch(option)
 			{
 				case 1:
-					//retornoFuncion = controller_loadFromText("data.csv",listaPasajeros);
-					//printf("[DEBUG]retorno : %d\n", retornoFuncion);
-					//printf("A- abriendo archivo\n");
-					pFile = fopen("data.csv", "r");//load from text
-
-					if(pFile != NULL)
-					{
-						printf("abriendo archivo....");
-						//aca tiene que ir algo que guarde de memoria a archivo
-						parser_PassengerFromText(pFile, listaPasajeros);
-						//printf("\n\nB-archivo abierto\n");
-						fclose(pFile);
-						//printf("C- retorno = 0");
-					}
-					else
-					{
-						printf("ERROR. No se ha crear abrir el archivo");
-						printf("retorno = -2");
-					}
-
+					printf("abriendo archivo data.csv....");
+					controller_loadFromText("data.csv",listaPasajeros);
 					break;
 			    case 2:
 					//cargar de modo binario
-			    	printf("1- se abre el archivo\n");
+			    	printf("abriendo archivo data-procesado.bin....\n");
 					controller_loadFromBinary("data-procesado.bin", listaPasajeros);
-					printf("2- se abrió el archivo\n");
 					break;/*
 				case 3:
 					// alta de empleado
@@ -95,10 +75,12 @@ int main()
 					break;*/
 				case 8:
 					//guardar en modo texto
+					printf("guardando archivo data-procesado.scv.....");
 					controller_saveAsText("data-procesado.scv", listaPasajeros);
 					break;
 				case 9:
 					//guardar en modo binario
+					printf("guardando archivo extension data-procesado.bin.....");
 					controller_saveAsBinary("data-procesado.bin", listaPasajeros);
 					break;
 				case 10:

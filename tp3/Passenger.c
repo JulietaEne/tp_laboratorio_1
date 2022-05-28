@@ -52,15 +52,15 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
  * 					   		   *ePassenger si logro crear y setear a la variable del tipo estructura(retorna la direccion de memoria en donde se creo al pasajero)
  *
  */
-ePassenger* Passenger_newParametros(int* id,char* nombre,char* tipoPasajero)
+ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero)
 {
 	ePassenger* this = NULL;
-	if(id != NULL && nombre != NULL && tipoPasajero != NULL)
+	if(nombre != NULL && tipoPasajero != NULL)
 	{
 		this = Passenger_new();
 		if(this != NULL)
 		{
-			Passenger_setId(this, *id);
+			Passenger_setId(this, id);
 			Passenger_setNombre(this, nombre);
 			Passenger_setTipoPasajero(this, tipoPasajero);
 		}
@@ -114,6 +114,7 @@ int Passenger_setId(ePassenger* this,int id)
 	if(this != NULL)
 	{
 		this->id=id;
+		printf("*********\nthis.id %d -- id: %d\n", this->id, id);
 		retorno=0;
 		 if(/*auxId > ID_MAX ||*/ id <ID_MIN)
 		 {
@@ -241,11 +242,11 @@ int Passenger_setTipoPasajero(ePassenger* this,char* tipoPasajero)
 	//int lenString;
 	retorno =-1;
 	//lenString = sizeof(tipoPasajero);
-	printf("*********\nauxTipoPasajero: %s\n", tipoPasajero);
+	//printf("*********\nauxTipoPasajero: %s\n", tipoPasajero);
 	if(this != NULL && tipoPasajero != NULL)
 	{
 		strcpy(this->tipoPasajero, tipoPasajero);//aca uso strNcpy y tengo error porq se copia menos de lo que debe. Pero sin eso, se copian muchas letras al final :(
-		printf("tipoPasajero en estructura: %s\n*************\n",this->tipoPasajero);
+		//printf("tipoPasajero en estructura: %s\n*************\n",this->tipoPasajero);
 		retorno=0;
 	}
 	return retorno;

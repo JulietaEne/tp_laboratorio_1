@@ -3,7 +3,7 @@
 #include "LinkedList.h"
 #include "Passenger.h"
 
-#define SIZE_STR 51
+#define SIZE_STR 128
 #define SIZE_INT 6
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
@@ -44,25 +44,11 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 		{
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
 			pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);//acá ya tendría un pasajero en la lista de punteros
-			/**********DEBUG*********
-			if(i>=0&&i<10)
-			{
-				printf("en memoria => auxId: %s - auxNombre: %s - auxTipoPasajero: %s \n",auxId, auxNombre,auxTipoPasajero);
-				printf("en la estructura => %d- %s - %s \n",pAuxPasajero->id, pAuxPasajero->nombre,pAuxPasajero->tipoPasajero);
-				//printf("3- creamos un espacio de memoria para los datos leidos hasta la linea %d\n", i);
-			}
-			*********DEBUG**********/
+
 			if(pAuxPasajero != NULL)
 			{
 				ll_add(pArrayListPassenger, pAuxPasajero);//guarda en la lista linkedList cada elemento
-				/**********DEBUG**********
-				if(i>1000 && i <2000)
-				{
 
-					printf("4- agregamos a la linkedList %d\n", i);
-					break;
-				}
-				**********DEBUG**********/
 			}
 			i++;
 		}
@@ -81,36 +67,39 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
  */
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 {
+	ePassenger unPasajero;
+	ePassenger* pAuxPasajero;
 	int retorno;
 	int lectura;
-	ePassenger* pAuxPasajero=NULL;
-	int auxId;
-	char auxNombre[SIZE_STR];
-	char auxTipoPasajero[SIZE_STR];
-/**debug**/int contador=0;
 
-	retorno =-1;
-	lectura = 1;
-	do{
-		lectura = fread(&pAuxPasajero, sizeof(ePassenger),1, pFile);
-		if(lectura==1)
-		{
-			pAuxPasajero = Passenger_newParametros(&auxId, auxNombre, auxTipoPasajero);
-			/**debug**/
-			contador ++;
-			printf("contador: %d", contador);
-			if(contador ==2)
+	retorno = -1;
+	if(pFile!= NULL && pArrayListPassenger != NULL)
+	{
+		retorno =0;
+		do{
+			//printf("entramos al do OK\n");
+
+			lectura=fread(&unPasajero, sizeof(ePassenger), 1, pFile);
+			//printf("lectura: %d", lectura);
+			pAuxPasajero = Passenger_newParametros(unPasajero.id, unPasajero.nombre, unPasajero.tipoPasajero);
+			if(pAuxPasajero != NULL)
 			{
-				printf("pasajero.id%d -- pasajero.nombre %s -- pasajero.tipoPasajero %s",
-														pAuxPasajero->id,
-														pAuxPasajero->nombre,
-														pAuxPasajero->tipoPasajero);
+				//printf("se cargó en lista");
+				ll_add(pArrayListPassenger, pAuxPasajero);
 			}
-			/**debug**/
-		}
-	}while(lectura);
-	retorno =0;
+			else
+			{
+				printf("ha habido un error en la lectura de los datos del archivo.\n");
+				break;
+			}
 
+			printf("%d -- %s -- %s\n",
+					pAuxPasajero->id,
+					pAuxPasajero->nombre,
+					pAuxPasajero->tipoPasajero);
+
+		}while(lectura!= 0);
+	}
 	return retorno;
 }
 
