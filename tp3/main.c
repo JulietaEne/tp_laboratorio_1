@@ -52,26 +52,26 @@ int main()
 					//cargar de modo binario
 			    	printf("abriendo archivo data-procesado.bin....\n");
 					controller_loadFromBinary("data-procesado.bin", listaPasajeros);
-					break;/*
-				case 3:
-					// alta de empleado
-					controller_addEmployee(listaPasajeros);
 					break;
-				case 4:
+				case 3:
+					// alta de pasajero
+					controller_addPassenger(listaPasajeros);
+					break;
+				/*case 4:
 					//modificar empleado
-					controller_editEmployee(listaPasajeros);
+					controller_editPassenger(listaPasajeros);
 					break;
 				case 5:
 					// baja de empleado
-					controller_removeEmployee(listaPasajeros);
+					controller_removePassenger(listaPasajeros);
 					break;
 				case 6:
 					// listar empleado
-					controller_ListEmployee(listaPasajeros);
+					controller_ListPassenger(listaPasajeros);
 					break;
 				case 7:
 					// ordenar empleados
-					controller_sortEmployee(listaPasajeros);
+					controller_sortPassenger(listaPasajeros);
 					break;*/
 				case 8:
 					//guardar en modo texto

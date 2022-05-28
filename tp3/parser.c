@@ -35,11 +35,7 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	if(pFile != NULL && pArrayListPassenger != NULL)
 	{
 		retorno =0;
-		//lectura fantasma
-		//printf("2- hacemos lectura fantasma \n");
 		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-		//printf("%s, %s, %s, %s, %s, %s, %s", auxId, auxNombre, auxApellido,auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-		//guarda los datos y parsea el ID, NOMBRE, TIPO PASAJERO
 		while(!feof(pFile))
 		{
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
@@ -48,21 +44,21 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 			if(pAuxPasajero != NULL)
 			{
 				ll_add(pArrayListPassenger, pAuxPasajero);//guarda en la lista linkedList cada elemento
-
 			}
 			i++;
 		}
 		retorno = i;
-		//printf("5- retorno funcion pasaje a memoria: %d", i);
 	}
     return retorno;
 }
 
-/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.bin (modo binario).
+/** \brief Parsea los datos de los pasajeros desde el archivo data.bin (modo binario).
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ int retorna -1 si no pudo operar.
+ * 						0 si no leyo
+ * 						>0 si leyo (retorna la cantidad de lecturas que hizo)
  *
  */
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
@@ -86,6 +82,7 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 			{
 				//printf("se cargó en lista");
 				ll_add(pArrayListPassenger, pAuxPasajero);
+				retorno ++;
 			}
 			else
 			{
@@ -93,10 +90,10 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 				break;
 			}
 
-			printf("%d -- %s -- %s\n",
+			/*printf("%d -- %s -- %s\n",
 					pAuxPasajero->id,
 					pAuxPasajero->nombre,
-					pAuxPasajero->tipoPasajero);
+					pAuxPasajero->tipoPasajero);*/
 
 		}while(lectura!= 0);
 	}
@@ -104,11 +101,13 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 }
 
 
-/** \brief
+/** \brief Transcribe al archivo binario los datos alojados en memoria
  *
  * \param FILE* pFile recibe el puntero al archivo sobre el cual realizara la operacion
  * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
- * \return int
+ * \return int retorno -1 si hubo un error en los parametros
+ *						0 si la lista de la cual se copia los datos no contiene datos
+ *						>0 si logro realizar el pasaje (retorna la cantidad de datos tipo ePassenger* pudo pasar)
  *
  */
 int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger)
@@ -132,22 +131,27 @@ int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger)
 			{
 				this = ll_get(pArrayListPassenger, i);//tengo que obtener los datos alojados en cada puntero de la lista
 				fwrite(this, sizeof(ePassenger), 1,pFile);
-				//Passenger_getDatosDePasajero(this, &auxId, auxNombre, &auxTypePassenger);//los guardo en una variable aux
-				//printf("%d) %d - %s - %d\n", i, auxId, auxNombre, auxTypePassenger);
-				//fprintf(pFile, "%d,%s,%d\n", auxId, auxNombre, auxTypePassenger);
-
-				//fwrite(this, sizeof(ePassenger), 1, pFile);				//los voy tomando los datos y pasando a un archivo binario
+				retorno ++;
 			}
 		}
+		else
+		{
+			printf("\n[DEBUG] ERROR la lista ingresada no contiene elementos\n");
+		}
 	}
-	else
-	{
-		retorno =-2;
-		printf("\n[DEBUG] ERROR la lista ingresada no contiene elementos\n");
-	}
+	//printf("retorno binario desde archivo --> %d", retorno);
 	return retorno;
 }
 
+/** \brief Transcribe al archivo .csv los datos alojados en memoria
+ *
+ * \param FILE* pFile recibe el puntero al archivo sobre el cual realizara la operacion
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error en los parametros
+ *						0 si la lista de la cual se copia los datos no contiene datos
+ *						>0 si logro realizar el pasaje (retorna la cantidad de datos tipo ePassenger* pudo pasar)
+ *
+ */
 int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 {
 	int retorno;
@@ -172,11 +176,11 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 				Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxTipoPasajero);
 				//printf("%d) %d - %s - %s\n", i, auxId, auxNombre, auxTipoPasajero);
 				fprintf(pFile, "%d,%s,%s\n", auxId, auxNombre, auxTipoPasajero);
+				retorno++;
 			}
 		}
 		else
 		{
-			retorno =-2;
 			printf("\n[DEBUG] ERROR la lista ingresada no contiene elementos\n");
 		}
 	}
