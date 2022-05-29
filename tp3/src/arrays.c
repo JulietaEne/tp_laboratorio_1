@@ -698,16 +698,16 @@ int arrayChar_plusInt(char unString[], int sizeString)
 			//printf("estoy en el for");
 			//convertirAMayuscula(&unString[i]);
 			//printf("\n%c", unString[i]);
-			if(i<3 && (unString[i]<'A' || unString[i]>'Z'))
+			if(i<2 && (unString[i]<'A' || unString[i]>'Z'))
 			{
-				retorno = -2;//error: requiere 3 caracteres alfabeticos
+				retorno = -2;//error: requiere 2 caracteres alfabeticos
 				//printf("ERROR -2 error en: ' %c '", unString[i]);
 				break;
 			}
 			else
 			{
 				//printf("i= %d\n", i);
-				if(i>2 && (unString[i]<'0' || unString[i]>'9'))
+				if(i>2 && (unString[i]<'0' || unString[i]>'9' || unString[i]<'A' || unString[i]>'Z'))
 				{
 					//printf(" i= %d  - ' %d ' <0 o ' %d ' >9??", i, unString[i], unString[i]);
 					retorno = -3;//error: requiere al menos 1 numero

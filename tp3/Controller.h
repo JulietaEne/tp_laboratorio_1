@@ -31,6 +31,10 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger);
 
 int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger);
 int controller_getNameToBuffer(char* name, int lenName);
+int controller_getLastNameToBuffer(char* lastName, int lenLastame);
+int controller_getPriceToBuffer(float* price);
+int controller_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
+int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
 int controller_getTypePassToBuffer(char* typePass, int lenName);
 
 #endif /* PARSER_H_ */

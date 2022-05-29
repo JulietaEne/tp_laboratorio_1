@@ -19,6 +19,8 @@
 #define PASS_TYPE_MAX 5
 #define SIZE_STR 50
 #define SIZE_INT 6
+#define MAX_PRICE 50000
+#define MIN_PRICE 5000
 
 typedef struct
 {
@@ -47,6 +49,11 @@ int Passenger_getId(ePassenger* this/*,int* id*/);
 
 int Passenger_setNombre(ePassenger* this,char* nombre);
 int Passenger_getNombre(ePassenger* this,char* nombre);
+
+int Passenger_setApellido(ePassenger* this,char* apellido);
+int Passenger_setPrecio(ePassenger* this,float precio);
+int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo);
+int Passenger_setEstadoVuelo(ePassenger* this,char* estadoVuelo);
 
 int Passenger_setApellido(ePassenger* this,char* apellido);
 int Passenger_getApellido(ePassenger* this,char* apellido);

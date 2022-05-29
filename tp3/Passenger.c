@@ -60,16 +60,21 @@ ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero)
 {
 	ePassenger* this = NULL;
 	int cargaCorrecta;
+	//int retornoFuncion;
 	if(nombre != NULL && tipoPasajero != NULL)
 	{
 		this = Passenger_new();
 		if(this != NULL)
 		{
 			cargaCorrecta = 0;
+
 			if( !Passenger_setId(this, id) &&
 				!Passenger_setNombre(this, nombre) &&
 				!Passenger_setTipoPasajero(this, tipoPasajero))
 			{
+			/*	Passenger_getApellido(this, apellido);
+				Passenger_setCodigoVuelo(this, codigoVuelo);
+				Passenger_setEstadoVuelo(this, estadoVuelo);*/
 				cargaCorrecta = 1;
 			}
 			if(!cargaCorrecta)
@@ -254,6 +259,85 @@ int Passenger_getNombre(ePassenger* this,char* nombre)
 		strcpy(nombre, this->nombre); //aca con strNcpy me copia muchas cosas de mas y no se por que :(
 		retorno =0;
 	}
+	return retorno;
+}
+
+int Passenger_setApellido(ePassenger* this,char* apellido)
+{
+	int retorno;
+	int lenString;
+
+	lenString=strlen(apellido);
+	retorno =-1;
+	//printf("puntero nombre: %s", nombre);
+	if(this != NULL && apellido != NULL && !validaciones_esNombre(apellido, lenString))
+	{
+		//printf("**********estamos en nombre\n");
+		strncpy(this->apellido, apellido, lenString);
+		retorno=0;
+	}
+
+	return retorno;
+}
+
+int Passenger_setPrecio(ePassenger* this,float precio)
+{
+	int retorno;
+	///int auxId;
+	retorno =-1;
+
+	if(this != NULL)
+	{
+		this->precio=precio;
+		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
+		retorno=0;
+		 if(precio<MIN_PRICE || precio>MIN_PRICE)
+		 {
+			 retorno = -2;
+			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f mayor a %.2f y menor a %.2f\n", precio, MIN_PRICE, MAX_PRICE);
+		 }
+	}
+	return retorno;
+}
+
+int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
+{
+	int retorno;
+	int lenString;
+
+	lenString=strlen(codigoVuelo);
+	retorno =-1;
+	//printf("puntero nombre: %s", nombre);
+	if(this != NULL && codigoVuelo != NULL )
+	{
+		//printf("**********estamos en nombre\n");
+		strncpy(this->flyCode, codigoVuelo, lenString);
+		retorno=0;
+		if(validaciones_EsCodigoTresLetrasYNumero(codigoVuelo, lenString))
+		{
+			retorno = -2;
+			printf("\n[DEBUG SET FLYCODE] ***WARNING*** el codigo ingresado no es un codigo valido. Codigo %s debe contener 2 caracteres alfabeticos al comienzo\n", codigoVuelo);
+		}
+	}
+
+	return retorno;
+}
+
+int Passenger_setEstadoVuelo(ePassenger* this,char* estadoVuelo)
+{
+	int retorno;
+	int lenString;
+
+	lenString=strlen(estadoVuelo);
+	retorno =-1;
+	//printf("puntero nombre: %s", nombre);
+	if(this != NULL && estadoVuelo != NULL )
+	{
+		//printf("**********estamos en nombre\n");
+		strncpy(this->estadoVuelo, estadoVuelo, lenString);
+		retorno=0;
+	}
+
 	return retorno;
 }
 

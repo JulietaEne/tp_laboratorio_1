@@ -82,7 +82,10 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
 	int auxId=1099;
 	char auxNombre[SIZE_STR];
 	char auxTipoPass[SIZE_STR];
-
+	//char auxApellido[SIZE_STR];
+	//float auxPrice;
+	//char codigoVuelo[SIZE_STR];
+	char estadoVuelo[SIZE_STR];
 	ePassenger* pAuxPasajero;
 	retorno = -1;
 	if(pArrayListPassenger != NULL)
@@ -92,7 +95,11 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
 		{
 			//controller_getIdToBuffer(&auxId, pArrayListPassenger); NO SE COMO HACER QUE ANDE :(
 			controller_getNameToBuffer(auxNombre, SIZE_STR);
+			//controller_getLastNameToBuffer(auxApellido, SIZE_STR);
+			//controller_getPriceToBuffer(auxPrice);
+			//controller_getSFlyCodeToBuffer(codigoVuelo, SIZE_STR);
 			controller_getTypePassToBuffer(auxTipoPass, SIZE_STR);
+			controller_getFlyCodeToBuffer(flyCode, lenFlyCode)
 			//voy a pedir los datos que el usuario quiere cargar.
 			pAuxPasajero=Passenger_newParametros(auxId, auxNombre, auxTipoPass);//voy a crear un nuevo pasajero
 			if(pAuxPasajero!= NULL)
@@ -263,9 +270,57 @@ int controller_getNameToBuffer(char* name, int lenName)
 {
 	int retorno;
 	retorno =-1;
-	if(name != NULL)
+	if(name != NULL && lenName>0)
 	{
 		utn_ingresarAlfabetica(name, lenName, "Nombre de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int controller_getLastNameToBuffer(char* lastName, int lenLastame)
+{
+	int retorno;
+	retorno =-1;
+	if(lastName != NULL && lenLastame>0)
+	{
+		utn_ingresarAlfabetica(lastName, lenLastame, "Apellido de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int controller_getPriceToBuffer(float* price)
+{
+	int retorno;
+	retorno =-1;
+	if(price != NULL)
+	{
+		utn_GetNumeroFloat(*price, "Ingrese precio de vuelo: $", "ingrese un dato valido", MIN_PRICE, MAX_PRICE, REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int controller_getFlyCodeToBuffer(char* flyCode, int lenFlyCode)
+{
+	int retorno;
+	retorno =-1;
+	if(flyCode != NULL && lenFlyCode>0)
+	{
+		utn_ingresarAlfabetica(flyCode, lenFlyCode, "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
+{
+	int retorno;
+	retorno =-1;
+	if(statusFlight != NULL && lenStatusFlight>0)
+	{
+		utn_ingresarAlfabetica(statusFlight, lenStatusFlight, "Estado del vuelo: ", "Ingrese un dato valido", REINTENTOS);
 		retorno=0;
 	}
 	return retorno;
