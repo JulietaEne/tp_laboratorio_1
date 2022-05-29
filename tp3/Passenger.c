@@ -6,7 +6,8 @@
  */
 #include "Passenger.h"
 
-/** \brief Reserva espacio en heap para una variable del tipo ePassenger
+
+/** \brief Reserva espacio en el heap para una variable del tipo ePassenger
  *
  * \return ePassenger* retorna NULL si no encontro espacio en heap para crear una variable del tipo ePassenger
  * 					   		   *ePassenger (direccion de memoria al tipo ePassenger) si realizo la operacion correctamente
@@ -55,17 +56,40 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
 ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero)
 {
 	ePassenger* this = NULL;
+	int cargaCorrecta;
 	if(nombre != NULL && tipoPasajero != NULL)
 	{
 		this = Passenger_new();
 		if(this != NULL)
 		{
-			Passenger_setId(this, id);
-			Passenger_setNombre(this, nombre);
-			Passenger_setTipoPasajero(this, tipoPasajero);
+			cargaCorrecta = 0;
+			if( !Passenger_setId(this, id) &&
+				!Passenger_setNombre(this, nombre) &&
+				!Passenger_setTipoPasajero(this, tipoPasajero))
+			{
+				cargaCorrecta = 1;
+			}
+			if(!cargaCorrecta)
+			{
+				this = NULL;
+				printf("ERROR AL CARGAR EL DATO %d , %s, %s", id, nombre, tipoPasajero);
+			}
 		}
 	}
 	return this;
+	/*ePassenger* this = NULL;
+		if(nombre != NULL && tipoPasajero != NULL)
+		{
+			this = Passenger_new();
+			if(this != NULL)
+			{
+
+				Passenger_setId(this, id);
+				Passenger_setNombre(this, nombre);
+				Passenger_setTipoPasajero(this, tipoPasajero);
+			}
+		}
+		return this;*/
 }
 
 /** \brief recibe una lista para recorrerla
@@ -95,6 +119,10 @@ int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* 
 
 	return retorno;
 }
+
+
+
+
 
 /** \brief parsea el valor recibido por parametro y lo setea en this, dentro de su campo id
  *

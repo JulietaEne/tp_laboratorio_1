@@ -8,6 +8,9 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
+#define SIZE_STR 128
+#define SIZE_INT 6
+
 #include "LinkedList.h"
 
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger);

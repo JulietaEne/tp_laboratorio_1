@@ -41,6 +41,7 @@ int Passenger_setIdStr(ePassenger* this,char* idStr);
 int Passenger_getId(ePassenger* this/*,int* id*/);
 
 
+
 int Passenger_setNombre(ePassenger* this,char* nombre);
 int Passenger_getNombre(ePassenger* this,char* nombre);
 

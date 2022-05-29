@@ -55,7 +55,7 @@ int main()
 					break;
 				case 3:
 					// alta de pasajero
-					controller_addPassenger(listaPasajeros);
+					//controller_addPassenger(listaPasajeros);//falta arreglar el tema del id
 					break;
 				/*case 4:
 					//modificar empleado

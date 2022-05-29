@@ -13,7 +13,7 @@
 #include "arrays.h"
 
 #define STR 41
-#define LEN_MINIMO_NOMBRE 3
+#define LEN_MINIMO_NOMBRE 2
 
 static int eliminarEspaciosAdelante(char unString[], int sizeString);
 static int eliminarEspaciosExtra(char unString[], int sizeString);

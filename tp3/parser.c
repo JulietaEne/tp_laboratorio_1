@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Passenger.h"
+#include "parser.h"
 
-#define SIZE_STR 128
-#define SIZE_INT 6
+
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
@@ -43,7 +43,7 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 
 			if(pAuxPasajero != NULL)
 			{
-				ll_add(pArrayListPassenger, pAuxPasajero);//guarda en la lista linkedList cada elemento
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elemento
 			}
 			i++;
 		}
@@ -81,7 +81,7 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 			if(pAuxPasajero != NULL)
 			{
 				//printf("se cargó en lista");
-				ll_add(pArrayListPassenger, pAuxPasajero);
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
 				retorno ++;
 			}
 			else
