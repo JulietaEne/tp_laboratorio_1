@@ -208,3 +208,41 @@ int validaciones_esNumeroInt(char* pCadena, int limite)
 	//printf("retorno función esEntero %d", retorno);
 	return retorno;
 }
+
+/**
+ * \brief 	Verifica si cada dato de la cadena ingresada es un dato flotante (contempla negativos)
+ * \param pCadena char* Cadena de caracteres a ser analizada
+ * \param limite int Indica la longitud de la cadena trabajada
+ * \return Retorna 1(verdadero) si la cadena es numerica
+ *		  		   0(falso) si no lo es
+ *
+ */
+int validaciones_esNumeroFlotante(char* pCadena, int limite)
+{
+	int retorno= 1;
+	int contadorFlotante=0;
+	int i;
+
+	for (i=0; i<limite && pCadena[i] != '\0'; i++) //LIMITE POR DOBLE CRITERIO: voy a recorrer mientras no me haya pasado del límite y mientras no encuentre un \0
+	{
+		if(i==0 && (pCadena[i] == '+' || pCadena[i]== '-'))
+		{
+			continue; //ejecuta de nuevo el for
+		}
+		if(pCadena[i] < '0' || pCadena [i] > '9')
+		{
+			if(pCadena[i]=='.' && contadorFlotante ==0)
+			{
+				contadorFlotante++;
+			}
+			else
+			{
+				//printf("estoy en el %d : %c - %d\n", i , pCadena[i], pCadena[i]);
+				retorno=0;
+				break;
+			}
+		}
+	}
+	//printf("retorno función esFlotante %d", retorno);
+	return retorno;
+}

@@ -12,6 +12,6 @@ int validaciones_esNombre(char unString[], int sizeString);
 int validacionesInt_sonIdenticos(int variable, int valor);
 int validaciones_EsCodigoTresLetrasYNumero(char unString[], int sizeString);
 int validaciones_esNumeroInt(char* pCadena, int limite);
-
+int validaciones_esNumeroFlotante(char* pCadena, int limite);
 
 #endif /* VALIDACIONES_H_ */

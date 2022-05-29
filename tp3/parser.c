@@ -82,6 +82,7 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 			{
 				//printf("se cargó en lista");
 				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
+				printf("%d - %s - %s\n", pAuxPasajero->id, pAuxPasajero->nombre, pAuxPasajero->tipoPasajero);
 				retorno ++;
 			}
 			else

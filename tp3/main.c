@@ -28,6 +28,8 @@ int main()
 		//int retornoFuncion;
 
 		LinkedList* listaPasajeros = ll_newLinkedList();
+		int controlGuardado;
+		controlGuardado = 0;
 
 
 
@@ -77,14 +79,23 @@ int main()
 					//guardar en modo texto
 					printf("guardando archivo data-procesado.scv.....");
 					controller_saveAsText("data-procesado.scv", listaPasajeros);
+					controlGuardado = 1;
 					break;
 				case 9:
 					//guardar en modo binario
 					printf("guardando archivo extension data-procesado.bin.....");
 					controller_saveAsBinary("data-procesado.bin", listaPasajeros);
+					controlGuardado = 1;
 					break;
 				case 10:
-					printf("cerrando el programa.......");
+					if(controlGuardado!= 0)
+					{
+						printf("cerrando el programa.......");
+					}
+					else
+					{
+						printf("ERROR. debe guardar los cambios para poder salir");
+					}
 			}
 		}while(option != 10);
 		printf("\nHa salido correctamente");

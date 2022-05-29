@@ -17,16 +17,19 @@
 #define ID_MIN 1
 #define PASS_TYPE_MIN 1
 #define PASS_TYPE_MAX 5
+#define SIZE_STR 50
+#define SIZE_INT 6
 
 typedef struct
 {
 	int id;
-	char nombre[50];
-	char apellido[50];
+	char nombre[SIZE_STR];
+	char apellido[SIZE_STR];
 	float precio;
-	char tipoPasajero[50];//este estaba en int pero en el archivo es un texto
-	char codigoVuelo[4];
-	int isEmpty;
+	char flyCode[SIZE_STR];
+	char tipoPasajero[SIZE_STR];//este estaba en int pero en el archivo es un texto
+	char estadoVuelo[SIZE_INT];
+	//int isEmpty;
 
 }ePassenger;
 
@@ -58,7 +61,9 @@ int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero);
 int Passenger_setPrecio(ePassenger* this,float precio);
 int Passenger_getPrecio(ePassenger* this,float* precio);
 
-
+int Passenger_setPrice(ePassenger* this,char* priceStr);
+int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
+int Passenger_setLastName(ePassenger* this,char* apellidoStr);
 
 
 

@@ -59,7 +59,7 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 			//printf("1B- abrimos el archivo");
 			retorno = parser_PassengerFromBinary(pFile, pArrayListPassenger);//ESTO HACE QUE POR ALGUNA RAZON NO ENTRE DIRECTAMENTE AL CONTROLLER LOAD
 			//printf("retorno: %d\n", retorno);
-
+			printf("todos los datos han sido pasados a memoria para trabajar\n");
 		}
 		else
 		{

@@ -38,7 +38,10 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
 		{
 			Passenger_setIdStr(this, idStr);
 			Passenger_setNombre(this, nombreStr);
+			//Passenger_setLastName(this, apellidoStr);
+			//Passenger_setPrice(this, priceStr);
 			Passenger_setTipoPasajero(this, tipoPasajeroStr);
+			//Passenger_setStatusFlight(this, estadoVueloStr);
 		}
 	}
 	return this;
@@ -83,7 +86,6 @@ ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero)
 			this = Passenger_new();
 			if(this != NULL)
 			{
-
 				Passenger_setId(this, id);
 				Passenger_setNombre(this, nombre);
 				Passenger_setTipoPasajero(this, tipoPasajero);
@@ -142,7 +144,7 @@ int Passenger_setId(ePassenger* this,int id)
 	if(this != NULL)
 	{
 		this->id=id;
-		printf("*********\nthis.id %d -- id: %d\n", this->id, id);
+		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
 		retorno=0;
 		 if(/*auxId > ID_MAX ||*/ id <ID_MIN)
 		 {
@@ -289,7 +291,6 @@ int Passenger_setTipoPasajero(ePassenger* this,char* tipoPasajero)
  * 						-2 si el valor recibido como tipo Pasajero no corresponde al rango esperado
  * 						0 si realizo la operacion correctamente
  *
-
 int Passenger_setTipoPasajero(ePassenger* this,int tipoPasajero)
 {
 	int retorno;
@@ -334,3 +335,62 @@ int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero)
 	return retorno;
 }
 
+int Passenger_setLastName(ePassenger* this,char* apellidoStr)
+{
+	int retorno;
+		int lenString;
+
+		lenString=strlen(apellidoStr);
+		retorno =-1;
+		//printf("puntero nombre: %s", nombre);
+		if(this != NULL && apellidoStr != NULL && !validaciones_esNombre(apellidoStr, lenString))
+		{
+			//printf("**********estamos en nombre\n");
+			strncpy(this->apellido, apellidoStr, lenString);
+			retorno=0;
+		}
+
+		return retorno;
+}
+
+
+int Passenger_setPrice(ePassenger* this,char* priceStr)
+{
+	int retorno;
+	float auxPrecio;
+	retorno =-1;
+	//printf("3-1-1 set id\n");
+	if(this != NULL && priceStr != NULL && !validaciones_esNumeroFlotante(priceStr, strlen(priceStr)))
+	{
+		//if()
+		auxPrecio = atof(priceStr);
+		this->precio=auxPrecio;
+		//printf("3-1-1 ****setId id-> %d --- this.id->%d\n\n", auxId, this->id);
+		retorno=0;
+		if(/*auxId > ID_MAX ||*/ auxPrecio < ID_MIN)
+		{
+			retorno = -2;
+			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %.2f\n", auxPrecio);
+		}
+	}
+	return retorno;
+}
+
+
+int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr)
+{
+	int retorno;
+	int lenString;
+
+	lenString=strlen(estadoVueloStr);
+	retorno =-1;
+	//printf("puntero nombre: %s", nombre);
+	if(this != NULL && estadoVueloStr != NULL)
+	{
+		//printf("**********estamos en nombre\n");
+		strncpy(this->estadoVuelo, estadoVueloStr, lenString);
+		retorno=0;
+	}
+
+	return retorno;
+}
