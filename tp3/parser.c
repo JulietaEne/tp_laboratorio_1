@@ -40,14 +40,18 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 		{
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
 			pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);//acá ya tendría un pasajero en la lista de punteros
-
+			i++;
 			if(pAuxPasajero != NULL)
 			{
 				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elemento
 			}
-			i++;
+			else
+			{
+				break;
+			}
 		}
 		retorno = i;
+		//printf("se pudo leer hasta la linea %d",i);
 	}
     return retorno;
 }

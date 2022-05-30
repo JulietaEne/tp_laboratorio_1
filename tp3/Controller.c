@@ -164,21 +164,21 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 {
 	int idSolicitado;
 	ePassenger* pAuxPassenger=NULL;
-	char auxNombre[SIZE_STR];
+	//char auxNombre[SIZE_STR];
 	int indexHallado;
-	// muestro la lista de pasajeros
-	//interactuo con el usuario pidiendo un id
-
-	utn_GetNumeroInt(&idSolicitado, "ingrese un id: ", "dato incorrecto", ID_MIN, ID_MAX, REINTENTOS);
-	//recorro el linkedlist para desencapsular cada *Passenger
-	pAuxPassenger=controller_findIndexById(pArrayListPassenger, idSolicitado, &indexHallado);//si encuentra igualdad, me decuelve el puntero que encapsula ese id
-	if(pAuxPassenger != NULL)
-	 {
-		 controller_getNameToBuffer(auxNombre, SIZE_STR);
-		 Passenger_setNombre(pAuxPassenger, auxNombre);
-		 printf("editado: %s", pAuxPassenger->nombre);
-	 }
-    return 1;
+	int retorno;
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//si encuentra igualdad, me decuelve el puntero que encapsula ese id
+		if(pAuxPassenger != NULL)
+		 {
+			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);
+			printf("editado: %s", pAuxPassenger->nombre);
+		 }
+		retorno=0;
+	}
+    return retorno;
 }
 
 /** \brief Baja de pasajero
@@ -187,26 +187,32 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
  * \param pArrayListPassenger LinkedList*
  * \return int
  *
-
+ */
 int controller_removePassenger(LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int idSolicitado;
+	int indexHallado;
 	ePassenger* pAuxPassenger;
 	retorno=-1;
 	if(pArrayListPassenger!= NULL)
 	{
 		utn_GetNumeroInt(&idSolicitado, "ingrese un id: ", "dato incorrecto", ID_MIN, ID_MAX, REINTENTOS);
-		pAuxPassenger=controller_findIndexById(pArrayListPassenger, idSolicitado);
+		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
 		if(pAuxPassenger!= NULL)
 		{
-			ll_remove(pArrayListPassenger, index)
+			printf("eliminando de la lista a id %d - %s\n", pAuxPassenger->id, pAuxPassenger->nombre);
+			if(!ll_remove(pArrayListPassenger, indexHallado))
+			{
+				printf("ha sido eliminado %d - %s", pAuxPassenger->id, pAuxPassenger->nombre);
+			}
+			//aca deberia imprimir toda la lista
 		}
 		retorno=0;
 
 	}
-    return 1;
-} */
+    return retorno;
+}
 
 /** \brief Listar pasajeros
  *
@@ -217,7 +223,23 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
  */
 int controller_ListPassenger(LinkedList* pArrayListPassenger)
 {
-    return 1;
+	int retorno;
+	int i;
+	ePassenger* pAuxPass = NULL;
+	int lenArray;
+
+	retorno =-1;
+	if(pArrayListPassenger!= NULL)
+	{
+		lenArray = ll_len(pArrayListPassenger);
+		retorno =0;
+		for(i=0; i<lenArray; i++)
+		{
+			pAuxPass = ll_get(pArrayListPassenger, i);
+			printf("%d, %s, %s\n", pAuxPass->id, pAuxPass->nombre, pAuxPass->tipoPasajero);
+		}
+	}
+    return retorno;
 }
 
 /** \brief Ordenar pasajeros
@@ -399,23 +421,26 @@ int controller_getTypePassToBuffer(char* typePass, int lenName)
 				// y analizo igualdad en this->id == idIngresado
 				//cuando encuentro, retorno el index donde se encontro
 	//rompo el bucle de busqueda
-ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int idIngresado, int* indexHallado)
+ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado)
 {
 	//int retorno;
 	int i;
 	int lenArray;
+	int auxId;
 	ePassenger* pAuxPass = NULL;
 
 	//retorno =-1;
 	lenArray=ll_len(pArrayListPassenger);
 	if(pArrayListPassenger!= NULL && idIngresado>0 && lenArray>0)
 	{
+		utn_GetNumeroInt(&auxId, "ingrese un id: ", "dato incorrecto", ID_MIN, ID_MAX, REINTENTOS);
+		*idIngresado = auxId;
 		//retorno =-2; //si no encontro ningun elemento
 		for(i=0; i<lenArray; i++)
 		{
 			pAuxPass = ll_get(pArrayListPassenger, i);
 			//printf("%d) %s\n", i+1, pAuxPass->nombre);
-			pAuxPass= Passenger_findIndexById(pAuxPass, idIngresado);
+			pAuxPass= Passenger_findIndexById(pAuxPass, *idIngresado);
 			if(pAuxPass!= NULL)
 			{
 				*indexHallado = i;
@@ -444,3 +469,37 @@ ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int idIngr
 	}
 	return retorno;
 }*/
+int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero)
+{
+	int retorno;
+	int opcion;
+	char auxNombre[SIZE_STR];
+	char auxTipoPasajero[SIZE_STR];
+
+	retorno =-1;
+	if(pPasajero!= NULL)
+	{
+		do{
+			opcion= tp_ImprimirMenuTresOpciones("1- Cambiar nombre", "2- Cambiar Tipo de Pasajero", "3- Volver atrás", "");
+
+			switch (opcion)
+			{
+				case 1:
+					controller_getNameToBuffer(auxNombre, SIZE_STR);
+					Passenger_setNombre(pPasajero, auxNombre);
+					printf("Ha modificado el nombre del pasajero %d\n\n", idPasajero);
+					break;
+				case 2:
+					controller_getTypePassToBuffer(auxTipoPasajero, SIZE_STR);
+					Passenger_setNombre(pPasajero, auxTipoPasajero);
+					printf("Ha modificado el Tipo de Pasajero del pasajero %d\n\n", idPasajero);
+					break;
+				case 3:
+					printf("Volviendo al menu principal\n\n");
+					break;
+			}
+		}while(opcion!= 3);
+
+	}
+	return retorno;
+}

@@ -14,6 +14,7 @@
 #include "Passenger.h"
 #include "parser.h"
 #include "src/utn.h"
+#include "src/tp.h"
 
 #define REINTENTOS 10
 
@@ -37,6 +38,9 @@ int controller_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
 int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
 int controller_getTypePassToBuffer(char* typePass, int lenName);
 
-ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int idIngresado, int* indexHallado);
+ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
+int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero);
+
+//int controller_findIndexById(LinkedList* pArrayListPassenger, ePassenger** pPassengerHallado, int idIngresado);
 
 #endif /* PARSER_H_ */

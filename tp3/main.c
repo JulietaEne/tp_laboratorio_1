@@ -61,9 +61,10 @@ int main()
 					break;
 				case 4:
 					//modificar pasajero
+					printf("MODIFICAR PASAJERO\n");
 					controller_editPassenger(listaPasajeros);
 					break;
-				/*case 5:
+				case 5:
 					// baja de empleado
 					controller_removePassenger(listaPasajeros);
 					break;
@@ -71,7 +72,7 @@ int main()
 					// listar empleado
 					controller_ListPassenger(listaPasajeros);
 					break;
-				case 7:
+				/*case 7:
 					// ordenar empleados
 					controller_sortPassenger(listaPasajeros);
 					break;*/
