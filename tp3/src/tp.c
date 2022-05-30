@@ -134,7 +134,7 @@ int tp_ImprimirMenuDiezOpciones(char* descripcion,char* opcionUno, char* opcionD
 */
 void tp_MensajeErrorGenerico(int error)
 {
-    printf("[ERROR %d]. Ha habido un error, imposible continuar\n ", error);
+    printf("[ERROR]. Ha habido un error, imposible continuar con la opcion %d\n ", error);
 }
 
 /**
@@ -170,7 +170,7 @@ int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionD
  * 		   0 si no continua
  *
  */
-int continuar(char* mensaje)
+int tp_continuar(char* mensaje)
 {
 	int retorno;
 	char respuesta;
@@ -183,10 +183,10 @@ int continuar(char* mensaje)
 	{
 		retorno = 1;
 	}
-	if(respuesta == 'N' || respuesta == 'n')
+	/*if(respuesta == 'N' || respuesta == 'n')
 	{
 		retorno = 0;
-	}
+	}*/
 	return retorno;
 }
 

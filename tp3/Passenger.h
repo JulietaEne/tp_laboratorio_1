@@ -12,15 +12,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include "src/validaciones.h"
+#include "src/tp.h"
+#include "Passenger.h"
 
 #define ID_MAX 1100
 #define ID_MIN 1
+#define ID_INIT -1
 #define PASS_TYPE_MIN 1
 #define PASS_TYPE_MAX 5
 #define SIZE_STR 50
 #define SIZE_INT 6
 #define MAX_PRICE 50000
 #define MIN_PRICE 5000
+#define INIT_PRICE 0
+#define REINTENTOS 10
 
 typedef struct
 {
@@ -39,7 +44,7 @@ ePassenger* Passenger_new();
 ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipoPasajeroStr);
 ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero);
 int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
-void Passenger_delete();
+int passenger_delete(ePassenger* this);
 
 int Passenger_setId(ePassenger* this,int id);
 int Passenger_setIdStr(ePassenger* this,char* idStr);
@@ -73,6 +78,8 @@ int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
 int Passenger_setLastName(ePassenger* this,char* apellidoStr);
 
 ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda);
+
+
 
 
 

@@ -191,3 +191,212 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 	}
 	return retorno;
 }
+
+/** \brief recibe por teclado los datos de un nuevo pasajero, crea un nuevo pasajero en memoria con los datos y si son correctos, lo agrega a la lista de pasajeros
+ *
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error en los parametros
+ *					   -2 si no pudo crear el pasajero en memoria
+ *						0 si opero correctamente
+ *
+ */
+int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
+{
+	int retorno;
+	int auxId=1099;
+	char auxNombre[SIZE_STR];
+	char auxTipoPass[SIZE_STR];
+	ePassenger* pAuxPasajero;
+	int contador;
+	retorno = -1;
+	contador =0;
+	if(pArrayListPassenger != NULL)
+	{
+		retorno = -2;
+		do//mientras que los datos no estén correctamente cargados, vuelvo a pedir datos
+		{
+			//controller_getIdToBuffer(&auxId, pArrayListPassenger);// NO SE COMO HACER QUE ANDE :(
+			parser_getNameToBuffer(auxNombre, SIZE_STR);
+			//controller_getLastNameToBuffer(auxApellido, SIZE_STR);
+			//controller_getPriceToBuffer(auxPrice);
+			//controller_getSFlyCodeToBuffer(codigoVuelo, SIZE_STR);
+			parser_getTypePassToBuffer(auxTipoPass, SIZE_STR);
+			//controller_getFlyCodeToBuffer(flyCode, lenFlyCode);
+			//voy a pedir los datos que el usuario quiere cargar.
+			pAuxPasajero=Passenger_newParametros(auxId, auxNombre, auxTipoPass);//voy a crear un nuevo pasajero
+			if(pAuxPasajero!= NULL)
+			{
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
+				retorno=0;
+			}
+			contador++;
+		}while(pAuxPasajero==NULL || contador!=5);
+	}
+	return retorno;
+}
+
+
+int parser_getNameToBuffer(char* name, int lenName)
+{
+	int retorno;
+	retorno =-1;
+	if(name != NULL && lenName>0)
+	{
+		utn_ingresarAlfabetica(name, lenName, "Nombre de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int parser_getLastNameToBuffer(char* lastName, int lenLastame)
+{
+	int retorno;
+	retorno =-1;
+	if(lastName != NULL && lenLastame>0)
+	{
+		utn_ingresarAlfabetica(lastName, lenLastame, "Apellido de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int parser_getPriceToBuffer(float* price)
+{
+	int retorno;
+	float auxPrice;
+	retorno =-1;
+	if(price != NULL)
+	{
+		utn_GetNumeroFloat(&auxPrice, "Ingrese precio de vuelo: $", "ingrese un dato valido", MIN_PRICE, MAX_PRICE, REINTENTOS);
+		*price = auxPrice;
+		retorno=0;
+	}
+	return retorno;
+}
+
+int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode)
+{
+	int retorno;
+	retorno =-1;
+	if(flyCode != NULL && lenFlyCode>0)
+	{
+		utn_ingresarAlfabetica(flyCode, lenFlyCode, "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
+{
+	int retorno;
+	retorno =-1;
+	if(statusFlight != NULL && lenStatusFlight>0)
+	{
+		utn_ingresarAlfabetica(statusFlight, lenStatusFlight, "Estado del vuelo: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+/*
+int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
+{
+	int retorno;
+	int auxId;
+	retorno =-1;
+	if(id != NULL)
+	{
+		//voy a buscar el id mas alto en los datos dentro de mi array de punteros
+		auxId = controller_findLastIdValue(pArrayListPassenger);
+		if(auxId >0)
+		{
+			*id = auxId+1;
+		}
+		else
+		{
+			printf("[ERROR ID]ha habido un error en la lectura de los datos del archivo\n");
+		}
+		retorno=0;
+	}
+	return retorno;
+}*/
+
+int parser_getTypePassToBuffer(char* typePass, int lenName)
+{
+	int retorno;
+	retorno =-1;
+	if(typePass != NULL && lenName >0)
+	{
+		utn_ingresarAlfabetica(typePass, lenName, "ingrese tipo de pasajero (FirstClass,ExecutiveClass,EconomyClass)", "ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+
+/** \brief se encarga de pedir el id del pasajero a editar, e interactuar con el usuario para efectuar el cambio del dato indicado
+ *
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error en los parametros
+ *					   -2 si no pudo crear el pasajero en memoria
+ *						0 si opero correctamente
+ *
+ */
+int parser_passengerToEdit(LinkedList* pArrayListPassenger)
+{
+	int idSolicitado;
+	ePassenger* pAuxPassenger=NULL;
+	//char auxNombre[SIZE_STR];
+	int indexHallado;
+	int retorno;
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//OK YO CREO QUE DEBERIA IR EN PARSER si encuentra igualdad, me decuelve el puntero que encapsula ese id
+		if(pAuxPassenger != NULL)
+		 {
+			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);//yo creo que este tendria que ir en passenger
+			printf("editado: %s", pAuxPassenger->nombre);
+		 }
+		else
+		{
+			retorno=-2;
+			//printf("no se ha encontrado coincidencias con el valor ingresado\n");
+		}
+		retorno=0;
+	}
+    return retorno;
+}
+
+/** \brief se encarga de pedir el id del pasajero a eliminar, e interactuar con el usuario para efectuar la baja
+ *
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error en los parametros
+ *					   -2 si no encontro el id solicitado
+ *					   -3 si no se realizo el delet
+ *						0 si opero correctamente
+ *
+ */
+int parser_passengerToDelete(LinkedList* pArrayListPassenger)
+{
+	int retorno;
+	int idSolicitado;
+	int indexHallado;
+	ePassenger* pAuxPassenger;
+
+	retorno=1;
+
+	if(pArrayListPassenger!= NULL)
+	{
+		retorno =2;
+		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
+		if(pAuxPassenger!= NULL)
+		{
+			retorno=-3;
+			passenger_delete(pAuxPassenger);
+			ll_remove(pArrayListPassenger, indexHallado);
+			retorno=0;
+		}
+	}
+	return retorno;
+}
+

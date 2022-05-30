@@ -13,10 +13,10 @@
 #include "LinkedList.h"
 #include "Passenger.h"
 #include "parser.h"
-#include "src/utn.h"
+
 #include "src/tp.h"
 
-#define REINTENTOS 10
+
 
 int controller_loadFromText(char* path , LinkedList* pArrayListPassenger);
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger);
@@ -29,14 +29,14 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger);
 int controller_sortPassenger(LinkedList* pArrayListPassenger);
 int controller_saveAsText(char* path , LinkedList* pArrayListPassenger);
 int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger);
-
+/*
 int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger);
 int controller_getNameToBuffer(char* name, int lenName);
 int controller_getLastNameToBuffer(char* lastName, int lenLastame);
 int controller_getPriceToBuffer(float* price);
 int controller_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
 int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
-int controller_getTypePassToBuffer(char* typePass, int lenName);
+int controller_getTypePassToBuffer(char* typePass, int lenName);*/
 
 ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
 int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero);

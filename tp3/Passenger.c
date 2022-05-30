@@ -128,6 +128,35 @@ int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* 
 }
 
 
+int passenger_delete(ePassenger* this)
+{
+	int retorno;
+	int confirmar;
+
+	retorno = -1;//si hay error en los parametros
+	confirmar =0;
+
+	if(this != NULL)
+	{
+		retorno=-2; // si se cancela la eliminacion
+
+		//preguntar si quiero mostrar todos los pasajeros / si dice que si, muestra la lista
+		printf("pasajero id: %d - nombre: %s\n", this->id, this->nombre);
+		confirmar=tp_continuar("confirma la baja del pasajero? (Y/N)");
+		if(confirmar)
+		{
+			Passenger_setCodigoVuelo(this, "-");
+			Passenger_setNombre(this, "-");
+			Passenger_setLastName(this, "-");
+			Passenger_setEstadoVuelo(this, "-");
+			Passenger_setPrecio(this, INIT_PRICE);
+			Passenger_setId(this, ID_INIT);
+			retorno=0;// si se borra correctamente
+			//printf("\n El pasajero %d - %s ha sido eliminado exitosamente\n", this->id, this->nombre);
+		}
+	}
+	return retorno;
+}
 
 
 
@@ -151,7 +180,7 @@ int Passenger_setId(ePassenger* this,int id)
 		this->id=id;
 		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
 		retorno=0;
-		 if(/*auxId > ID_MAX ||*/ id <ID_MIN)
+		 if(/*auxId > ID_MAX ||*/ id <ID_MIN && id!= ID_INIT)
 		 {
 			 retorno = -2;
 			 printf("\n[DEBUG SET ID] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d<%d\n", id, ID_MIN);
@@ -291,7 +320,7 @@ int Passenger_setPrecio(ePassenger* this,float precio)
 		this->precio=precio;
 		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
 		retorno=0;
-		 if(precio<MIN_PRICE || precio>MIN_PRICE)
+		 if((precio<MIN_PRICE && precio!= INIT_PRICE) || precio>MIN_PRICE )
 		 {
 			 retorno = -2;
 			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f mayor a %d y menor a %d\n", precio, MIN_PRICE, MAX_PRICE);
@@ -313,7 +342,7 @@ int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
 		//printf("**********estamos en nombre\n");
 		strncpy(this->flyCode, codigoVuelo, lenString);
 		retorno=0;
-		if(validaciones_EsCodigoTresLetrasYNumero(codigoVuelo, lenString))
+		if(validaciones_EsCodigoTresLetrasYNumero(codigoVuelo, lenString) && strcmp(codigoVuelo,"-"))
 		{
 			retorno = -2;
 			printf("\n[DEBUG SET FLYCODE] ***WARNING*** el codigo ingresado no es un codigo valido. Codigo %s debe contener 2 caracteres alfabeticos al comienzo\n", codigoVuelo);
@@ -491,3 +520,6 @@ ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda)
 	}
 	return thisCorrecto;
 }
+
+
+

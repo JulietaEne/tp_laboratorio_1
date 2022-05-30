@@ -23,7 +23,7 @@ int tp_ImprimirMenuDiezOpciones(char* descripcion,char* opcionUno, char* opcionD
 void tp_MensajeErrorGenerico(int error);
 void tp_MensajeError(char* mensaje);
 int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionDos, char* opcionTres);
-int continuar(char* mensaje);
+int tp_continuar(char* mensaje);
 
 int swap(int* numero1, int* numero2);
 //int ordenarFormaCreciente(int* numeroA, int* numeroB);
