@@ -96,15 +96,15 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
  * 						0 si no hallo datos
  * 						>0 si pudo operar(retorna el valor del ultimo id)
  *
-
-int Controller_findLastIdValue(LinkedList* pArrayListPassenger)
+ */
+int controller_findLastIdValue(LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int i;
 	int lenArray;
-	int ultimoId;
-	ePassenger* pAuxPasajero1;
-	//ePassenger* pAuxPasajero2;
+	int mayotId;
+	ePassenger* pAuxPasajero;
+	int idAuxPasajero;
 
 	retorno =-1;
 	lenArray = ll_len(pArrayListPassenger);
@@ -114,21 +114,24 @@ int Controller_findLastIdValue(LinkedList* pArrayListPassenger)
 		//recorro la lista y busco el id mas alto
 		for(i=0; i<lenArray; i++)
 		{
-			pAuxPasajero1= *(pArrayListPassenger+i); //quiero desencapsular el contenido de la posicion i del array de punteros :(
-			//pAuxPasajero2= pArrayListPassenger[i+1];
+			pAuxPasajero = ll_get(pArrayListPassenger, i);
+			idAuxPasajero = Passenger_getId(pAuxPasajero);
+			//printf("HOLA - nombre: %s -- id: %d\n", pAuxPasajero->nombre, idAuxPasajero);
 			if(i==0)
 			{
-				ultimoId = pAuxPasajero1->id;
+				mayotId = idAuxPasajero;
+				//printf("*** ultimo id: %d -- id: %d\n", ultimoId, idAuxPasajero);
 			}
-			if(ultimoId < pAuxPasajero1->id)
+			if(mayotId < idAuxPasajero)
 			{
-				ultimoId = pAuxPasajero1->id;
+				mayotId =idAuxPasajero;
 			}
+			//printf("ultimo id: %d\n", mayotId);
 		}
-		retorno = ultimoId;
+		retorno = mayotId;
 	}
 	return retorno;
-}*/
+}
 
 /** \brief Modificar datos de pasajero
  *

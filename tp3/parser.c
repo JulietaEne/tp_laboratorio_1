@@ -206,7 +206,11 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 	int retorno;
 	int auxId=1099;
 	char auxNombre[SIZE_STR];
+	char auxApellido[SIZE_STR];
+	float auxPrice;
+	char auxCodigoVuelo[SIZE_STR];
 	char auxTipoPass[SIZE_STR];
+	char auxEstadoVuelo[SIZE_STR];
 	ePassenger* pAuxPasajero;
 	int contador;
 	retorno = -1;
@@ -216,22 +220,24 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 		retorno = -2;
 		do//mientras que los datos no estén correctamente cargados, vuelvo a pedir datos
 		{
-			//controller_getIdToBuffer(&auxId, pArrayListPassenger);// NO SE COMO HACER QUE ANDE :(
+			parser_getIdToBuffer(&auxId, pArrayListPassenger);// NO SE COMO HACER QUE ANDE :(
 			parser_getNameToBuffer(auxNombre, SIZE_STR);
-			//controller_getLastNameToBuffer(auxApellido, SIZE_STR);
-			//controller_getPriceToBuffer(auxPrice);
-			//controller_getSFlyCodeToBuffer(codigoVuelo, SIZE_STR);
+			parser_getLastNameToBuffer(auxApellido, SIZE_STR);
+			parser_getPriceToBuffer(&auxPrice);
+			parser_getFlyCodeToBuffer(auxCodigoVuelo, SIZE_STR);
 			parser_getTypePassToBuffer(auxTipoPass, SIZE_STR);
-			//controller_getFlyCodeToBuffer(flyCode, lenFlyCode);
+			parser_getStatusFlightToBuffer(auxEstadoVuelo, SIZE_STR);
 			//voy a pedir los datos que el usuario quiere cargar.
-			pAuxPasajero=Passenger_newParametros(auxId, auxNombre, auxTipoPass);//voy a crear un nuevo pasajero
+			//pAuxPasajero=Passenger_newParametros(auxId, auxNombre, auxTipoPass);//voy a crear un nuevo pasajero
+			pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo);
+			//int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo
 			if(pAuxPasajero!= NULL)
 			{
 				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
 				retorno=0;
 			}
 			contador++;
-		}while(pAuxPasajero==NULL || contador!=5);
+		}while(pAuxPasajero==NULL /*|| contador!=5*/);
 	}
 	return retorno;
 }
@@ -249,17 +255,18 @@ int parser_getNameToBuffer(char* name, int lenName)
 	return retorno;
 }
 
-int parser_getLastNameToBuffer(char* lastName, int lenLastame)
+int parser_getLastNameToBuffer(char* lastName, int lenLastName)
 {
 	int retorno;
 	retorno =-1;
-	if(lastName != NULL && lenLastame>0)
+	if(lastName != NULL && lenLastName>0)
 	{
-		utn_ingresarAlfabetica(lastName, lenLastame, "Apellido de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		utn_ingresarAlfabetica(lastName, lenLastName, "Apellido de pasajero: ", "Ingrese un dato valido", REINTENTOS);
 		retorno=0;
 	}
 	return retorno;
 }
+
 
 int parser_getPriceToBuffer(float* price)
 {
@@ -281,7 +288,7 @@ int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode)
 	retorno =-1;
 	if(flyCode != NULL && lenFlyCode>0)
 	{
-		utn_ingresarAlfabetica(flyCode, lenFlyCode, "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS);
+		utn_getAlfaNumerica(flyCode, lenFlyCode,  "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS);
 		retorno=0;
 	}
 	return retorno;
@@ -298,8 +305,8 @@ int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
 	}
 	return retorno;
 }
-/*
-int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
+
+int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int auxId;
@@ -319,7 +326,7 @@ int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 		retorno=0;
 	}
 	return retorno;
-}*/
+}
 
 int parser_getTypePassToBuffer(char* typePass, int lenName)
 {

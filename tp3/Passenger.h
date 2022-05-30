@@ -44,6 +44,8 @@ ePassenger* Passenger_new();
 ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipoPasajeroStr);
 ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr);
 ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero);
+ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo);
+
 int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
 int passenger_delete(ePassenger* this);
 int Passenger_initPasajero(ePassenger* this);
