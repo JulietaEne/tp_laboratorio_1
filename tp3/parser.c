@@ -39,7 +39,8 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 		while(!feof(pFile))
 		{
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-			pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);//acá ya tendría un pasajero en la lista de punteros
+			//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
+			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);//acá ya tendría un pasajero en la lista de punteros
 			i++;
 			if(pAuxPasajero != NULL)
 			{
@@ -391,10 +392,12 @@ int parser_passengerToDelete(LinkedList* pArrayListPassenger)
 		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
 		if(pAuxPassenger!= NULL)
 		{
-			retorno=-3;
-			passenger_delete(pAuxPassenger);
-			ll_remove(pArrayListPassenger, indexHallado);
 			retorno=0;
+			if(passenger_delete(pAuxPassenger)==-2)
+			{
+				retorno =-3;
+			}
+			ll_remove(pArrayListPassenger, indexHallado);
 		}
 	}
 	return retorno;

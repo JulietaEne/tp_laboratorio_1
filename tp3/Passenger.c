@@ -55,6 +55,37 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
  * \return ePassenger* retorna NULL si hubo un error al realizar la operacion
  * 					   		   *ePassenger si logro crear y setear a la variable del tipo estructura(retorna la direccion de memoria en donde se creo al pasajero)
  *
+*/
+ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr)
+{
+	ePassenger* this = NULL;
+	if(idStr != NULL && nombreStr != NULL && tipoPasajeroStr != NULL)
+	{
+
+		this = Passenger_new();
+		//printf("PRECIO: %s\n", precioStr);
+		if(this != NULL)
+		{
+			Passenger_setIdStr(this, idStr);
+			Passenger_setNombre(this, nombreStr);
+			Passenger_setLastName(this, apellidoStr);
+			Passenger_setPrice(this, precioStr);
+			Passenger_setCodigoVuelo(this, codigoVueloStr);
+			Passenger_setTipoPasajero(this, tipoPasajeroStr);
+			Passenger_setStatusFlight(this, estadoVueloStr);
+		}
+	}
+	return this;
+}
+
+/** \brief Crea un pasajero en memoria dinamica seteando en sus campos ID NOMBRE TIPO PASAJERO los datos recibidos por parametro (modo texto)
+ *
+ * \param char* idStr recibe la referencia a la cadena correspondiente para el campo id
+ * \param char* nombreStr recibe la referencia a la cadena correspondiente para el campo nombre
+ * \param char* tipoPasajeroStr recibe la referencia a la cadena correspondiente para el campo tipo pasajero
+ * \return ePassenger* retorna NULL si hubo un error al realizar la operacion
+ * 					   		   *ePassenger si logro crear y setear a la variable del tipo estructura(retorna la direccion de memoria en donde se creo al pasajero)
+ *
  */
 ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero)
 {
@@ -127,7 +158,15 @@ int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* 
 	return retorno;
 }
 
+/** \brief elimina pasajero recibido por parametros
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
 
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						-2 si se cancela la operacion
+ * 						0 si elimino correctamente
+ *
+ */
 int passenger_delete(ePassenger* this)
 {
 	int retorno;
@@ -145,12 +184,7 @@ int passenger_delete(ePassenger* this)
 		confirmar=tp_continuar("confirma la baja del pasajero? (Y/N)");
 		if(confirmar)
 		{
-			Passenger_setCodigoVuelo(this, "-");
-			Passenger_setNombre(this, "-");
-			Passenger_setLastName(this, "-");
-			Passenger_setEstadoVuelo(this, "-");
-			Passenger_setPrecio(this, INIT_PRICE);
-			Passenger_setId(this, ID_INIT);
+			Passenger_initPasajero(this);
 			retorno=0;// si se borra correctamente
 			//printf("\n El pasajero %d - %s ha sido eliminado exitosamente\n", this->id, this->nombre);
 		}
@@ -158,7 +192,61 @@ int passenger_delete(ePassenger* this)
 	return retorno;
 }
 
+/** \brief inicializa los campos del pasajero recibido por parametro
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
 
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						0 si elimino correctamente
+ *
+ */
+int Passenger_initPasajero(ePassenger* this)
+{
+	int retorno;
+	retorno=-1;
+	if(this != NULL)
+	{
+		Passenger_setCodigoVuelo(this, "-");
+		Passenger_setNombre(this, "-");
+		Passenger_setLastName(this, "-");
+		Passenger_setEstadoVuelo(this, "-");
+		Passenger_setPrecio(this, INIT_PRICE);
+		Passenger_setId(this, ID_INIT);
+		retorno =0;
+	}
+	return retorno;
+}
+
+/** \brief inicializa los campos del pasajero recibido por parametro
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						0 si elimino correctamente
+ *
+ */
+int Passenger_printPasajero(ePassenger* this)
+{
+	int retorno;
+	retorno=-1;
+	if(this != NULL)
+	{
+		printf("%d %13s %17s %15.2f %15s %18s %15s",
+												this->id,
+												this->nombre,
+												this->apellido,
+												this->precio,
+												this->flyCode,
+												this->tipoPasajero,
+												this->estadoVuelo);
+		retorno =0;
+	}
+	return retorno;
+}
+void Passenger_printEncabezado()
+{
+	printf("ID\tNOMBRE\t\tAPELLIDO\tPRECIO\t\tCODIGO VUELO\tTIPO PASAJERO\tESTADO VUELO\n");
+}
 
 /** \brief parsea el valor recibido por parametro y lo setea en this, dentro de su campo id
  *
@@ -342,7 +430,7 @@ int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
 		//printf("**********estamos en nombre\n");
 		strncpy(this->flyCode, codigoVuelo, lenString);
 		retorno=0;
-		if(validaciones_EsCodigoTresLetrasYNumero(codigoVuelo, lenString) && strcmp(codigoVuelo,"-"))
+		if(!validaciones_EsCodigoTresLetrasYNumero(codigoVuelo, lenString) && strcmp(codigoVuelo,"-"))
 		{
 			retorno = -2;
 			printf("\n[DEBUG SET FLYCODE] ***WARNING*** el codigo ingresado no es un codigo valido. Codigo %s debe contener 2 caracteres alfabeticos al comienzo\n", codigoVuelo);
@@ -473,10 +561,11 @@ int Passenger_setPrice(ePassenger* this,char* priceStr)
 	float auxPrecio;
 	retorno =-1;
 	//printf("3-1-1 set id\n");
-	if(this != NULL && priceStr != NULL && !validaciones_esNumeroFlotante(priceStr, strlen(priceStr)))
+	if(this != NULL && priceStr != NULL && validaciones_esNumeroFlotante(priceStr, strlen(priceStr)))
 	{
 		//if()
 		auxPrecio = atof(priceStr);
+		//printf("PRECIOOOO %.2f\n", auxPrecio);
 		this->precio=auxPrecio;
 		//printf("3-1-1 ****setId id-> %d --- this.id->%d\n\n", auxId, this->id);
 		retorno=0;

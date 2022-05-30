@@ -34,7 +34,7 @@ int main()
 
 
 		do{
-				option = tp_ImprimirMenuDiezOpciones("[MENU]\n", "1- Abrir archivo de texto"
+				option = tp_ImprimirMenuDiezOpciones("\n[MENU]\n", "1- Abrir archivo de texto"
 															, "2- Abrir archivo binario"
 															, "3- Dar de alta pasajero"
 															, "4- Modificar pasajero"

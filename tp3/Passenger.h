@@ -35,16 +35,21 @@ typedef struct
 	float precio;
 	char flyCode[SIZE_STR];
 	char tipoPasajero[SIZE_STR];//este estaba en int pero en el archivo es un texto
-	char estadoVuelo[SIZE_INT];
+	char estadoVuelo[SIZE_STR];
 	//int isEmpty;
 
 }ePassenger;
 
 ePassenger* Passenger_new();
 ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipoPasajeroStr);
+ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr);
 ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero);
 int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
 int passenger_delete(ePassenger* this);
+int Passenger_initPasajero(ePassenger* this);
+int Passenger_printPasajero(ePassenger* this);
+void Passenger_printEncabezado();
+
 
 int Passenger_setId(ePassenger* this,int id);
 int Passenger_setIdStr(ePassenger* this,char* idStr);

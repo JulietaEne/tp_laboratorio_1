@@ -59,7 +59,7 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 			//printf("1B- abrimos el archivo");
 			retorno = parser_PassengerFromBinary(pFile, pArrayListPassenger);//ESTO HACE QUE POR ALGUNA RAZON NO ENTRE DIRECTAMENTE AL CONTROLLER LOAD
 			//printf("retorno: %d\n", retorno);
-			printf("todos los datos han sido pasados a memoria para trabajar\n");
+			printf("\nTodos los datos han sido pasados a memoria para trabajar\n");
 		}
 		else
 		{
@@ -187,7 +187,7 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 				printf("\nError el id solicitado no se encuentra en la lista\n");
 				break;
 			case -3:
-				printf("\nNo se pudo realizar la baja del pasajero\n");
+				printf("\nLa baja del pasajero no se ha realizado\n");
 				break;
 			case 0:
 				printf("\nEl pasajero indicado se ha eliminado correctamente\n");
@@ -221,10 +221,11 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
 	{
 		lenArray = ll_len(pArrayListPassenger);
 		retorno =0;
+		Passenger_printEncabezado();
 		for(i=0; i<lenArray; i++)
 		{
 			pAuxPass = ll_get(pArrayListPassenger, i);
-			printf("%d, %s, %s\n", pAuxPass->id, pAuxPass->nombre, pAuxPass->tipoPasajero);
+			Passenger_printPasajero(pAuxPass);
 		}
 	}
     return retorno;
@@ -394,7 +395,7 @@ int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero)
 					break;
 				case 2:
 					parser_getTypePassToBuffer(auxTipoPasajero, SIZE_STR);
-					Passenger_setNombre(pPasajero, auxTipoPasajero);
+					Passenger_setTipoPasajero(pPasajero, auxTipoPasajero);
 					printf("Ha modificado el Tipo de Pasajero del pasajero %d\n\n", idPasajero);
 					break;
 				case 3:
