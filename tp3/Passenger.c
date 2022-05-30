@@ -294,7 +294,7 @@ int Passenger_setPrecio(ePassenger* this,float precio)
 		 if(precio<MIN_PRICE || precio>MIN_PRICE)
 		 {
 			 retorno = -2;
-			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f mayor a %.2f y menor a %.2f\n", precio, MIN_PRICE, MAX_PRICE);
+			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f mayor a %d y menor a %d\n", precio, MIN_PRICE, MAX_PRICE);
 		 }
 	}
 	return retorno;
@@ -477,4 +477,17 @@ int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr)
 	}
 
 	return retorno;
+}
+
+ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda)
+{
+	ePassenger* thisCorrecto=NULL;
+	if (this != NULL)
+	{
+		if(this->id== idBusqueda)
+		{
+			thisCorrecto = this;
+		}
+	}
+	return thisCorrecto;
 }

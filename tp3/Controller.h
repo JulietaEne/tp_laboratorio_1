@@ -37,4 +37,6 @@ int controller_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
 int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
 int controller_getTypePassToBuffer(char* typePass, int lenName);
 
+ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int idIngresado, int* indexHallado);
+
 #endif /* PARSER_H_ */

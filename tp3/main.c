@@ -55,15 +55,15 @@ int main()
 			    	printf("abriendo archivo data-procesado.bin....\n");
 					controller_loadFromBinary("data-procesado.bin", listaPasajeros);
 					break;
-				case 3:
+				//case 3:
 					// alta de pasajero
 					//controller_addPassenger(listaPasajeros);//falta arreglar el tema del id
 					break;
-				/*case 4:
-					//modificar empleado
+				case 4:
+					//modificar pasajero
 					controller_editPassenger(listaPasajeros);
 					break;
-				case 5:
+				/*case 5:
 					// baja de empleado
 					controller_removePassenger(listaPasajeros);
 					break;

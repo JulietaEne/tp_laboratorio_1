@@ -72,6 +72,7 @@ int Passenger_setPrice(ePassenger* this,char* priceStr);
 int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
 int Passenger_setLastName(ePassenger* this,char* apellidoStr);
 
+ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda);
 
 
 
