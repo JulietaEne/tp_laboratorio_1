@@ -71,10 +71,10 @@ int main()
 					printf("LISTA DE PASAJEROS\n");
 					controller_ListPassenger(listaPasajeros);
 					break;
-				/*case 7:
+				case 7:
 					// ordenar empleados
 					controller_sortPassenger(listaPasajeros);
-					break;*/
+					break;
 				case 8:
 					//guardar en modo texto
 					printf("guardando archivo data-procesado.scv.....");
@@ -97,7 +97,7 @@ int main()
 						printf("ERROR. debe guardar los cambios para poder salir");
 					}
 			}
-		}while(option != 10);
+		}while(option != 10  && controlGuardado==0);//cuando control guardado es falso, no deberia salir :(
 		printf("\nHa salido correctamente");
 	return EXIT_SUCCESS;
 }

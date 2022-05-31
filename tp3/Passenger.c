@@ -667,5 +667,25 @@ ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda)
 	return thisCorrecto;
 }
 
+int Passenger_comparePassengersByName(ePassenger* this, ePassenger* that)
+{
+	int retorno;
+	char nombre1[SIZE_STR];
+	char nombre2[SIZE_STR];
+	retorno = -1;
+	if(this != NULL && that != NULL)
+	{
 
+		Passenger_getNombre(this, nombre1);
+		Passenger_getNombre(that, nombre2);
+
+		arrayChar_convertirStringMayuscula(nombre1, strlen(nombre1));
+		arrayChar_convertirStringMayuscula(nombre2, strlen(nombre2));
+		//printf("estamos en passenger compare\n");
+		//printf("nombre1: %s - nombre2: %s\n", nombre1, nombre2);
+		retorno= strcmp(nombre1, nombre2);
+		//printf("retorno : %d", retorno);
+	}
+	return retorno;
+}
 

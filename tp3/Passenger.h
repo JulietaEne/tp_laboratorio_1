@@ -14,6 +14,7 @@
 #include "src/validaciones.h"
 #include "src/tp.h"
 #include "Passenger.h"
+#include "src/arrays.h"
 
 #define ID_MAX 1100
 #define ID_MIN 1
@@ -58,7 +59,6 @@ int Passenger_setIdStr(ePassenger* this,char* idStr);
 int Passenger_getId(ePassenger* this/*,int* id*/);
 
 
-
 int Passenger_setNombre(ePassenger* this,char* nombre);
 int Passenger_getNombre(ePassenger* this,char* nombre);
 
@@ -85,13 +85,7 @@ int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
 int Passenger_setLastName(ePassenger* this,char* apellidoStr);
 
 ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda);
-
-
-
-
-
-
-
+int Passenger_comparePassengersByName(ePassenger* this, ePassenger* that);
 
 
 #endif /* PASSENGER_H_ */

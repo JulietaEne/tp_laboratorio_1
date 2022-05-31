@@ -31,6 +31,8 @@ int parser_getTypePassToBuffer(char* typePass, int lenName);
 int parser_passengerToEdit(LinkedList* pArrayListPassenger);
 int parser_passengerToDelete(LinkedList* pArrayListPassenger);
 
+int parser_sortPassenger(LinkedList* pArrayListPassenger);
+
 
 
 

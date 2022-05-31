@@ -243,7 +243,73 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
  */
 int controller_sortPassenger(LinkedList* pArrayListPassenger)
 {
-    return 1;
+	int retorno;
+	retorno = -1;
+	if(pArrayListPassenger!= NULL)
+	{
+		controller_comparePassenger(pArrayListPassenger);
+		retorno =0;
+	}
+    return retorno;
+}
+
+int controller_comparePassenger(LinkedList* pArrayListPassenger)
+{
+	int retorno;
+	int i;
+	int lenArray;
+	int flagSwap;
+	ePassenger* pAuxPass1 = NULL;
+	ePassenger* pAuxPass2 = NULL;
+	int comparacion;
+
+	retorno =-1;
+	lenArray = ll_len(pArrayListPassenger);
+	if(pArrayListPassenger!= NULL && lenArray>0)
+	{
+		lenArray=lenArray-1;
+		printf("estamos en el sort\n");
+		do
+		{
+			flagSwap=0;
+			for(i=0; i<lenArray; i++)
+			{
+				pAuxPass1=(ePassenger*)ll_get(pArrayListPassenger, i);
+				pAuxPass2=(ePassenger*)ll_get(pArrayListPassenger, (i+1));
+				//printf("p1: %p -- p2: %p\n", pAuxPass1, pAuxPass2);
+				if(pAuxPass1 != NULL && pAuxPass2 != NULL)
+				{
+					//printf("pass 1 y pass 2 OK\n");
+					comparacion=Passenger_comparePassengersByName(pAuxPass1, pAuxPass2);
+					if(comparacion>0)
+					{
+						//printf("la comparacion dio %d\n", comparacion);
+						controller_swapPpasajero(&pAuxPass1, &pAuxPass2);
+						flagSwap=1;
+					}
+				}
+			}
+			lenArray--;
+		}while(flagSwap);
+		retorno =0;
+	}
+	return retorno;
+}
+
+int controller_swapPpasajero(ePassenger** pPasajero1, ePassenger** pPasajero2)
+{
+	int retorno;
+	ePassenger* pAuxPasajero;
+	retorno=-1;
+	if(pPasajero1 != NULL && pPasajero2 != NULL)
+	{
+		pAuxPasajero = *pPasajero1;
+		*pPasajero1 = *pPasajero2;
+		*pPasajero2= pAuxPasajero;
+
+		retorno=0;
+	}
+	return retorno;
 }
 
 /** \brief Guarda los datos de los pasajeros en el archivo data.csv (modo texto).

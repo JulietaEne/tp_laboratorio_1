@@ -363,7 +363,7 @@ int parser_passengerToEdit(LinkedList* pArrayListPassenger)
 		if(pAuxPassenger != NULL)
 		 {
 			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);//yo creo que este tendria que ir en passenger
-			printf("editado: %s", pAuxPassenger->nombre);
+			printf("editado: %s", pAuxPassenger->nombre);//ATENCION :B
 		 }
 		else
 		{
@@ -409,4 +409,6 @@ int parser_passengerToDelete(LinkedList* pArrayListPassenger)
 	}
 	return retorno;
 }
+
+
 
