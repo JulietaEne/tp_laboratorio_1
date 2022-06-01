@@ -4,7 +4,18 @@
 #include "Passenger.h"
 #include "parser.h"
 
-
+int parser_controlListaPasajeros(LinkedList* pArrayListPassenger)
+{
+	int retorno;
+	int cantElementos;
+	retorno=-1;
+	if(pArrayListPassenger != NULL)
+	{
+		retorno=0;
+		cantElementos = ll_len(pArrayListPassenger);
+	}
+	return retorno;
+}
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
@@ -220,7 +231,7 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 	return retorno;
 }
 
-/** \brief recibe por teclado los datos de un nuevo pasajero, crea un nuevo pasajero en memoria con los datos y si son correctos, lo agrega a la lista de pasajeros
+/** \brief recibe por teclado los datos de un nuevo pasajero y lo transforma en un elemento *ePasajero dentro de la lista
  *
  * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
  * \return int retorno -1 si hubo un error en los parametros
@@ -240,6 +251,7 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 	char auxEstadoVuelo[SIZE_STR];
 	ePassenger* pAuxPasajero;
 	int contador;
+
 	retorno = -1;
 	contador =0;
 	if(pArrayListPassenger != NULL)
@@ -247,13 +259,14 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 		retorno = -2;
 		do//mientras que los datos no estén correctamente cargados, vuelvo a pedir datos
 		{
-			parser_getIdToBuffer(&auxId, pArrayListPassenger);// NO SE COMO HACER QUE ANDE :(
+			parser_getIdToBuffer(&auxId, pArrayListPassenger);
 			parser_getNameToBuffer(auxNombre, SIZE_STR);
 			parser_getLastNameToBuffer(auxApellido, SIZE_STR);
 			parser_getPriceToBuffer(&auxPrice);
 			parser_getFlyCodeToBuffer(auxCodigoVuelo, SIZE_STR);
 			parser_getTypePassToBuffer(auxTipoPass, SIZE_STR);
 			parser_getStatusFlightToBuffer(auxEstadoVuelo, SIZE_STR);
+			//printf("en parser getid: %d", auxId);
 			//voy a pedir los datos que el usuario quiere cargar.
 			//pAuxPasajero=Passenger_newParametros(auxId, auxNombre, auxTipoPass);//voy a crear un nuevo pasajero
 			pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo);
@@ -344,23 +357,23 @@ int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 	{
 		//voy a buscar el id mas alto en los datos dentro de mi array de punteros
 		auxId = 0;
-		parser_analizarId(auxId);
+		auxId=  parser_analizarId(auxId);
 		if(auxId >0)
 		{
-			*id = auxId+1;
+			*id = auxId/*+1*/;
 		}
-		else
+		/*else
 		{
-			/*if(lenArray > 0)
+			if(lenArray > 0)
 			{
 				printf("[ERROR ID]ha habido un error en el campo ID\n");
-			}*/
+			}
 
 
-				*id=1;
+				*id=0;
 
 
-		}
+		}*/
 		retorno=0;
 	}
 	return retorno;
@@ -505,22 +518,42 @@ int parser_analizarId(int idRecibido)
 	int idLeido;
 
 	retorno=-1;
-	if(parser_loadIdFromFile(idRecibido)==-1)//si el archivo no existe
+	idLeido= parser_loadIdFromFile();//me trae el idLeido
+
+	printf("id recibido:%d - ", idRecibido);
+	if(idLeido==-1)//si el archivo no existe
 	{
+		printf("EL ARCHIVO NO EXISTE ");
+		idRecibido=idRecibido+1;
 		parser_saveIdIntoFile(idRecibido);//lo crea con el id recibido
 		retorno=idRecibido; //retorna el valor del ID RECIBIDO si creó el archivo escribiendo ese valor
+		printf("lo creamos en file: %d\n", idRecibido);
 	}
 	else//si el archivo existe
 	{
-		idLeido= parser_loadIdFromFile();//me trae el idLeido
+		printf("EL ARCHIVO EXISTE ");
 		if(idLeido < idRecibido)
 		{
-			retorno = idRecibido;
-			parser_saveIdIntoFile(idRecibido);
+			printf("valor leido %d es menor al valor recibido %d", idLeido, idRecibido);
+			retorno = idRecibido+1;
+			parser_saveIdIntoFile(retorno);
+			printf(" sobreescribo el archivo\n");
 		}
 		else //si idRecibido es menor entonces el ultimo id fue el idLeido
 		{
-			retorno = idLeido; //retorna >0 si levantò el ultimoId
+			printf("valor leido %d es mayor al valor recibido %d", idRecibido, idLeido);
+			if(idLeido == idRecibido)
+			{
+				retorno = idLeido+1;
+				parser_saveIdIntoFile(retorno);
+				printf(" son iguales asi que le +1 = retorno: %d\n", retorno);
+				//parser_saveIdIntoFile(retorno);
+			}
+			else
+			{
+				printf(" el valor leido %d es mayor al recibido %d , entonces devuelvo el valor del archivo +1 = retorno %d\n",idRecibido, idLeido, retorno);
+				retorno = idLeido; //retorna >0 si levantò el ultimoId
+			}
 		}
 	}
 	return retorno;

@@ -26,45 +26,45 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
 		{
 			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger);
 			retorno = 0;
-			printf("\nSe han obtenido los datos del archivo hasta la linea %d\n", retornoFuncion);
+			printf("\nSe han obtenido los datos del archivo hasta la linea %d del archivo %s\n", retornoFuncion, path);
 		}
 		else
 		{
-			printf("Error al abrir archivo. Verifique que la ruta de acceso sea correcta.\n");
+			printf("[ERROR]No existe archivo %s.\n", path);
 		}
 	}
     return retorno;
 }
 
-/** \brief Carga los datos de los pasajeros desde el archivo data.csv (modo binario).
+/** \brief Carga los datos de los pasajeros desde el archivo data-procesado.bin (modo binario).
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param path char* recibe como cadena de caracteres la ruta donde se encuentra el archivo o donde se lo creara
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no pudo abrir el archivo
+ * 			   0 si pudo realizar lectura (retorna la cantidad de lineas que leyo del archivo)
  *
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 {
 	FILE* pFile;
 	int retorno;
-	//printf("HOLAAAAAA 1 \n");
+	int retornoFuncion;
 	retorno = -1;
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
-		//printf("HOLAAAAAA 2 \n");
 		retorno = 0;
-		pFile = fopen(path, "rb");
-		//printf("1A- puntero archivo nulo");
+		pFile = fopen(path, "rb");	//printf("1A- puntero archivo nulo");
 		if(pFile != NULL)
 		{
 			//printf("1B- abrimos el archivo");
-			retorno = parser_PassengerFromBinary(pFile, pArrayListPassenger);//ESTO HACE QUE POR ALGUNA RAZON NO ENTRE DIRECTAMENTE AL CONTROLLER LOAD
-			//printf("retorno: %d\n", retorno);
-			printf("\nTodos los datos han sido pasados a memoria para trabajar\n");
+			retornoFuncion = parser_PassengerFromBinary(pFile, pArrayListPassenger);//ESTO HACE QUE POR ALGUNA RAZON NO ENTRE DIRECTAMENTE AL CONTROLLER LOAD
+			retorno =0;
+			printf("\nSe han obtenido los datos del archivo hasta la linea%d del archivo %s\n", retornoFuncion, path);
 		}
 		else
 		{
-			printf("Error al abrir archivo. Verifique que la ruta de acceso sea correcta.\n");
+			printf("\n[ERROR] No existe archivo%s\n", path);
 		}
 	}
 	return retorno;
@@ -345,7 +345,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 		}
 		else
 		{
-			printf("ERROR. No se ha crear abrir el archivo");
+			printf("[ERROR] No se ha crear abrir el archivo");
 			retorno = -2;
 		}
 	}

@@ -150,7 +150,7 @@ ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float
 		if(this != NULL)
 		{
 			cargaCorrecta = 0;
-
+			printf("en new, id: %d ---------- ", id);
 			Passenger_setId(this, id);
 			Passenger_setNombre(this, nombre);
 			Passenger_setTipoPasajero(this, tipoPasajero);
@@ -313,23 +313,41 @@ void Passenger_printEncabezado()
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_setId(ePassenger* this,int id)
+int Passenger_setId(ePassenger* this,int id, LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int auxId;
+	int mantenerIdArchivo;
 	retorno =-1;
 
 	if(this != NULL)
 	{
-		this->id=id;
-		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
-		auxId=parser_analizarId(id);
+		if(!parser_controlListaPasajeros(pArrayListPassenger))
+		{
+			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea mantener el codigo ID del archivo en la carga? Y/N");
+			if(!mantenerIdArchivo)
+			{
+				auxId = ID_MIN;
+				parser_saveIntIntoFile(auxId);
+			}
+			else
+			{
+				auxId = id;
+			}
+
+		}
+		else
+		{
+			auxId = parser_analizarId(auxId);//si hay archivos cargados,si o si tengo que ser correlativa al id del archivo
+		}
+		this->id=auxId;
 		retorno=0;
-		 if(/*auxId > ID_MAX ||*/ id <ID_MIN && id!= ID_INIT)
-		 {
-			 retorno = -2;
-			 printf("\n[DEBUG SET ID] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d<%d\n", id, ID_MIN);
-		 }
+
+		if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
+		{
+			retorno = -2;
+			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d - maximoId: %d\n", auxId, ID_MAX);
+		}
 	}
 	return retorno;
 }
@@ -344,26 +362,40 @@ int Passenger_setId(ePassenger* this,int id)
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_setIdStr(ePassenger* this,char* idStr)
+int Passenger_setIdStr(ePassenger* this,char* idStr, LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int auxId;
+	int mantenerIdArchivo;
+	//int auxIdControl;
 	retorno =-1;
 	//printf("3-1-1 set id\n");
 	if(this != NULL && idStr != NULL && !validaciones_esNumeroInt(idStr, strlen(idStr)))
 	{
-		//if()
-		auxId = atoi(idStr);
-		auxId = parser_analizarId(auxId);
+		if(!parser_controlListaPasajeros(pArrayListPassenger))
+		{
+			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea mantener el codigo ID del archivo en la carga? Y/N");
+			if(!mantenerIdArchivo)
+			{
+				auxId = ID_MIN;
+				parser_saveIntIntoFile(auxId);
+			}
+			else
+			{
+				auxId = atoi(idStr);
+			}
+
+		}
+		else
+		{
+			auxId = parser_analizarId(auxId);
+		}
 		this->id=auxId;
-
-
-		//printf("3-1-1 ****setId id-> %d --- this.id->%d\n\n", auxId, this->id);
 		retorno=0;
 		if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
 		{
 			retorno = -2;
-			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d\n", auxId);
+			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d - maximoId: %d\n", auxId, ID_MAX);
 		}
 	}
 	return retorno;
@@ -401,15 +433,27 @@ int Passenger_setNombre(ePassenger* this,char* nombre)
 {
 	int retorno;
 	int lenString;
+	int cargaManual;
 
 	lenString=strlen(nombre);
 	retorno =-1;
 	//printf("puntero nombre: %s", nombre);
-	if(this != NULL && nombre != NULL && !validaciones_esNombre(nombre, lenString))
+	if(this != NULL && nombre != NULL)
 	{
-		//printf("**********estamos en nombre\n");
 		strncpy(this->nombre, nombre, lenString);
-		retorno=0;
+		if(!validaciones_esNombre(nombre, lenString))
+		{
+			retorno=0;
+		}
+		else
+		{
+			printf("Error al cargar pasajero nombre:%s id:%d. ", this->nombre, this->id);
+			cargaManual= tp_continuar("Desea cargar manualmente? Y/N");
+			if(cargaManual)
+			{
+				parser_getNameToBuffer(nombre, SIZE_STR);
+			}
+		}
 	}
 
 	return retorno;
@@ -482,10 +526,10 @@ int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
 {
 	int retorno;
 	int lenString;
+	int cargaManual;
 
 	lenString=strlen(codigoVuelo);
 	retorno =-1;
-	//printf("puntero nombre: %s", nombre);
 	if(this != NULL && codigoVuelo != NULL )
 	{
 		//printf("**********estamos en nombre\n");
@@ -495,22 +539,13 @@ int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
 		{
 			retorno = -2;
 			printf("\n[DEBUG SET FLYCODE] ***WARNING*** el codigo ingresado para %s %s id %d no es un codigo valido. Codigo %s debe contener 2 caracteres alfabeticos al comienzo\n", this->nombre, this->apellido, this->id, codigoVuelo);
-			parser_getFlyCodeToBuffer(codigoVuelo, SIZE_STR);
+			cargaManual= tp_continuar("Desea cargar manualmente? Y/N");
+			if(cargaManual)
+			{
+				parser_getFlyCodeToBuffer(codigoVuelo, SIZE_STR);
+			}
 		}
 	}
-/*
- * if(this != NULL)
-	{
-		this->precio=precio;
-		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
-		retorno=0;
-		 if((precio<MIN_PRICE && precio!= INIT_PRICE) || precio>MAX_PRICE )
-		 {
-			 retorno = -2;
-			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f debe ser mayor a %d y menor a %d\n", precio, MIN_PRICE, MAX_PRICE);
-			 parser_getPriceToBuffer(precio);
-		 }
-	}*/
 	return retorno;
 }
 
@@ -613,18 +648,30 @@ int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero)
 int Passenger_setLastName(ePassenger* this,char* apellidoStr)
 {
 	int retorno;
-		int lenString;
+	int lenString;
+	int cargaManual;
 
-		lenString=strlen(apellidoStr);
-		retorno =-1;
-		//printf("puntero nombre: %s", nombre);
-		if(this != NULL && apellidoStr != NULL && !validaciones_esNombre(apellidoStr, lenString))
+	lenString=strlen(apellidoStr);
+	retorno =-1;
+	//printf("puntero nombre: %s", nombre);
+	if(this != NULL && apellidoStr != NULL && !validaciones_esNombre(apellidoStr, lenString))
+	{
+		//printf("**********estamos en nombre\n");
+		strncpy(this->apellido, apellidoStr, lenString);
+		if(!validaciones_esNombre(apellidoStr, lenString))
 		{
-			//printf("**********estamos en nombre\n");
-			strncpy(this->apellido, apellidoStr, lenString);
 			retorno=0;
 		}
-
+		else
+		{
+			printf("Error al cargar pasajero apellido:%s id:%d. ", this->apellido, this->id);
+			cargaManual= tp_continuar("Desea cargar manualmente? Y/N");
+			if(cargaManual)
+			{
+				parser_getLastNameToBuffer(apellidoStr, SIZE_STR);
+			}
+		}
+	}
 		return retorno;
 }
 
@@ -633,20 +680,24 @@ int Passenger_setPrice(ePassenger* this,char* priceStr)
 {
 	int retorno;
 	float auxPrecio;
+	int cargaManual;
+
 	retorno =-1;
 	//printf("3-1-1 set id\n");
 	if(this != NULL && priceStr != NULL && validaciones_esNumeroFlotante(priceStr, strlen(priceStr)))
 	{
-		//if()
 		auxPrecio = atof(priceStr);
-		//printf("PRECIOOOO %.2f\n", auxPrecio);
 		this->precio=auxPrecio;
-		//printf("3-1-1 ****setId id-> %d --- this.id->%d\n\n", auxId, this->id);
 		retorno=0;
 		if(/*auxId > ID_MAX ||*/ auxPrecio < ID_MIN)
 		{
 			retorno = -2;
-			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %.2f\n", auxPrecio);
+			printf("\n[DEBUG] ***WARNING*** el precio recibido esta fuera de los parametros esperados para un precio. Valor: %.2f\n", auxPrecio);
+			cargaManual= tp_continuar("Desea cargar manualmente? Y/N");
+			if(cargaManual)
+			{
+				parser_getPriceToBuffer(&auxPrecio);
+			}
 		}
 	}
 	return retorno;

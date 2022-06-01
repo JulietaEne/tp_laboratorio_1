@@ -29,11 +29,12 @@ int main()
 
 		LinkedList* listaPasajeros = ll_newLinkedList();
 		int controlGuardado;
+		int controlPasajeros;
 		//int controlDelet;
 		controlGuardado = 0;
+		controlPasajeros=0;
 
-
-
+		printf("cantidad de elementos: %d", parser_controlListaPasajeros(listaPasajeros));
 		do{
 				option = tp_ImprimirMenuDiezOpciones("\n[MENU]\n", "1- Abrir archivo de texto"
 															, "2- Abrir archivo binario"
@@ -49,44 +50,95 @@ int main()
 			{
 				case 1:
 					printf("abriendo archivo data.csv....");
-					controller_loadFromText("data.csv",listaPasajeros);
+					if(!controller_loadFromText("data.csv",listaPasajeros))
+					{
+						controlPasajeros=1;
+					}
 					break;
 			    case 2:
 					//cargar desde archivo binario
 			    	printf("abriendo archivo data-procesado.bin....\n");
-					controller_loadFromBinary("data-procesado.bin", listaPasajeros);
+					if(!controller_loadFromBinary("data-procesado.bin", listaPasajeros))
+					{
+						controlPasajeros=1;
+					}
 					break;
 				case 3:
 					// alta de pasajero
-					controller_addPassenger(listaPasajeros);//falta arreglar el tema del id
+					if(!controller_addPassenger(listaPasajeros))
+					{
+						controlPasajeros=1;//falta arreglar el tema del id
+					}
 					break;
 				case 4:
 					printf("MODIFICAR PASAJERO\n");
-					controller_editPassenger(listaPasajeros);
+					if(controlPasajeros)
+					{
+						controller_editPassenger(listaPasajeros);
+					}
+					else
+					{
+						printf("[AVISO]Es necesario cargar pasajeros antes de ingresar a la operacion modificar\n");
+					}
 					break;
 				case 5:
 					printf("DAR DE BAJA PASAJERO\n");
-					controller_removePassenger(listaPasajeros);
+					if(controlPasajeros)
+					{
+						controller_removePassenger(listaPasajeros);
+					}
+					else
+					{
+						printf("[AVISO]Es necesario cargar pasajeros antes de ingresar a la operacion dar de baja\n");
+					}
 					break;
 				case 6:
 					printf("LISTA DE PASAJEROS\n");
-					controller_ListPassenger(listaPasajeros);
+					if(controlPasajeros)
+					{
+						controller_ListPassenger(listaPasajeros);
+					}
+					else
+					{
+						printf("[AVISO]Es necesario cargar pasajeros antes de ingresar a la listar pasajeros\n");
+					}
 					break;
 				case 7:
 					// ordenar empleados
-					controller_sortPassenger(listaPasajeros);
+					if(controlPasajeros)
+					{
+						controller_sortPassenger(listaPasajeros);
+					}
+					else
+					{
+						printf("[AVISO]Es necesario cargar pasajeros antes de ingresar a la listar pasajeros\n");
+					}
 					break;
 				case 8:
 					//guardar en modo texto
-					printf("guardando archivo data-procesado.scv.....");
-					controller_saveAsText("data-procesado.scv", listaPasajeros);
-					controlGuardado = 1;
+					if(controlPasajeros)
+					{
+						printf("guardando archivo data-procesado.scv.....");
+						controller_saveAsText("data-procesado.txt", listaPasajeros);
+						controlGuardado = 1;
+					}
+					else
+					{
+						printf("[ERROR]No hay pasajeros para guardar\n");
+					}
 					break;
 				case 9:
 					//guardar en modo binario
-					printf("guardando archivo extension data-procesado.bin.....");
-					controller_saveAsBinary("data-procesado.bin", listaPasajeros);
-					controlGuardado = 1;
+					if(controlPasajeros)
+					{
+						printf("guardando archivo extension data-procesado.bin.....");
+						controller_saveAsBinary("data-procesado.bin", listaPasajeros);
+						controlGuardado = 1;
+					}
+					else
+					{
+						printf("[ERROR]No hay pasajeros para guardar\n");
+					}
 					break;
 				case 10:
 					if(controlGuardado!= 0)
@@ -95,11 +147,11 @@ int main()
 					}
 					else
 					{
-						printf("ERROR. debe guardar los cambios para poder salir");
+						printf("[ERROR] debe guardar los cambios para poder salir");
 						option=0;
 					}
 			}
-		}while(option != 10  && controlGuardado==0);//cuando control guardado es falso, no deberia salir :(
+		}while(option != 10  || controlGuardado==0);//cuando control guardado es falso, no deberia salir :(
 		printf("\nHa salido correctamente");
 	return EXIT_SUCCESS;
 }
