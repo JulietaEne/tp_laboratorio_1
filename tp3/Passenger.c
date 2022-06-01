@@ -646,6 +646,7 @@ int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr)
 	//printf("puntero nombre: %s", nombre);
 	if(this != NULL && estadoVueloStr != NULL)
 	{
+
 		//printf("**********estamos en nombre\n");
 		strncpy(this->estadoVuelo, estadoVueloStr, lenString);
 		retorno=0;
