@@ -287,7 +287,7 @@ int Passenger_printPasajero(ePassenger* this)
 	retorno=-1;
 	if(this != NULL)
 	{
-		printf("%d %13s %17s %15.2f %15s %18s %15s",
+		printf("%d %13s %17s %15.2f %15s %18s %15s\n",
 												this->id,
 												this->nombre,
 												this->apellido,
@@ -646,7 +646,7 @@ int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr)
 	//printf("puntero nombre: %s", nombre);
 	if(this != NULL && estadoVueloStr != NULL)
 	{
-
+		 validaciones_eliminarUltimoEnter(estadoVueloStr, SIZE_STR);
 		//printf("**********estamos en nombre\n");
 		strncpy(this->estadoVuelo, estadoVueloStr, lenString);
 		retorno=0;
