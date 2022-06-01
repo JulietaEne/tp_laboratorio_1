@@ -5,7 +5,7 @@
  *      Author: Julieta Nakasone
  */
 #include "Passenger.h"
-
+//#include "parser.h"
 
 /** \brief Reserva espacio en el heap para una variable del tipo ePassenger
  *
@@ -151,19 +151,19 @@ ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float
 		{
 			cargaCorrecta = 0;
 
-			if( !Passenger_setId(this, id) &&
-				!Passenger_setNombre(this, nombre) &&
-				!Passenger_setTipoPasajero(this, tipoPasajero)&&
-				!Passenger_setApellido(this, apellido) &&
-				!Passenger_setCodigoVuelo(this, codigoVuelo) &&
-				!Passenger_setPrecio(this, precio) &&
-				!Passenger_setEstadoVuelo(this, estadoVuelo))
-			{
+			Passenger_setId(this, id);
+			Passenger_setNombre(this, nombre);
+			Passenger_setTipoPasajero(this, tipoPasajero);
+			Passenger_setApellido(this, apellido);
+			Passenger_setCodigoVuelo(this, codigoVuelo);
+			Passenger_setPrecio(this, precio);
+			Passenger_setEstadoVuelo(this, estadoVuelo);
+
 			/*	Passenger_getApellido(this, apellido);
 				Passenger_setCodigoVuelo(this, codigoVuelo);
 				Passenger_setEstadoVuelo(this, estadoVuelo);*/
 				cargaCorrecta = 1;
-			}
+
 			if(!cargaCorrecta)
 			{
 				this = NULL;
@@ -240,7 +240,7 @@ int passenger_delete(ePassenger* this)
 		confirmar=tp_continuar("confirma la baja del pasajero? (Y/N)");
 		if(confirmar)
 		{
-			Passenger_initPasajero(this);
+			free(this);
 			retorno=0;// si se borra correctamente
 			//printf("\n El pasajero %d - %s ha sido eliminado exitosamente\n", this->id, this->nombre);
 		}
@@ -287,7 +287,7 @@ int Passenger_printPasajero(ePassenger* this)
 	retorno=-1;
 	if(this != NULL)
 	{
-		printf("%d %13s %17s %15.2f %15s %18s %15s",
+		printf("%d %13s %17s %15.2f %15s %18s %15s\n",
 												this->id,
 												this->nombre,
 												this->apellido,
@@ -316,13 +316,14 @@ void Passenger_printEncabezado()
 int Passenger_setId(ePassenger* this,int id)
 {
 	int retorno;
-	///int auxId;
+	int auxId;
 	retorno =-1;
 
 	if(this != NULL)
 	{
 		this->id=id;
 		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
+		auxId=parser_analizarId(id);
 		retorno=0;
 		 if(/*auxId > ID_MAX ||*/ id <ID_MIN && id!= ID_INIT)
 		 {
@@ -353,7 +354,10 @@ int Passenger_setIdStr(ePassenger* this,char* idStr)
 	{
 		//if()
 		auxId = atoi(idStr);
+		auxId = parser_analizarId(auxId);
 		this->id=auxId;
+
+
 		//printf("3-1-1 ****setId id-> %d --- this.id->%d\n\n", auxId, this->id);
 		retorno=0;
 		if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
@@ -468,7 +472,7 @@ int Passenger_setPrecio(ePassenger* this,float precio)
 		 {
 			 retorno = -2;
 			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f debe ser mayor a %d y menor a %d\n", precio, MIN_PRICE, MAX_PRICE);
-			 parser_getPriceToBuffer(precio);
+			 parser_getPriceToBuffer(&precio);
 		 }
 	}
 	return retorno;
@@ -490,10 +494,23 @@ int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
 		if(!validaciones_EsCodigoTresLetrasYNumero(codigoVuelo, lenString) && strcmp(codigoVuelo,"-"))
 		{
 			retorno = -2;
-			printf("\n[DEBUG SET FLYCODE] ***WARNING*** el codigo ingresado no es un codigo valido. Codigo %s debe contener 2 caracteres alfabeticos al comienzo\n", codigoVuelo);
+			printf("\n[DEBUG SET FLYCODE] ***WARNING*** el codigo ingresado para %s %s id %d no es un codigo valido. Codigo %s debe contener 2 caracteres alfabeticos al comienzo\n", this->nombre, this->apellido, this->id, codigoVuelo);
+			parser_getFlyCodeToBuffer(codigoVuelo, SIZE_STR);
 		}
 	}
-
+/*
+ * if(this != NULL)
+	{
+		this->precio=precio;
+		//printf("*********\nthis.id %d -- id: %d\n", this->id, id);
+		retorno=0;
+		 if((precio<MIN_PRICE && precio!= INIT_PRICE) || precio>MAX_PRICE )
+		 {
+			 retorno = -2;
+			 printf("\n[DEBUG SET PRICE] ***WARNING*** el precio ingresado esta fuera de los parametros esperados. Valor: %.2f debe ser mayor a %d y menor a %d\n", precio, MIN_PRICE, MAX_PRICE);
+			 parser_getPriceToBuffer(precio);
+		 }
+	}*/
 	return retorno;
 }
 
@@ -646,6 +663,7 @@ int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr)
 	//printf("puntero nombre: %s", nombre);
 	if(this != NULL && estadoVueloStr != NULL)
 	{
+		 validaciones_eliminarUltimoEnter(estadoVueloStr, SIZE_STR);
 		//printf("**********estamos en nombre\n");
 		strncpy(this->estadoVuelo, estadoVueloStr, lenString);
 		retorno=0;

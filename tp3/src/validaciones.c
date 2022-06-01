@@ -246,3 +246,37 @@ int validaciones_esNumeroFlotante(char* pCadena, int limite)
 	//printf("retorno función esFlotante %d", retorno);
 	return retorno;
 }
+
+int validaciones_eliminarUltimoEnter(char*pCadena, int lenCadena)
+{
+	int retorno;
+	int largoCadena;
+	int i;
+	//int loMostre;
+	retorno = -1;
+	if(pCadena != NULL && lenCadena>0)
+	{
+		largoCadena= strlen(pCadena);
+		//printf("1largo cadena: %d\n", largoCadena);
+		for(i=0; i<largoCadena; i++)
+		{
+			/*loMostre=0;
+			if(*(pCadena+i)=='D')
+			{
+				printf("%s -len: %d", pCadena, largoCadena);
+				loMostre=1;
+			}*/
+			if(i== largoCadena-1 /*&& i== '\n'*/)
+			{
+				/*if(loMostre==1)
+				{
+					printf("i=%d",i);
+				}*/
+				*(pCadena+i)=' ';
+				retorno=0;
+			}
+		}
+		//printf("\n2largo cadena: %d\n", largoCadena);
+	}
+	return retorno;
+}

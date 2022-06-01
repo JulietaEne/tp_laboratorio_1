@@ -12,7 +12,7 @@
  * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
  * \return int retorna -1 si no pudo operar.
  * 						0 si no leyo
- * 						>0 si leyo (retorna la cantidad de lecturas que hizo)
+ * 						>0 si leyo (retorna la cantidad de lineas que leyo)
  *
  */
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
@@ -36,18 +36,23 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	{
 		retorno =0;
 		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+		//parser_countLenFile(pFile);
+
 		while(!feof(pFile))
 		{
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
 			//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
+			//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
 			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);//acá ya tendría un pasajero en la lista de punteros
-			i++;
+
 			if(pAuxPasajero != NULL)
 			{
-				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elemento
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
+				i++;
 			}
 			else
 			{
+				//printf("Error en la lectura de la linea %d", i);
 				break;
 			}
 		}
@@ -56,6 +61,26 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	}
     return retorno;
 }
+
+/*int parser_countLenFile(FILE* pFile)
+{
+	int retorno;
+	int contadorLineas;
+	char auxChar[1500];
+
+	retorno = -1;
+	contadorLineas=0;
+	if(pFile!= NULL)
+	{
+		do{
+			fscanf(pFile,"%[^\n]",auxChar);
+			contadorLineas++;
+		}while(!feof(pFile));
+		retorno = contadorLineas;
+		printf("contador de lineas: %d", contadorLineas);
+	}
+	return retorno;
+}*/
 
 /** \brief Parsea los datos de los pasajeros desde el archivo data.bin (modo binario).
  *
@@ -82,17 +107,19 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 
 			lectura=fread(&unPasajero, sizeof(ePassenger), 1, pFile);
 			//printf("lectura: %d", lectura);
-			pAuxPasajero = Passenger_newParametros(unPasajero.id, unPasajero.nombre, unPasajero.tipoPasajero);
+			//pAuxPasajero = Passenger_newParametros(unPasajero.id, unPasajero.nombre, unPasajero.tipoPasajero);
+			pAuxPasajero = Passenger_newParametrosAll(unPasajero.id, unPasajero.nombre, unPasajero.apellido, unPasajero.precio, unPasajero.flyCode, unPasajero.tipoPasajero, unPasajero.estadoVuelo);
 			if(pAuxPasajero != NULL)
 			{
 				//printf("se cargó en lista");
 				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
-				printf("%d - %s - %s\n", pAuxPasajero->id, pAuxPasajero->nombre, pAuxPasajero->tipoPasajero);
+				//printf("la carga se realizó con exito\n");
+				//printf("%d - %s - %s\n", pAuxPasajero->id, pAuxPasajero->nombre, pAuxPasajero->tipoPasajero);
 				retorno ++;
 			}
 			else
 			{
-				printf("ha habido un error en la lectura de los datos del archivo.\n");
+				//printf("ha habido un error en la lectura de los datos del archivo.\n");
 				break;
 			}
 
@@ -310,18 +337,29 @@ int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int auxId;
+	//int lenArray;
 	retorno =-1;
+	//lenArray = ll_len(pArrayListPassenger);
 	if(id != NULL)
 	{
 		//voy a buscar el id mas alto en los datos dentro de mi array de punteros
-		auxId = controller_findLastIdValue(pArrayListPassenger);
+		auxId = 0;
+		parser_analizarId(auxId);
 		if(auxId >0)
 		{
 			*id = auxId+1;
 		}
 		else
 		{
-			printf("[ERROR ID]ha habido un error en la lectura de los datos del archivo\n");
+			/*if(lenArray > 0)
+			{
+				printf("[ERROR ID]ha habido un error en el campo ID\n");
+			}*/
+
+
+				*id=1;
+
+
 		}
 		retorno=0;
 	}
@@ -391,24 +429,100 @@ int parser_passengerToDelete(LinkedList* pArrayListPassenger)
 	int indexHallado;
 	ePassenger* pAuxPassenger;
 
-	retorno=1;
+
+	retorno=-1;
 
 	if(pArrayListPassenger!= NULL)
 	{
-		retorno =2;
+		retorno =-2;
 		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
+
 		if(pAuxPassenger!= NULL)
 		{
-			retorno=0;
-			if(passenger_delete(pAuxPassenger)==-2)
+
+			if(!passenger_delete(pAuxPassenger))
+			{
+				ll_remove(pArrayListPassenger, indexHallado);
+				retorno=0;
+			}
+			else
 			{
 				retorno =-3;
 			}
-			ll_remove(pArrayListPassenger, indexHallado);
+
 		}
 	}
 	return retorno;
 }
 
 
+
+
+int parser_saveIdIntoFile(int ultimoId)
+{
+	int retorno;
+	FILE* pFileIdDeleted;
+
+	retorno=-1;
+	pFileIdDeleted = fopen("ultimoId.bin", "wb");
+	if(pFileIdDeleted != NULL)
+	{
+		fwrite(&ultimoId, sizeof(int), 1, pFileIdDeleted); //escribe el idRecibido en archivo
+		fclose(pFileIdDeleted);
+		retorno =0;
+	}
+
+	return retorno;
+}
+
+int parser_loadIdFromFile()
+{
+	int retorno;
+	int getId;
+	FILE* pFileIdDeleted;
+
+	getId=0;
+	retorno=-1;
+	pFileIdDeleted = fopen("ultimoId.bin", "rb");
+
+	if(pFileIdDeleted != NULL)
+	{
+		fread(&getId, sizeof(int), 1, pFileIdDeleted);
+		fclose(pFileIdDeleted);
+		retorno = getId;//retorna el id leido en el archivo
+	}
+	/*else
+	{
+		printf("DEBUG ERROR DE LECTURA ARCHIVO ULTIMOID");
+	}*/
+
+	return retorno;
+}
+
+int parser_analizarId(int idRecibido)
+{
+	int retorno;
+	int idLeido;
+
+	retorno=-1;
+	if(parser_loadIdFromFile(idRecibido)==-1)//si el archivo no existe
+	{
+		parser_saveIdIntoFile(idRecibido);//lo crea con el id recibido
+		retorno=idRecibido; //retorna el valor del ID RECIBIDO si creó el archivo escribiendo ese valor
+	}
+	else//si el archivo existe
+	{
+		idLeido= parser_loadIdFromFile();//me trae el idLeido
+		if(idLeido < idRecibido)
+		{
+			retorno = idRecibido;
+			parser_saveIdIntoFile(idRecibido);
+		}
+		else //si idRecibido es menor entonces el ultimo id fue el idLeido
+		{
+			retorno = idLeido; //retorna >0 si levantò el ultimoId
+		}
+	}
+	return retorno;
+}
 

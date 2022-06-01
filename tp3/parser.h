@@ -15,6 +15,7 @@
 #include "Controller.h"
 
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger);
+//int parser_countLenFile(FILE* pFile);
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger);
 int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger);
 int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger);
@@ -30,6 +31,10 @@ int parser_getTypePassToBuffer(char* typePass, int lenName);
 
 int parser_passengerToEdit(LinkedList* pArrayListPassenger);
 int parser_passengerToDelete(LinkedList* pArrayListPassenger);
+int parser_saveIntIntoFile(int ultimoId);
+int parser_saveIdIntoFile(int ultimoId);
+int parser_loadIdFromFile();
+int parser_analizarId(int unId);
 
 int parser_sortPassenger(LinkedList* pArrayListPassenger);
 

@@ -29,6 +29,7 @@ int main()
 
 		LinkedList* listaPasajeros = ll_newLinkedList();
 		int controlGuardado;
+		//int controlDelet;
 		controlGuardado = 0;
 
 
@@ -95,6 +96,7 @@ int main()
 					else
 					{
 						printf("ERROR. debe guardar los cambios para poder salir");
+						option=0;
 					}
 			}
 		}while(option != 10  && controlGuardado==0);//cuando control guardado es falso, no deberia salir :(

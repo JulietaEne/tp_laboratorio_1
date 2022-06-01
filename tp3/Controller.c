@@ -15,6 +15,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
 {
 	FILE* pFile;
 	int retorno;
+	int retornoFuncion;
 
 	retorno = -1;
 	if(path != NULL && pArrayListPassenger != NULL)
@@ -23,9 +24,9 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
 		pFile = fopen(path, "r");
 		if(pFile != NULL)
 		{
-			parser_PassengerFromText(pFile, pArrayListPassenger);
+			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger);
 			retorno = 0;
-			printf("Se han obtenido todos los datos del archivo\n");
+			printf("\nSe han obtenido los datos del archivo hasta la linea %d\n", retornoFuncion);
 		}
 		else
 		{
@@ -108,6 +109,10 @@ int controller_findLastIdValue(LinkedList* pArrayListPassenger)
 
 	retorno =-1;
 	lenArray = ll_len(pArrayListPassenger);
+	/*if(lenArray ==0)
+	{
+		printf("HOLA lenArray =0\n");
+	}*/
 	if(pArrayListPassenger!= NULL && lenArray>0)
 	{
 		retorno=0;
@@ -284,29 +289,31 @@ int controller_comparePassenger(LinkedList* pArrayListPassenger)
 					if(comparacion>0)
 					{
 						//printf("la comparacion dio %d\n", comparacion);
-						controller_swapPpasajero(&pAuxPass1, &pAuxPass2);
+						controller_swapPpasajero(pAuxPass1, pAuxPass2);
 						flagSwap=1;
 					}
 				}
 			}
 			lenArray--;
 		}while(flagSwap);
+		printf("lo mostramos: \n");
+		controller_ListPassenger(pArrayListPassenger);
 		retorno =0;
 	}
 	return retorno;
 }
 
-int controller_swapPpasajero(ePassenger** pPasajero1, ePassenger** pPasajero2)
+int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2)
 {
 	int retorno;
 	ePassenger* pAuxPasajero;
 	retorno=-1;
 	if(pPasajero1 != NULL && pPasajero2 != NULL)
 	{
-		pAuxPasajero = *pPasajero1;
-		*pPasajero1 = *pPasajero2;
-		*pPasajero2= pAuxPasajero;
-
+		pAuxPasajero = pPasajero1;
+		pPasajero1 = pPasajero2;
+		pPasajero2= pAuxPasajero;
+		//printf("hicimos el cambio");
 		retorno=0;
 	}
 	return retorno;
