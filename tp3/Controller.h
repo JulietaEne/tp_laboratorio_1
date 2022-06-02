@@ -28,7 +28,7 @@ int controller_removePassenger(LinkedList* pArrayListPassenger);
 int controller_ListPassenger(LinkedList* pArrayListPassenger);
 int controller_sortPassenger(LinkedList* pArrayListPassenger);
 int controller_comparePassenger(LinkedList* pArrayListPassenger);
-int controller_swapPpasajero(ePassenger** pPasajero1, ePassenger** pPasajero2);
+int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2);
 
 
 int controller_saveAsText(char* path , LinkedList* pArrayListPassenger);
@@ -43,6 +43,7 @@ int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
 int controller_getTypePassToBuffer(char* typePass, int lenName);*/
 
 ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
+void controller_askToViewList(LinkedList* pArrayListPassenger);
 int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero);
 
 //int controller_findIndexById(LinkedList* pArrayListPassenger, ePassenger** pPassengerHallado, int idIngresado);

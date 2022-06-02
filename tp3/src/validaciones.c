@@ -266,7 +266,7 @@ int validaciones_eliminarUltimoEnter(char*pCadena, int lenCadena)
 				printf("%s -len: %d", pCadena, largoCadena);
 				loMostre=1;
 			}*/
-			if(i== largoCadena-1 /*&& i== '\n'*/)
+			if(i== largoCadena-1 && i== '\n')
 			{
 				/*if(loMostre==1)
 				{

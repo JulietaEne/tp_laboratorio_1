@@ -15,6 +15,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
 {
 	FILE* pFile;
 	int retorno;
+	int retornoFuncion;
 
 	retorno = -1;
 	if(path != NULL && pArrayListPassenger != NULL)
@@ -23,47 +24,47 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
 		pFile = fopen(path, "r");
 		if(pFile != NULL)
 		{
-			parser_PassengerFromText(pFile, pArrayListPassenger);
+			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger);
 			retorno = 0;
-			printf("Se han obtenido todos los datos del archivo\n");
+			printf("\nSe han obtenido los datos del archivo hasta la linea %d del archivo %s\n", retornoFuncion, path);
 		}
 		else
 		{
-			printf("Error al abrir archivo. Verifique que la ruta de acceso sea correcta.\n");
+			printf("[ERROR]No existe archivo %s.\n", path);
 		}
 	}
     return retorno;
 }
 
-/** \brief Carga los datos de los pasajeros desde el archivo data.csv (modo binario).
+/** \brief Carga los datos de los pasajeros desde el archivo data-procesado.bin (modo binario).
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param path char* recibe como cadena de caracteres la ruta donde se encuentra el archivo o donde se lo creara
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no pudo abrir el archivo
+ * 			   0 si pudo realizar lectura (retorna la cantidad de lineas que leyo del archivo)
  *
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 {
 	FILE* pFile;
 	int retorno;
-	//printf("HOLAAAAAA 1 \n");
+	int retornoFuncion;
 	retorno = -1;
 	if(path != NULL && pArrayListPassenger != NULL)
 	{
-		//printf("HOLAAAAAA 2 \n");
 		retorno = 0;
-		pFile = fopen(path, "rb");
-		//printf("1A- puntero archivo nulo");
+		pFile = fopen(path, "rb");	//printf("1A- puntero archivo nulo");
 		if(pFile != NULL)
 		{
 			//printf("1B- abrimos el archivo");
-			retorno = parser_PassengerFromBinary(pFile, pArrayListPassenger);//ESTO HACE QUE POR ALGUNA RAZON NO ENTRE DIRECTAMENTE AL CONTROLLER LOAD
-			//printf("retorno: %d\n", retorno);
-			printf("\nTodos los datos han sido pasados a memoria para trabajar\n");
+			retornoFuncion = parser_PassengerFromBinary(pFile, pArrayListPassenger);//ESTO HACE QUE POR ALGUNA RAZON NO ENTRE DIRECTAMENTE AL CONTROLLER LOAD
+			retorno =0;
+			printf("\nSe han obtenido los datos del archivo hasta la linea%d del archivo %s\n", retornoFuncion, path);
 		}
 		else
 		{
-			printf("Error al abrir archivo. Verifique que la ruta de acceso sea correcta.\n");
+			printf("\n[ERROR] No existe archivo%s\n", path);
 		}
 	}
 	return retorno;
@@ -108,6 +109,10 @@ int controller_findLastIdValue(LinkedList* pArrayListPassenger)
 
 	retorno =-1;
 	lenArray = ll_len(pArrayListPassenger);
+	/*if(lenArray ==0)
+	{
+		printf("HOLA lenArray =0\n");
+	}*/
 	if(pArrayListPassenger!= NULL && lenArray>0)
 	{
 		retorno=0;
@@ -284,29 +289,31 @@ int controller_comparePassenger(LinkedList* pArrayListPassenger)
 					if(comparacion>0)
 					{
 						//printf("la comparacion dio %d\n", comparacion);
-						controller_swapPpasajero(&pAuxPass1, &pAuxPass2);
+						controller_swapPpasajero(pAuxPass1, pAuxPass2);
 						flagSwap=1;
 					}
 				}
 			}
 			lenArray--;
 		}while(flagSwap);
+		printf("lo mostramos: \n");
+		controller_ListPassenger(pArrayListPassenger);
 		retorno =0;
 	}
 	return retorno;
 }
 
-int controller_swapPpasajero(ePassenger** pPasajero1, ePassenger** pPasajero2)
+int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2)
 {
 	int retorno;
 	ePassenger* pAuxPasajero;
 	retorno=-1;
 	if(pPasajero1 != NULL && pPasajero2 != NULL)
 	{
-		pAuxPasajero = *pPasajero1;
-		*pPasajero1 = *pPasajero2;
-		*pPasajero2= pAuxPasajero;
-
+		pAuxPasajero = pPasajero1;
+		pPasajero1 = pPasajero2;
+		pPasajero2= pAuxPasajero;
+		//printf("hicimos el cambio");
 		retorno=0;
 	}
 	return retorno;
@@ -338,7 +345,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 		}
 		else
 		{
-			printf("ERROR. No se ha crear abrir el archivo");
+			printf("[ERROR] No se ha crear abrir el archivo");
 			retorno = -2;
 		}
 	}
@@ -393,8 +400,9 @@ ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIng
 
 	//retorno =-1;
 	lenArray=ll_len(pArrayListPassenger);
-	if(pArrayListPassenger!= NULL && idIngresado>0 && lenArray>0)
+	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
 	{
+		controller_askToViewList(pArrayListPassenger);
 		utn_GetNumeroInt(&auxId, "ingrese un id: ", "dato incorrecto", ID_MIN, ID_MAX, REINTENTOS);
 		*idIngresado = auxId;
 		//retorno =-2; //si no encontro ningun elemento
@@ -414,6 +422,18 @@ ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIng
 	return pAuxPass;
 }
 
+void controller_askToViewList(LinkedList* pArrayListPassenger)
+{
+	int verLista;
+	if(pArrayListPassenger!= NULL)
+	{
+		verLista = tp_continuar("Imprimir lista de pasajeros? Y/N");
+		if(verLista)
+		{
+			controller_ListPassenger(pArrayListPassenger);
+		}
+	}
+}
 
 /*int controller_recorrerArray(LinkedList* pArrayListPassenger, ePassenger* pAuxPass)
 {
