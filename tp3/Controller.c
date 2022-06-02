@@ -400,8 +400,9 @@ ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIng
 
 	//retorno =-1;
 	lenArray=ll_len(pArrayListPassenger);
-	if(pArrayListPassenger!= NULL && idIngresado>0 && lenArray>0)
+	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
 	{
+		controller_askToViewList(pArrayListPassenger);
 		utn_GetNumeroInt(&auxId, "ingrese un id: ", "dato incorrecto", ID_MIN, ID_MAX, REINTENTOS);
 		*idIngresado = auxId;
 		//retorno =-2; //si no encontro ningun elemento
@@ -421,6 +422,18 @@ ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIng
 	return pAuxPass;
 }
 
+void controller_askToViewList(LinkedList* pArrayListPassenger)
+{
+	int verLista;
+	if(pArrayListPassenger!= NULL)
+	{
+		verLista = tp_continuar("Imprimir lista de pasajeros? Y/N");
+		if(verLista)
+		{
+			controller_ListPassenger(pArrayListPassenger);
+		}
+	}
+}
 
 /*int controller_recorrerArray(LinkedList* pArrayListPassenger, ePassenger* pAuxPass)
 {

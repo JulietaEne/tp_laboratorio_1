@@ -167,7 +167,7 @@ int tp_ImprimirMenuTresOpciones(char* descripcion,char* opcionUno, char* opcionD
  * \breif muestra mensaje y recibe un caracter para corroborar que sea 'y'
  * \param *mensaje Recibe por referencia el literal a mostrar
  * \return retorna 1 si continua
- * 		   0 si no continua
+ * 		   		0 si no continua
  *
  */
 int tp_continuar(char* mensaje)

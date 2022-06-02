@@ -34,7 +34,7 @@ int main()
 		controlGuardado = 0;
 		controlPasajeros=0;
 
-		printf("cantidad de elementos: %d", parser_controlListaPasajeros(listaPasajeros));
+		//printf("cantidad de elementos: %d", parser_controlListaPasajeros(listaPasajeros));
 		do{
 				option = tp_ImprimirMenuDiezOpciones("\n[MENU]\n", "1- Abrir archivo de texto"
 															, "2- Abrir archivo binario"
