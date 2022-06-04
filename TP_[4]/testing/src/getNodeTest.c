@@ -46,8 +46,9 @@ void getNodeTestCase01(void)
     nodo2->pNextNode = NULL;
     list->pFirstNode = nodo1;
     list->size=2;
+    printf("CASE1 size 2 - index 0\n");
     nodoAux = test_getNode(list,0);
-    utest_assertNotNullMsg(nodoAux,"\nError en el valor de retorno de <getNode> si los parametros son correctos\n y la lista tiene elementos la funcion retorna el puntero al nodo\n");
+    utest_assertNotNullMsg(nodoAux,"\n01 Error en el valor de retorno de <getNode> si los parametros son correctos\n y la lista tiene elementos la funcion retorna el puntero al nodo\n");
 
 }
 
@@ -66,8 +67,9 @@ void getNodeTestCase02(void)
     nodo2->pNextNode = NULL;
     list->pFirstNode = nodo1;
     list->size=2;
+    printf("CASE2 (size 2 - index 0)\n");
     nodoAux = test_getNode(list,0);
-    utest_assertEqualsPointerMsg(nodoAux,nodo1,"\nError en el valor de retorno de <getNode> al solicitar el primer elemento\n");
+    utest_assertEqualsPointerMsg(nodoAux,nodo1,"\n02 Error en el valor de retorno de <getNode> al solicitar el primer elemento\n");
 
 }
 
@@ -85,8 +87,9 @@ void getNodeTestCase03(void)
     nodo2->pNextNode = NULL;
     list->pFirstNode = nodo1;
     list->size=2;
+    printf("CASE3 (size 2 - index 1)\n");
     nodoAux = test_getNode(list,1);
-    utest_assertEqualsPointerMsg(nodoAux,nodo2,"\nError en el valor de retorno de <getNode> al solicitar el ultimo elemento\n");
+    utest_assertEqualsPointerMsg(nodoAux,nodo2,"\n03 Error en el valor de retorno de <getNode> al solicitar el ultimo elemento\n");
 
 }
 
@@ -104,16 +107,19 @@ void getNodeTestCase04(void)
     nodo2->pNextNode = NULL;
     list->pFirstNode = nodo1;
     list->size=1;
+    printf("CASE4 (size 1(pero tiene 2) - index -1)\n");
     nodoAux = test_getNode(list,-1);
-    utest_assertNullMsg(nodoAux, "\nError en el valor de retorno de <getNode> al solicitar un elemento fuera de indice (-1),\n se deberia retornar NULL\n");
+    utest_assertNullMsg(nodoAux, "\n04 Error en el valor de retorno de <getNode> al solicitar un elemento fuera de indice (-1),\n se deberia retornar NULL\n");
+    printf("CASE4 (size 1 (pero tiene 2) - index 1)\n");
     nodoAux = test_getNode(list,1);
-    utest_assertNullMsg(nodoAux, "\nError en el valor de retorno de <getNode> al solicitar un elemento fuera de indice (>= a ll_len),\n se deberia retornar NULL\n");
+    utest_assertNullMsg(nodoAux, "\n04b Error en el valor de retorno de <getNode> al solicitar un elemento fuera de indice (>= a ll_len),\n se deberia retornar NULL\n");
 
 
 }
 
 void getNodeTestCase05(void)
 {
-    utest_assertNullMsg(test_getNode(NULL,0),"\nError en el valor de retorno de <get> si la lista pasada es NULL\n el valor a retornar es (-1)\n");
+	printf("CASE5 (lista NULL - index 0)\n");
+    utest_assertNullMsg(test_getNode(NULL,0),"\n05 Error en el valor de retorno de <get> si la lista pasada es NULL\n el valor a retornar es (-1)\n");
 }
 

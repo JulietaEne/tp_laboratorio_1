@@ -6,6 +6,8 @@
 
 static Node* getNode(LinkedList* this, int nodeIndex);
 static int addNode(LinkedList* this, int nodeIndex,void* pElement);
+//static void countNode(Node* this, int* counter);
+
 
 /** \brief Crea un nuevo LinkedList en memoria de manera dinamica
  *
@@ -15,8 +17,10 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement);
  */
 LinkedList* ll_newLinkedList(void)
 {
-    LinkedList* this= NULL;
-    return this;
+	LinkedList* this;
+	this = (LinkedList*) malloc(sizeof(LinkedList));
+	return this;
+	//printf("New linkedList\n First Node: %p - size Of this%d", this->pFirstNode, this->size);
 }
 
 /** \brief Retorna la cantidad de elementos de la lista
@@ -27,10 +31,59 @@ LinkedList* ll_newLinkedList(void)
  */
 int ll_len(LinkedList* this)
 {
-    int returnAux = -1;
-    return returnAux;
+	Node* pAuxNode=NULL;
+    //int returnAux = -1;
+    int contadorLen;
+
+    contadorLen=-1;
+	//printf("LEN\nNew linkedList %p\n First Node: %p - size Of this:%d\n\n",this, this->pFirstNode, this->size);
+
+   // printf("linkedList: %p\n", this);
+    if(this != NULL)
+    {
+    	contadorLen=0;
+    	pAuxNode = this->pFirstNode;
+
+    	//countNode(pAuxNode, &contadorLen);
+    	//printf("!!!!!!!!!!!!!this->pFirstNode %p =? pAuxNode: %p\n", this->pFirstNode, pAuxNode);
+		if(pAuxNode!= NULL)// si la linkedList apunta a 1 elemento
+		{
+			contadorLen = 1;
+			do
+			{
+
+				if(pAuxNode->pNextNode!= NULL)//si en el campo pNextNode, hay una direccion de memoria
+				{
+					contadorLen++;//contabilizo
+					pAuxNode=pAuxNode->pNextNode;//actualizo el auxiliar
+					//printf("!!!!!!!!!!!!!tenemos elementos? %d!!!!!!!!!!", contadorLen);
+				}
+				else
+				{
+					break;
+				}
+			}while(pAuxNode!=NULL);
+		}//
+    }
+  //  printf("retorno: %d\n\n", contadorLen);
+    return contadorLen;
 }
 
+/*static void countNode(Node* this, int* counter)
+{
+	do
+	{
+		counter++;//contabilizo
+		if(this->pNextNode!= NULL)//si en el campo pNextNode, hay una direccion de memoria
+		{
+			this=this->pNextNode;//actualizo el auxiliar
+		}
+		else
+		{
+			break;
+		}
+	}while(this!=NULL);
+}*/
 
 /** \brief  Obtiene un nodo de la lista
  *
@@ -42,7 +95,25 @@ int ll_len(LinkedList* this)
  */
 static Node* getNode(LinkedList* this, int nodeIndex)
 {
-    return NULL;
+    Node* pObtainedNode=NULL;
+    int sizeThis;
+    int i;
+
+
+    sizeThis = ll_len(this);//len me da 2 -.-
+    printf("GETNODE\n nodeIndex: %d, len: %d --", nodeIndex, sizeThis);
+    if(this != NULL && nodeIndex>=0 && nodeIndex<sizeThis && sizeThis >0)
+    {
+    	pObtainedNode= this->pFirstNode;
+    	printf("\nprimer nodo:%p \n", pObtainedNode);
+    	for(i=1; i<=nodeIndex; i++)
+    	{
+    		printf("i/index=%d nodo:%p \n", i, pObtainedNode->pNextNode);
+    		pObtainedNode = pObtainedNode->pNextNode;
+    	}
+    }
+    printf("retorno: %p\n\n", pObtainedNode);
+	return pObtainedNode;
 }
 
 /** \brief  Permite realizar el test de la funcion getNode la cual es privada
