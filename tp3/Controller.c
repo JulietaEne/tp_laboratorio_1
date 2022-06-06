@@ -11,7 +11,7 @@
  * 			   0 si pudo realizar lectura (retorna la cantidad de lineas que leyo del archivo)
  *
  */
-int controller_loadFromText(char* path , LinkedList* pArrayListPassenger, int** controlPrimerCarga)//fopen read
+int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen read
 {
 	FILE* pFile;
 	int retorno;
@@ -24,7 +24,8 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger, int** 
 		pFile = fopen(path, "r");
 		if(pFile != NULL)
 		{
-			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger, **controlPrimerCarga);
+			//printf("load ok\n");
+			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger);
 			retorno = 0;
 			printf("\nSe han obtenido los datos del archivo hasta la linea %d del archivo %s\n", retornoFuncion, path);
 		}

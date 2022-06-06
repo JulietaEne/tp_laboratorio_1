@@ -18,7 +18,7 @@
 
 
 
-int controller_loadFromText(char* path , LinkedList* pArrayListPassenger, int** controlPrimerCargaArchivo);
+int controller_loadFromText(char* path , LinkedList* pArrayListPassenger);
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger);
 int controller_addPassenger(LinkedList* pArrayListPassenger);
 int controller_findLastIdValue(LinkedList* pArrayListPassenger);

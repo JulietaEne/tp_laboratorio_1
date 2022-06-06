@@ -51,7 +51,7 @@ int main()
 			{
 				case 1:
 					printf("abriendo archivo data.csv....");
-					if(!controller_loadFromText("data.csv",listaPasajeros,&controlPasajeros))
+					if(!controller_loadFromText("data.csv",listaPasajeros))
 					{
 						controlPasajeros=1;
 

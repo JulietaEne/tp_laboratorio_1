@@ -14,7 +14,7 @@
 #include "src/utn.h"
 #include "Controller.h"
 
-int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger, int controlPrimerCargaArchivo);
+int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger);
 //int parser_countLenFile(FILE* pFile);
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger);
 int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger);

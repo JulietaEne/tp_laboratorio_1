@@ -44,7 +44,7 @@ typedef struct
 
 ePassenger* Passenger_new();
 ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipoPasajeroStr);
-ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int*** controlLista);
+ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int* controlLista);
 ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero);
 ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo, int controlLista);
 
@@ -57,7 +57,7 @@ void Passenger_printEncabezado();
 
 
 int Passenger_setId(ePassenger* this,int id, int controlLista);
-int Passenger_setIdStr(ePassenger* this,char* idStr, int*** controlLista);
+int Passenger_setIdStr(ePassenger* this,char* idStr, int** controlLista);
 int Passenger_getId(ePassenger* this/*,int* id*/);
 
 
