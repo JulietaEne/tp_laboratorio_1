@@ -46,6 +46,7 @@ void addNodeTestCase01(void)
     LinkedList* list;
 
     list = ll_newLinkedList();
+    printf("testeo 1\n");
     test_addNode(list,0,NULL);
     utest_assertEqualsIntMsg(1,list->size,"\nError en el valor de size de la lista se debe incrementar al agregar nodos\n");
 
@@ -58,9 +59,11 @@ void addNodeTestCase02(void)
     Employee* pAux[LENGTH];
     list = ll_newLinkedList();
 
+    printf("testeo 2\n");
     for(i=0; i < LENGTH; i++)
     {
         pAux[i] = newEmployee(id[i],unsortedList[i],unsortedList[i],salary[i],sector[i]);
+
         r = test_addNode(list,list->size,pAux[i]);
         utest_assertEqualsIntMsg(r,0,"\nError en el valor de retorno de <addNode> si se agrego un nodo correctamente\n el valor a retornar es (0)\n");
     }
@@ -77,14 +80,18 @@ void addNodeTestCase03(void)
 
     list = ll_newLinkedList();
 
+    printf("testeo 3\n");
     for(i=0; i < LENGTH; i++)
     {
         pAux[i] = newEmployee(id[i],unsortedList[i],unsortedList[i],salary[i],sector[i]);
+
         test_addNode(list,list->size,pAux[i]);
     }
 
+    printf("testeo 3b\n");
     for (i=0;i < LENGTH;i++)
     {
+
         nodoAux = test_getNode(list,i);
         utest_assertNotNullMsg(nodoAux,"\nExiste un error al intentar obtener el nodo.\n El valor de retorno no puede ser NULL\n");
         sprintf(msg,"\nError en el valor de retorno de <getNode> al solicitar el elemento en la  posicion %i\n",i);
@@ -97,6 +104,7 @@ void addNodeTestCase03(void)
 void addNodeTestCase04(void)
 {
     int r;
+    printf("testeo 4\n");
     r = test_addNode(NULL,0,NULL);
     utest_assertEqualsIntMsg(r,-1,"\nError en el valor de retorno de <addNode> si la lista pasada es NULL\n el valor a retornar es (-1)\n");
 }
@@ -118,12 +126,14 @@ void addNodeTestCase05(void)
     }
 
     Employee* other = newEmployee(99,"99","99",99,99);
+    printf("testeo 5\n");
     test_addNode(list,0,other);
 
     nodoAux = test_getNode(list,0);
     utest_assertNotNullMsg(nodoAux,"\nExiste un error al intentar obtener el nodo.\n El valor de retorno no puede ser NULL\n");
     utest_assertEqualsPointerMsg(nodoAux->pElement,other,"El puntero al employee agregado en la pos 0 no corresponde\n");
 
+    printf("testeo 5b\n");
     for (i=0;i < LENGTH;i++)
     {
         nodoAux = test_getNode(list,i+1);

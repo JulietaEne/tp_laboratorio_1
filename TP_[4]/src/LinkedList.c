@@ -6,6 +6,8 @@
 
 static Node* getNode(LinkedList* this, int nodeIndex);
 static int addNode(LinkedList* this, int nodeIndex,void* pElement);
+//static Node*  findNodeByIndex(LinkedList* this, int nodeIndex, Node* pObtainedNode);
+
 //static void countNode(Node* this, int* counter);
 
 
@@ -101,9 +103,10 @@ static Node* getNode(LinkedList* this, int nodeIndex)
 
 
     sizeThis = ll_len(this);//len me da 2 -.-
-    printf("GETNODE\n nodeIndex: %d, len: %d --", nodeIndex, sizeThis);
+    printf("**GETNODE\n nodeIndex: %d, len: %d --", nodeIndex, sizeThis);
     if(this != NULL && nodeIndex>=0 && nodeIndex<sizeThis && sizeThis >0)
     {
+    	//findNodeByIndex(this, nodeIndex,pObtainedNode);
     	pObtainedNode= this->pFirstNode;
     	printf("\nprimer nodo:%p \n", pObtainedNode);
     	for(i=1; i<=nodeIndex; i++)
@@ -115,6 +118,22 @@ static Node* getNode(LinkedList* this, int nodeIndex)
     printf("retorno: %p\n\n", pObtainedNode);
 	return pObtainedNode;
 }
+
+/*static Node* findNodeByIndex(LinkedList* this, int nodeIndex, Node* pObtainedNode)
+{
+	int i;
+	Node* pAuxNode=NULL;
+
+	pObtainedNode= this->pFirstNode;
+	printf("\nprimer nodo:%p \n", pObtainedNode);
+	for(i=1; i<=nodeIndex; i++)
+	{
+		printf("i/index=%d nodo:%p \n", i, pObtainedNode->pNextNode);
+		pObtainedNode = pObtainedNode->pNextNode;
+		pAuxNode = pObtainedNode;
+	}
+	return pAuxNode;
+}*/
 
 /** \brief  Permite realizar el test de la funcion getNode la cual es privada
  *
@@ -141,8 +160,60 @@ Node* test_getNode(LinkedList* this, int nodeIndex)
  */
 static int addNode(LinkedList* this, int nodeIndex,void* pElement)
 {
-    int returnAux = -1;
-    return returnAux;
+	Node* newNode=NULL;
+	Node* nodoAnterior = NULL;
+	Node* nodoReacomodado = NULL;
+	int sizeThis;
+	int retorno;
+	int i;
+
+	sizeThis = ll_len(this);
+	nodoAnterior= this->pFirstNode;//tomo la direccion de memoria del primer nodo a partir de LL
+	retorno =-1;
+	if(this != NULL && nodeIndex>=0 && nodeIndex<=sizeThis && sizeThis >=0)
+	{
+		newNode = (Node*)malloc(sizeof(Node));
+		if(newNode != NULL)
+		{
+			switch (nodeIndex){
+			case 0://si agrego nodo al primer index de la lista
+				if(nodoAnterior == NULL)// si LL aun no apunta a nada
+				{
+					//nodoAnterior = newNode; cambio el puntero de linked list
+					newNode->pNextNode = NULL;
+					//newNode->pElement = pElement;
+				}
+				else//si el LL ya apunta a algo, tengo que modificarlo
+				{
+					nodoReacomodado = nodoAnterior; //nodo anterior es la direcc de mem que tengo que reacomodar
+					//nodoAnterior = newNode;
+					newNode->pNextNode = nodoReacomodado;
+					//newNode->pElement = pElement;
+				}
+				nodoAnterior = newNode;
+				newNode->pElement = pElement;
+				retorno =0;
+				break;
+			default://si agrego nodo a un index >0:  tengo que cambiar el puntero a nodo posterior y el anterior al del index señalado
+				nodoReacomodado = nodoAnterior;
+				for (i=1; i<=nodeIndex; i++)//para llegar al nodo que tengo que reacomodar
+				{
+					nodoReacomodado=nodoReacomodado->pNextNode;
+				}
+				for (i=1; i<nodeIndex; i++)//para llegar al nodo que antecede al nuevo acomodado
+				{
+					nodoAnterior = nodoAnterior->pNextNode;
+				}
+				nodoAnterior->pNextNode = newNode;
+				newNode->pNextNode = nodoReacomodado;
+				newNode->pElement = pElement;
+				retorno =0;
+				break;
+			}
+			sizeThis = sizeThis +1;
+		}
+	}
+	return retorno;
 }
 
 /** \brief Permite realizar el test de la funcion addNode la cual es privada
