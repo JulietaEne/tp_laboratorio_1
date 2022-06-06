@@ -18,7 +18,7 @@
 
 
 
-int controller_loadFromText(char* path , LinkedList* pArrayListPassenger, int** controlPrimerCargaArchivo);
+int controller_loadFromText(char* path , LinkedList* pArrayListPassenger);
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger);
 int controller_addPassenger(LinkedList* pArrayListPassenger);
 int controller_findLastIdValue(LinkedList* pArrayListPassenger);
@@ -27,7 +27,7 @@ int controller_editPassenger(LinkedList* pArrayListPassenger);
 int controller_removePassenger(LinkedList* pArrayListPassenger);
 int controller_ListPassenger(LinkedList* pArrayListPassenger);
 int controller_sortPassenger(LinkedList* pArrayListPassenger);
-//int controller_comparePassenger(LinkedList* pArrayListPassenger);
+int controller_comparePassenger(LinkedList* pArrayListPassenger);
 int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2);
 
 

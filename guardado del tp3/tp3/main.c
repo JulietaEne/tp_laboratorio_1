@@ -31,10 +31,9 @@ int main()
 		int controlGuardado;
 		int controlPasajeros;
 		//int controlDelet;
-		//int primeraCargaArchivo;
 		controlGuardado = 0;
 		controlPasajeros=0;
-		//primeraCargaArchivo=0;
+
 		//printf("cantidad de elementos: %d", parser_controlListaPasajeros(listaPasajeros));
 		do{
 				option = tp_ImprimirMenuDiezOpciones("\n[MENU]\n", "1- Abrir archivo de texto"
@@ -51,10 +50,9 @@ int main()
 			{
 				case 1:
 					printf("abriendo archivo data.csv....");
-					if(!controller_loadFromText("data.csv",listaPasajeros,&controlPasajeros))
+					if(!controller_loadFromText("data.csv",listaPasajeros))
 					{
 						controlPasajeros=1;
-
 					}
 					break;
 			    case 2:

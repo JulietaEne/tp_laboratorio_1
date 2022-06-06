@@ -11,7 +11,7 @@
  * 			   0 si pudo realizar lectura (retorna la cantidad de lineas que leyo del archivo)
  *
  */
-int controller_loadFromText(char* path , LinkedList* pArrayListPassenger, int** controlPrimerCarga)//fopen read
+int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen read
 {
 	FILE* pFile;
 	int retorno;
@@ -24,7 +24,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger, int** 
 		pFile = fopen(path, "r");
 		if(pFile != NULL)
 		{
-			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger, **controlPrimerCarga);
+			retornoFuncion=parser_PassengerFromText(pFile, pArrayListPassenger);
 			retorno = 0;
 			printf("\nSe han obtenido los datos del archivo hasta la linea %d del archivo %s\n", retornoFuncion, path);
 		}
@@ -249,37 +249,16 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
 int controller_sortPassenger(LinkedList* pArrayListPassenger)
 {
 	int retorno;
-	int opcionIngresada;
-	int tipoOrden;
 	retorno = -1;
 	if(pArrayListPassenger!= NULL)
 	{
-		opcionIngresada=tp_ImprimirMenuTresOpciones("Ordenar parajeros según:", "1- ordenar por precio", "2- ordenar por estado vuelo", "3- ordenar por nombre");
-		switch (opcionIngresada) {
-			case 1:
-				tipoOrden= tp_continuar("Imprimr de menor precio a mayor precio? Y/N");
-				//ll_sort(pArrayListPassenger, Passenger_compareByPrice, tipoOrden);
-				break;
-			case 2:
-				tipoOrden= tp_continuar("Imprimr por orden alfabetico estado vuelo? Y/N");
-				//ll_sort(pArrayListPassenger, Passenger_compareByFlyStatus, tipoOrden);
-				break;
-			case 3:
-				tipoOrden= tp_continuar("Imprimr por orden alfabetico nombre? Y/N");
-				ll_sort(pArrayListPassenger, Passenger_compareByName, tipoOrden);
-				break;
-			default:
-				break;
-		}
-		controller_ListPassenger(pArrayListPassenger);
-		//controller_comparePassenger(pArrayListPassenger);
+		controller_comparePassenger(pArrayListPassenger);
 		retorno =0;
 	}
     return retorno;
 }
 
-
-/*int controller_comparePassenger(LinkedList* pArrayListPassenger)
+int controller_comparePassenger(LinkedList* pArrayListPassenger)
 {
 	int retorno;
 	int i;
@@ -338,7 +317,7 @@ int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2)
 		retorno=0;
 	}
 	return retorno;
-}*/
+}
 
 /** \brief Guarda los datos de los pasajeros en el archivo data.csv (modo texto).
  *
