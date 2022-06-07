@@ -252,10 +252,12 @@ int controller_sortPassenger(LinkedList* pArrayListPassenger)
 	int retorno;
 	int opcionIngresada;
 	int tipoOrden;
+	int (*compareByName)(void*, void*);
 	retorno = -1;
+	compareByName = Passenger_compareByName;
 	if(pArrayListPassenger!= NULL)
 	{
-		opcionIngresada=tp_ImprimirMenuTresOpciones("Ordenar parajeros según:", "1- ordenar por precio", "2- ordenar por estado vuelo", "3- ordenar por nombre");
+		/*opcionIngresada=tp_ImprimirMenuTresOpciones("Ordenar parajeros según:", "1- ordenar por precio", "2- ordenar por estado vuelo", "3- ordenar por nombre");
 		switch (opcionIngresada) {
 			case 1:
 				tipoOrden= tp_continuar("Imprimr de menor precio a mayor precio? Y/N");
@@ -264,21 +266,21 @@ int controller_sortPassenger(LinkedList* pArrayListPassenger)
 			case 2:
 				tipoOrden= tp_continuar("Imprimr por orden alfabetico estado vuelo? Y/N");
 				//ll_sort(pArrayListPassenger, Passenger_compareByFlyStatus, tipoOrden);
+
 				break;
 			case 3:
 				tipoOrden= tp_continuar("Imprimr por orden alfabetico nombre? Y/N");
-				ll_sort(pArrayListPassenger, Passenger_compareByName, tipoOrden);
-				break;
-			default:
+				printf("tipoOdren: %d*****", tipoOrden);
+				ll_sort(pArrayListPassenger, compareByName, 1);
+				//printf("\n\n%d ", Passenger_compareByName);
 				break;
 		}
-		controller_ListPassenger(pArrayListPassenger);
+		//controller_ListPassenger(pArrayListPassenger);
 		//controller_comparePassenger(pArrayListPassenger);
-		retorno =0;
+		retorno =0;*/
 	}
     return retorno;
 }
-
 
 /*int controller_comparePassenger(LinkedList* pArrayListPassenger)
 {

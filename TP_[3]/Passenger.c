@@ -56,7 +56,7 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
  * 					   		   *ePassenger si logro crear y setear a la variable del tipo estructura(retorna la direccion de memoria en donde se creo al pasajero)
  *
 */
-ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int controlLista)
+ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int* controlLista)
 {
 	ePassenger* this = NULL;
 	if(idStr != NULL && nombreStr != NULL && tipoPasajeroStr != NULL)
@@ -73,6 +73,7 @@ ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* a
 			Passenger_setCodigoVuelo(this, codigoVueloStr);
 			Passenger_setTipoPasajero(this, tipoPasajeroStr);
 			Passenger_setStatusFlight(this, estadoVueloStr);
+			*controlLista = 1;
 		}
 	}
 	return this;
@@ -367,7 +368,7 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_setIdStr(ePassenger* this,char* idStr, int controlLista)
+int Passenger_setIdStr(ePassenger* this,char* idStr, int* controlLista)
 {
 	int retorno;
 	int auxId;
@@ -375,9 +376,10 @@ int Passenger_setIdStr(ePassenger* this,char* idStr, int controlLista)
 	//int auxIdControl;
 	retorno =-1;
 	//printf("3-1-1 set id\n");
+	//printf("Control lista en SetId: %d", *controlLista);
 	if(this != NULL && idStr != NULL && !validaciones_esNumeroInt(idStr, strlen(idStr)))
 	{
-		if(!controlLista)
+		if(*controlLista==0)
 		{
 			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea comenzar por el ID 1? Y/N");
 			if(mantenerIdArchivo)
@@ -745,25 +747,30 @@ ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda)
 	return thisCorrecto;
 }
 
-int Passenger_comparePassengersByName(ePassenger* this, ePassenger* that)
+int Passenger_compareByName(void* this, void* that)
 {
 	int retorno;
 	char nombre1[SIZE_STR];
 	char nombre2[SIZE_STR];
+	ePassenger* pPasajero1;
+	ePassenger* pPasajero2;
 	retorno = -1;
-	if(this != NULL && that != NULL)
-	{
+	//if(this != NULL && that != NULL)
+	//{
 
-		Passenger_getNombre(this, nombre1);
-		Passenger_getNombre(that, nombre2);
+		pPasajero1 = (ePassenger*)this;
+		pPasajero2 = (ePassenger*)that;
 
-		arrayChar_convertirStringMayuscula(nombre1, strlen(nombre1));
-		arrayChar_convertirStringMayuscula(nombre2, strlen(nombre2));
+		Passenger_getNombre(pPasajero1, nombre1);
+		Passenger_getNombre(pPasajero2, nombre2);
+
+		//arrayChar_convertirStringMayuscula(nombre1, strlen(nombre1));
+		//arrayChar_convertirStringMayuscula(nombre2, strlen(nombre2));
 		//printf("estamos en passenger compare\n");
 		//printf("nombre1: %s - nombre2: %s\n", nombre1, nombre2);
 		retorno= strcmp(nombre1, nombre2);
 		//printf("retorno : %d", retorno);
-	}
+	//}
 	return retorno;
 }
 

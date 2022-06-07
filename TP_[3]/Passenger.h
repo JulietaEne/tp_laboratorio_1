@@ -57,7 +57,7 @@ void Passenger_printEncabezado();
 
 
 int Passenger_setId(ePassenger* this,int id, int controlLista);
-int Passenger_setIdStr(ePassenger* this,char* idStr, int** controlLista);
+int Passenger_setIdStr(ePassenger* this,char* idStr, int* controlLista);
 int Passenger_getId(ePassenger* this/*,int* id*/);
 
 

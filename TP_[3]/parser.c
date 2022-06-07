@@ -41,35 +41,83 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	char auxStatusFlight[SIZE_STR];
 	int i;
 	int controlLista;
+	int aceptarModificarId;
 
 	retorno = -1;
 	i=0;
 	controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+	//printf("[DEBUGGGGG]control lista: %d", controlPrimerCarga);
 	if(pFile != NULL && pArrayListPassenger != NULL)
 	{
 		retorno =0;
-		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-		//parser_countLenFile(pFile);
-
-		while(!feof(pFile))
+		if(controlLista)
 		{
+			printf("Ya hay datos guardados en el programa. Es posible que modifique el dato ID del archivo recibido. Desea continuar?");
+			aceptarModificarId=tp_continuar("Y/N");
+			if(aceptarModificarId)
 			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
 			//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
 			//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
-			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, controlLista);//acá ya tendría un pasajero en la lista de punteros
+			//printf("parser ok\n");
+			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, &controlLista);//acá ya tendría un pasajero en la lista de punteros
 
 			if(pAuxPasajero != NULL)
 			{
-				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
-				i++;
+				fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+				//parser_countLenFile(pFile);
+
+				while(!feof(pFile))
+				{
+					fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+					//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
+					//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
+					pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, &controlLista);//acá ya tendría un pasajero en la lista de punteros
+
+					if(pAuxPasajero != NULL)
+					{
+						ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
+						i++;
+					}
+					else
+					{
+						//printf("Error en la lectura de la linea %d", i);
+						break;
+					}
+				}
+				retorno = i;
 			}
 			else
 			{
-				//printf("Error en la lectura de la linea %d", i);
-				break;
+				printf("se ha cancelado la lectura del archivo. Se sugiere hacer backUp de los datos del archivo antes de volver a intentar la lectura");
 			}
 		}
-		retorno = i;
+		else
+		{
+			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+			//parser_countLenFile(pFile);
+
+			while(!feof(pFile))
+			{
+				fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+				//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
+				//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
+				pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, &controlLista);//acá ya tendría un pasajero en la lista de punteros
+
+				if(pAuxPasajero != NULL)
+				{
+					ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
+					i++;
+				}
+				else
+				{
+					//printf("Error en la lectura de la linea %d", i);
+					break;
+				}
+			}
+			retorno = i;
+		}
+
+
 		//printf("se pudo leer hasta la linea %d",i);
 	}
     return retorno;
@@ -255,6 +303,7 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 	retorno = -1;
 	contador =0;
 	controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+	printf("lista: %d", controlLista);
 	if(pArrayListPassenger != NULL)
 	{
 		retorno = -2;
@@ -392,8 +441,9 @@ int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 				*id=0;
 
 
-		}
-		retorno=0;*/
+		}*/
+		retorno=0;
+
 	}
 	return retorno;
 }
