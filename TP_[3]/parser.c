@@ -17,6 +17,63 @@ int parser_controlListaPasajeros(LinkedList* pArrayListPassenger)
 	}
 	return retorno;
 }
+/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
+ *
+ * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorna -1 si no pudo operar.
+ * 						0 si no leyo
+ * 						>0 si leyo (retorna la cantidad de lineas que leyo)
+ *
+*/
+int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
+{
+	int retorno;
+
+	ePassenger* pAuxPasajero=NULL;
+	char auxId[SIZE_INT];
+	char auxNombre[SIZE_STR];
+	char auxApellido[SIZE_STR];
+	char auxPrice[SIZE_STR];
+	char auxFlyCode[SIZE_STR];
+	char auxTipoPasajero[SIZE_STR];
+	char auxStatusFlight[SIZE_STR];
+	int i;
+	//int controlLista;
+
+
+	retorno = -1;
+	i=0;
+	//controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+	//printf("[DEBUGGGGG]control lista: %d", controlPrimerCarga);
+	if(pFile != NULL && pArrayListPassenger != NULL)
+	{
+		retorno = 0;
+		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+		//parser_countLenFile(pFile);
+
+		while(!feof(pFile))
+		{
+			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+			//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
+			//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
+			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);//acá ya tendría un pasajero en la lista de punteros
+
+			if(pAuxPasajero != NULL)
+			{
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
+				i++;
+			}
+			else
+			{
+				//printf("Error en la lectura de la linea %d", i);
+				break;
+			}
+		}
+		retorno = i;
+	}
+	return retorno;
+}
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
@@ -26,7 +83,7 @@ int parser_controlListaPasajeros(LinkedList* pArrayListPassenger)
  * 						0 si no leyo
  * 						>0 si leyo (retorna la cantidad de lineas que leyo)
  *
- */
+
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 {
 	int retorno;
@@ -121,7 +178,7 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 		//printf("se pudo leer hasta la linea %d",i);
 	}
     return retorno;
-}
+}*/
 
 /*int parser_countLenFile(FILE* pFile)
 {
@@ -158,10 +215,10 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 	ePassenger* pAuxPasajero;
 	int retorno;
 	int lectura;
-	int controlLista;
+	//int controlLista;
 
 	retorno = -1;
-	controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+	//controlLista = parser_controlListaPasajeros(pArrayListPassenger);
 	if(pFile!= NULL && pArrayListPassenger != NULL)
 	{
 		retorno =0;
@@ -171,7 +228,7 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
 			lectura=fread(&unPasajero, sizeof(ePassenger), 1, pFile);
 			//printf("lectura: %d", lectura);
 			//pAuxPasajero = Passenger_newParametros(unPasajero.id, unPasajero.nombre, unPasajero.tipoPasajero);
-			pAuxPasajero = Passenger_newParametrosAll(unPasajero.id, unPasajero.nombre, unPasajero.apellido, unPasajero.precio, unPasajero.flyCode, unPasajero.tipoPasajero, unPasajero.estadoVuelo, controlLista);
+			pAuxPasajero = Passenger_newParametrosAllBinary(unPasajero.id, unPasajero.nombre, unPasajero.apellido, unPasajero.precio, unPasajero.flyCode, unPasajero.tipoPasajero, unPasajero.estadoVuelo);
 			if(pAuxPasajero != NULL)
 			{
 				//printf("se cargó en lista");
@@ -303,7 +360,7 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 	retorno = -1;
 	contador =0;
 	controlLista = parser_controlListaPasajeros(pArrayListPassenger);
-	printf("lista: %d", controlLista);
+	//printf("lista: %d", controlLista);
 	if(pArrayListPassenger != NULL)
 	{
 		retorno = -2;
@@ -318,8 +375,10 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 			parser_getStatusFlightToBuffer(auxEstadoVuelo, SIZE_STR);
 			//printf("en parser getid: %d", auxId);
 			//voy a pedir los datos que el usuario quiere cargar.
-			//pAuxPasajero=Passenger_newParametros(auxId, auxNombre, auxTipoPass);//voy a crear un nuevo pasajero
+
 			pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo, controlLista);
+			//pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo, contr);
+
 			//int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo
 			if(pAuxPasajero!= NULL)
 			{

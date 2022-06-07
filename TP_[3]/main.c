@@ -30,39 +30,48 @@ int main()
 		LinkedList* listaPasajeros = ll_newLinkedList();
 		int controlGuardado;
 		int controlPasajeros;
+		int controlListaOrdenada;
 		//int controlDelet;
 		//int primeraCargaArchivo;
 		controlGuardado = 0;
 		controlPasajeros=0;
+		controlListaOrdenada = 1;
 		//primeraCargaArchivo=0;
 		//printf("cantidad de elementos: %d", parser_controlListaPasajeros(listaPasajeros));
 		do{
 				option = tp_ImprimirMenuDiezOpciones("\n[MENU]\n", "1- Abrir archivo de texto"
-															, "2- Abrir archivo binario"
-															, "3- Dar de alta pasajero"
-															, "4- Modificar pasajero"
-															, "5- Dar de baja pasajero"
-															, "6- Listar pasajeros"
-															, "7- Ordenar pasajeros (por nombre)"
-															, "8- Guardar en archivo .csv"
-															, "9- Guardar en archivo binario"
-															, "10- Salir del programa");
+																, "2- Abrir archivo binario"
+																, "3- Dar de alta pasajero"
+																, "4- Modificar pasajero"
+																, "5- Dar de baja pasajero"
+																, "6- Listar pasajeros"
+																, "7- Ordenar pasajeros (por nombre)"
+																, "8- Guardar en archivo .csv"
+																, "9- Guardar en archivo binario"
+																, "10- Salir del programa");
 			switch(option)
 			{
 				case 1:
 					printf("abriendo archivo data.csv....");
-					if(!controller_loadFromText("data.csv",listaPasajeros))
+					if(!controlPasajeros && !controller_loadFromText("data.csv",listaPasajeros))
 					{
 						controlPasajeros=1;
-
+					}
+					else
+					{
+						printf("\n\nATENCION Imposible abrir archivo. Hay un archivo de datos en ejecucion");
 					}
 					break;
 			    case 2:
 					//cargar desde archivo binario
 			    	printf("abriendo archivo data-procesado.bin....\n");
-					if(!controller_loadFromBinary("data-procesado.bin", listaPasajeros))
+					if(!controlPasajeros && !controller_loadFromBinary("data-procesado.bin", listaPasajeros))
 					{
 						controlPasajeros=1;
+					}
+					else
+					{
+						printf("\n\nATENCION Imposible abrir archivo. Hay un archivo de datos en ejecucion");
 					}
 					break;
 				case 3:
@@ -98,7 +107,7 @@ int main()
 					printf("LISTA DE PASAJEROS\n");
 					if(controlPasajeros)
 					{
-						controller_ListPassenger(listaPasajeros);
+						controller_ListPassenger(listaPasajeros, controlListaOrdenada);
 					}
 					else
 					{
@@ -110,6 +119,7 @@ int main()
 					if(controlPasajeros)
 					{
 						controller_sortPassenger(listaPasajeros);
+						controlListaOrdenada=0;
 					}
 					else
 					{

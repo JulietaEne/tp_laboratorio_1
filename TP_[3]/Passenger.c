@@ -5,7 +5,7 @@
  *      Author: Julieta Nakasone
  */
 #include "Passenger.h"
-//#include "parser.h"
+#include "parser.h"
 
 /** \brief Reserva espacio en el heap para una variable del tipo ePassenger
  *
@@ -56,7 +56,9 @@ ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipo
  * 					   		   *ePassenger si logro crear y setear a la variable del tipo estructura(retorna la direccion de memoria en donde se creo al pasajero)
  *
 */
-ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int* controlLista)
+//ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int* controlLista)
+
+ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr)
 {
 	ePassenger* this = NULL;
 	if(idStr != NULL && nombreStr != NULL && tipoPasajeroStr != NULL)
@@ -66,14 +68,15 @@ ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* a
 		//printf("PRECIO: %s\n", precioStr);
 		if(this != NULL)
 		{
-			Passenger_setIdStr(this, idStr, controlLista);
+			//Passenger_setIdStr(this, idStr, controlLista);
+			Passenger_setIdStr(this, idStr);
 			Passenger_setNombre(this, nombreStr);
 			Passenger_setLastName(this, apellidoStr);
 			Passenger_setPrice(this, precioStr);
 			Passenger_setCodigoVuelo(this, codigoVueloStr);
 			Passenger_setTipoPasajero(this, tipoPasajeroStr);
 			Passenger_setStatusFlight(this, estadoVueloStr);
-			*controlLista = 1;
+			//*controlLista = 1;
 		}
 	}
 	return this;
@@ -144,6 +147,7 @@ ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float
 {
 	ePassenger* this = NULL;
 	int cargaCorrecta;
+
 	//int retornoFuncion;
 	if(nombre != NULL && tipoPasajero != NULL)
 	{
@@ -153,6 +157,60 @@ ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float
 			cargaCorrecta = 0;
 			//printf("en new, id: %d ---------- ", id);
 			Passenger_setId(this, id, controlLista);
+			Passenger_setNombre(this, nombre);
+			Passenger_setTipoPasajero(this, tipoPasajero);
+			Passenger_setApellido(this, apellido);
+			Passenger_setCodigoVuelo(this, codigoVuelo);
+			Passenger_setPrecio(this, precio);
+			Passenger_setEstadoVuelo(this, estadoVuelo);
+
+			cargaCorrecta = 1;
+
+			if(!cargaCorrecta)
+			{
+				this = NULL;
+				printf("ERROR AL CARGAR EL DATO %d , %s, %s", id, nombre, tipoPasajero);
+			}
+		}
+	}
+	return this;
+	/*ePassenger* this = NULL;
+		if(nombre != NULL && tipoPasajero != NULL)
+		{
+			this = Passenger_new();
+			if(this != NULL)
+			{
+				Passenger_setId(this, id);
+				Passenger_setNombre(this, nombre);
+				Passenger_setTipoPasajero(this, tipoPasajero);
+			}
+		}
+		return this;*/
+}
+
+/** \brief Crea un pasajero en memoria dinamica seteando en sus campos ID NOMBRE TIPO PASAJERO los datos recibidos por parametro (modo texto)
+ *
+ * \param char* idStr recibe la referencia a la cadena correspondiente para el campo id
+ * \param char* nombreStr recibe la referencia a la cadena correspondiente para el campo nombre
+ * \param char* tipoPasajeroStr recibe la referencia a la cadena correspondiente para el campo tipo pasajero
+ * \return ePassenger* retorna NULL si hubo un error al realizar la operacion
+ * 					   		   *ePassenger si logro crear y setear a la variable del tipo estructura(retorna la direccion de memoria en donde se creo al pasajero)
+ *
+ */
+ePassenger* Passenger_newParametrosAllBinary(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo)
+{
+	ePassenger* this = NULL;
+	int cargaCorrecta;
+
+	//int retornoFuncion;
+	if(nombre != NULL && tipoPasajero != NULL)
+	{
+		this = Passenger_new();
+		if(this != NULL)
+		{
+			cargaCorrecta = 0;
+			//printf("en new, id: %d ---------- ", id);
+			Passenger_setIdBinary(this, id);
 			Passenger_setNombre(this, nombre);
 			Passenger_setTipoPasajero(this, tipoPasajero);
 			Passenger_setApellido(this, apellido);
@@ -322,13 +380,15 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
 	int retorno;
 	int auxId;
 	int mantenerIdArchivo;
-	retorno =-1;
+	int fromFile;
 
+	retorno =-1;
+	fromFile = 1;
 	if(this != NULL)
 	{
 		if(!controlLista)
 		{
-			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea comenzar por el ID 1? Y/N");
+			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea comenzar por el ID 1001? Y/N");
 			if(mantenerIdArchivo)
 			{
 				auxId = ID_MIN;
@@ -338,7 +398,7 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
 			{
 				auxId = id;
 			}
-
+			fromFile = 0;
 		}
 		else
 		{
@@ -349,7 +409,7 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
 		this->id=auxId;
 		retorno=0;
 
-		if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
+		if(/*auxId > ID_MAX ||*/ fromFile && auxId < FILE_ID_MIN)
 		{
 			retorno = -2;
 			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d - maximoId: %d\n", auxId, ID_MAX);
@@ -357,7 +417,6 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
 	}
 	return retorno;
 }
-
 
 /** \brief parsea el valor recibido por parametro y lo setea en this, dentro de su campo id
  *
@@ -368,18 +427,52 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_setIdStr(ePassenger* this,char* idStr, int* controlLista)
+int Passenger_setIdBinary(ePassenger* this,int id)
 {
 	int retorno;
 	int auxId;
-	int mantenerIdArchivo;
+	//int mantenerIdArchivo;
+
+	auxId = id;
+	retorno =-1;
+
+	if(this != NULL)
+	{
+		this->id=auxId;
+		retorno=0;
+
+		if(/*auxId > ID_MAX || &&*/ auxId < FILE_ID_MIN && auxId > ID_MIN)
+		{
+			retorno = -2;
+			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id recibido de archivo. Valor: %d - maximoId: %d\n", auxId, ID_MIN);
+		}
+	}
+	return retorno;
+}
+
+/** \brief parsea el valor recibido por parametro y lo setea en this, dentro de su campo id
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+ * \param char* idStr recibe la referencia de la cadena a la cual se validara como id para setearla en el campo correspondiente
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						-2 si el valor recibido como id no corresponde al rango esperado
+ * 						0 si realizo la operacion correctamente
+ *
+ */
+//int Passenger_setIdStr(ePassenger* this,char* idStr, int* controlLista)
+int Passenger_setIdStr(ePassenger* this,char* idStr)
+{
+	int retorno;
+	int auxId;
+	//int mantenerIdArchivo;
 	//int auxIdControl;
 	retorno =-1;
 	//printf("3-1-1 set id\n");
 	//printf("Control lista en SetId: %d", *controlLista);
 	if(this != NULL && idStr != NULL && !validaciones_esNumeroInt(idStr, strlen(idStr)))
 	{
-		if(*controlLista==0)
+		auxId = atoi(idStr);
+		/*if(*controlLista==0)
 		{
 			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea comenzar por el ID 1? Y/N");
 			if(mantenerIdArchivo)
@@ -396,13 +489,13 @@ int Passenger_setIdStr(ePassenger* this,char* idStr, int* controlLista)
 		{
 			auxId = 0;
 			auxId = parser_proximoId(auxId);
-		}
+		}*/
 		this->id=auxId;
 		retorno=0;
-		if(/*auxId > ID_MAX ||*/ auxId < ID_MIN)
+		if(/*auxId > ID_MAX ||*/ auxId < FILE_ID_MIN && auxId > ID_MIN)
 		{
 			retorno = -2;
-			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d - maximoId: %d\n", auxId, ID_MAX);
+			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id recibido de archivo. Valor: %d - maximoId: %d\n", auxId, ID_MIN);
 		}
 	}
 	return retorno;
@@ -529,6 +622,26 @@ int Passenger_setPrecio(ePassenger* this,float precio)
 				parser_getPriceToBuffer(&precio);
 			}
 		 }
+	}
+	return retorno;
+}
+
+/** \brief analiza un elemento del tipo ePassenger y devuelve por referencia el dato alojado en el campo id
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+ * \param int* id recibe la referencia donde alojar el valor hallado
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						0 si realizo la operacion correctamente
+ *
+ */
+float Passenger_getPrice(ePassenger* this/*,int* id*/)
+{
+	float retorno;
+	retorno =-1;
+	if(this!= NULL /*&& id != NULL*/)
+	{
+
+		retorno =this->precio;
 	}
 	return retorno;
 }
@@ -745,6 +858,69 @@ ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda)
 		}
 	}
 	return thisCorrecto;
+}
+
+
+int Passenger_compareById(void* this, void* that)
+{
+	int comparacion;
+	int id1;
+	int id2;
+	ePassenger* pPasajero1;
+	ePassenger* pPasajero2;
+	comparacion = 0;
+	if(this != NULL && that != NULL)
+	{
+
+		pPasajero1 = (ePassenger*)this;
+		pPasajero2 = (ePassenger*)that;
+
+		id1= Passenger_getId(pPasajero1);
+		id2= Passenger_getId(pPasajero2);
+		if(id1 < id2)
+		{
+			comparacion = -1;
+		}
+		else
+		{
+			if(id1 > id2)
+			{
+				comparacion = 1;
+			}
+		}
+	}
+	return comparacion;
+}
+
+int Passenger_comparePrice(void* this, void* that)
+{
+	int comparacion;
+	ePassenger* pPasajero1;
+	ePassenger* pPasajero2;
+	float precio1;
+	float precio2;
+	comparacion =-1;
+	if(this != NULL && that != NULL)
+	{
+		pPasajero1 = (ePassenger*) this;
+		pPasajero2 = (ePassenger*) that;
+
+		precio1=Passenger_getPrice(pPasajero1);
+		precio2=Passenger_getPrice(pPasajero2);
+
+		if(precio1 < precio2)
+		{
+			comparacion = -1;
+		}
+		else
+		{
+			if(precio1 > precio2)
+			{
+				comparacion = 1;
+			}
+		}
+	}
+	return comparacion;
 }
 
 int Passenger_compareByName(void* this, void* that)
