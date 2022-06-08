@@ -308,7 +308,11 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 	int i;
 	int auxId;
 	char auxNombre[SIZE_STR];
+	char auxApellido[SIZE_STR];
+	float auxPrecio;
+	char auxCodigoVuelo[SIZE_STR];
 	char auxTipoPasajero[SIZE_STR];
+	char auxEstadoVuelo[SIZE_STR];
 
 	retorno = -1;
 
@@ -321,9 +325,10 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 			for(i=0; i<lenPArray; i++)
 			{
 				this=ll_get(pArrayListPassenger, i);
-				Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxTipoPasajero);
+				//Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxTipoPasajero);
+				Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxApellido, &auxPrecio, auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
 				//printf("%d) %d - %s - %s\n", i, auxId, auxNombre, auxTipoPasajero);
-				fprintf(pFile, "%d,%s,%s\n", auxId, auxNombre, auxTipoPasajero);
+				fprintf(pFile, "%d,%s,%s,%.2f,%s,%s,%s\n", auxId, auxNombre, auxApellido, auxPrecio, auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
 				retorno++;
 			}
 		}

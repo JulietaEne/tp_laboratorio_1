@@ -410,7 +410,7 @@ int utn_getAlfaNumerica(char pArray[], int len, char* mensaje, char* mensajeErro
 				{
 					break;
 				}*/
-			   if(!((pArray[i]>='a' && pArray[i]<= 'z') || (pArray[i]>='A' && pArray[i]<= 'Z'))&& !(pArray[i]<= 9 || pArray[i]>= 0)) /*|| (nombre[i] = 32) quise contemplar los espacios pero cuando pongo números, me los lee como espacios¿¿¿???*/
+			   if(!((pArray[i]>='a' && pArray[i]<= 'z') || (pArray[i]>='A' && pArray[i]<= 'Z'))&& !(pArray[i]<= 9 || pArray[i]>= 0)&& !(pArray[i]<= '-' || pArray[i]>= '/')) /*|| (nombre[i] = 32) quise contemplar los espacios pero cuando pongo números, me los lee como espacios¿¿¿???*/
 			   {
 					retorno=-1;
 					reintentos--;

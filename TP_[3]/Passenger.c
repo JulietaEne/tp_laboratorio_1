@@ -258,20 +258,25 @@ void Passenger_printMensajeConId(char* mensaje, ePassenger* pAuxPasajero)
  * 						0 si realizo la operacion correctamente
  *
  */
-int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero)
+//int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero)
+int Passenger_getDatosDePasajero(ePassenger* this, int* id,char* nombre,char* apellido,float* precio, char* codigoVuelo, char* tipoPasajero,char* estadoVuelo)
 {
 	int retorno;
 
 
 	retorno = -1;
-	if(id!= NULL && nombre != NULL && typePasajero != NULL && this != NULL)
+	if(this!= NULL && id!= NULL && nombre != NULL && apellido != NULL && precio!= NULL && codigoVuelo != NULL && tipoPasajero != NULL &&  tipoPasajero != NULL)
 	{
 		retorno = 0;
-		*id= Passenger_getId(this/*, &id*/);
+		*id= Passenger_getId(this);
 		//printf("[GETTER ID] this.id: %d -- id: %d\n", this->id,*id);
 		Passenger_getNombre(this, nombre);
+		Passenger_getApellido(this, apellido);
+		*precio= Passenger_getPrice(this);
+		Passenger_getCodigoVuelo(this, codigoVuelo);
+		Passenger_getEstadoVuelo(this, estadoVuelo);
 		//printf("[GETTER NAME] this.name: %s -- name: %s\n", this->nombre,nombre);
-		Passenger_getTipoPasajero(this, typePasajero);
+		Passenger_getTipoPasajero(this, tipoPasajero);
 		//printf("[GETTER TYPE] this.tipo: %s -- typePass: %s\n", this->tipoPasajero,typePasajero);
 	}
 
@@ -583,6 +588,54 @@ int Passenger_getNombre(ePassenger* this,char* nombre)
 	return retorno;
 }
 
+/** \brief analiza un elemento del tipo ePassenger y devuelve por referencia el dato alojado en el campo nombre
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+ * \param char* nombre recibe la referencia donde alojar el valor hallado
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						0 si realizo la operacion correctamente
+ *
+ */
+int Passenger_getApellido(ePassenger* this,char* apellido)
+{
+	int retorno;
+	//int lenString;
+
+	//lenString=strlen(this->nombre);
+	//printf("****name previo: %s - len: %d - campo nombre: %s\n", nombre, lenString, this->nombre);
+	retorno =-1;
+	if(this!= NULL && apellido != NULL)
+	{
+		strcpy(apellido, this->apellido); //aca con strNcpy me copia muchas cosas de mas y no se por que :(
+		retorno =0;
+	}
+	return retorno;
+}
+
+/** \brief analiza un elemento del tipo ePassenger y devuelve por referencia el dato alojado en el campo nombre
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+ * \param char* nombre recibe la referencia donde alojar el valor hallado
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						0 si realizo la operacion correctamente
+ *
+ */
+int Passenger_getCodigoVuelo(ePassenger* this,char* codigoVuelo)
+{
+	int retorno;
+	//int lenString;
+
+	//lenString=strlen(this->nombre);
+	//printf("****name previo: %s - len: %d - campo nombre: %s\n", nombre, lenString, this->nombre);
+	retorno =-1;
+	if(this!= NULL && codigoVuelo != NULL)
+	{
+		strcpy(codigoVuelo, this->flyCode); //aca con strNcpy me copia muchas cosas de mas y no se por que :(
+		retorno =0;
+	}
+	return retorno;
+}
+
 int Passenger_setApellido(ePassenger* this,char* apellido)
 {
 	int retorno;
@@ -645,6 +698,8 @@ float Passenger_getPrice(ePassenger* this/*,int* id*/)
 	}
 	return retorno;
 }
+
+
 
 int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo)
 {
@@ -764,6 +819,31 @@ int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero)
 	if(this!= NULL && tipoPasajero != NULL)
 	{
 		strcpy(tipoPasajero, this->tipoPasajero);//si uso el strNcpy me copia mal
+		retorno =0;
+	}
+	return retorno;
+}
+
+/** \brief analiza un elemento del tipo ePassenger y devuelve por referencia el dato alojado en el campo tipoPasajero
+ *
+ * \param ePassenger* this recibe el puntero al elemento sobre el cual se va a realizar la operacion
+ * \param int* tipoPasajero recibe la referencia donde alojar el valor hallado
+ * \return int  retorna -1 si hubo un error en los parametros recibidos
+ * 						0 si realizo la operacion correctamente
+ *
+ */
+int Passenger_getEstadoVuelo(ePassenger* this,char* estadoVuelo)
+{
+	int retorno;
+	retorno =-1;
+
+	//int lenString;
+
+	//lenString=strlen(tipoPasajero);
+	retorno =-1;
+	if(this!= NULL && estadoVuelo != NULL)
+	{
+		strcpy(estadoVuelo, this->estadoVuelo);//si uso el strNcpy me copia mal
 		retorno =0;
 	}
 	return retorno;

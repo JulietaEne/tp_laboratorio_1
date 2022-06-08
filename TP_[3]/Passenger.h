@@ -53,7 +53,8 @@ ePassenger* Passenger_newParametrosAllBinary(int id,char* nombre,char* apellido,
 //ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo);
 
 void Passenger_printMensajeConId(char* mensaje,  ePassenger* pAuxPasajero);
-int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
+//int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
+int Passenger_getDatosDePasajero(ePassenger* this, int* id,char* nombre,char* apellido,float* precio, char* codigoVuelo, char* tipoPasajero,char* estadoVuelo);
 int passenger_delete(ePassenger* this);
 int Passenger_initPasajero(ePassenger* this);
 int Passenger_printPasajero(ePassenger* this);
@@ -89,6 +90,7 @@ int Passenger_setPrecio(ePassenger* this,float precio);
 float Passenger_getPrice(ePassenger* this);
 
 int Passenger_setPrice(ePassenger* this,char* priceStr);
+int Passenger_getEstadoVuelo(ePassenger* this,char* estadoVuelo);
 int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
 int Passenger_setLastName(ePassenger* this,char* apellidoStr);
 

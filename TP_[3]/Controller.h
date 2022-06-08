@@ -17,8 +17,9 @@
 #include "src/tp.h"
 
 
-
+int controller_optionsToOpenCsv(LinkedList* pArrayListPassenger);
 int controller_loadFromText(char* path , LinkedList* pArrayListPassenger);
+int controller_optionsToOpenBin(LinkedList* pArrayListPassenger);
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger);
 int controller_addPassenger(LinkedList* pArrayListPassenger);
 int controller_findLastIdValue(LinkedList* pArrayListPassenger);
@@ -30,8 +31,9 @@ int controller_sortPassenger(LinkedList* pArrayListPassenger);
 //int controller_comparePassenger(LinkedList* pArrayListPassenger);
 int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2);
 
-
+int controller_optionsToSaveCsv(LinkedList* pArrayListPassenger);
 int controller_saveAsText(char* path , LinkedList* pArrayListPassenger);
+int controller_optionsToSaveBin(LinkedList* pArrayListPassenger);
 int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger);
 /*
 int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger);

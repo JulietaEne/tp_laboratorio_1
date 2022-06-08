@@ -52,8 +52,8 @@ int main()
 			switch(option)
 			{
 				case 1:
-					printf("abriendo archivo data.csv....");
-					if(!controlPasajeros && !controller_loadFromText("data.csv",listaPasajeros))
+
+					if(!controlPasajeros && !controller_optionsToOpenCsv(listaPasajeros))
 					{
 						controlPasajeros=1;
 					}
@@ -64,8 +64,8 @@ int main()
 					break;
 			    case 2:
 					//cargar desde archivo binario
-			    	printf("abriendo archivo data-procesado.bin....\n");
-					if(!controlPasajeros && !controller_loadFromBinary("data-procesado.bin", listaPasajeros))
+			    	//printf("abriendo archivo data-procesado.bin....\n");
+					if(!controlPasajeros && !controller_optionsToOpenBin(listaPasajeros))
 					{
 						controlPasajeros=1;
 					}
@@ -131,7 +131,7 @@ int main()
 					if(controlPasajeros)
 					{
 						printf("guardando archivo data-procesado.scv.....");
-						controller_saveAsText("data-procesado.txt", listaPasajeros);
+						controller_optionsToSaveCsv(listaPasajeros);
 						controlGuardado = 1;
 					}
 					else
@@ -144,7 +144,7 @@ int main()
 					if(controlPasajeros)
 					{
 						printf("guardando archivo extension data-procesado.bin.....");
-						controller_saveAsBinary("data-procesado.bin", listaPasajeros);
+						controller_optionsToSaveBin(listaPasajeros);
 						controlGuardado = 1;
 					}
 					else

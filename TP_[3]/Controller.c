@@ -2,6 +2,26 @@
 #include "Controller.h"
 
 
+int controller_optionsToOpenCsv(LinkedList* pArrayListPassenger)
+{
+	int cambiarPath;
+	char path[SIZE_STR]="data.csv";
+	int retorno;
+
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		cambiarPath= tp_continuar("Ubicacion de archivo './data.csv' Desea cambiar el path de apertura? Y/N");
+		if(cambiarPath)
+		{
+			utn_getAlfaNumerica(path, SIZE_STR, "ingrese nuevo path: ", "ingrese un dato valido", REINTENTOS);
+		}
+		controller_loadFromText(path,pArrayListPassenger);
+		retorno = 0;
+	}
+	return retorno;
+}
+
 /** \brief Carga los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
  * \param path char* recibe como cadena de caracteres la ruta donde se encuentra el archivo o donde se lo creara
@@ -35,6 +55,26 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
 		}
 	}
     return retorno;
+}
+
+int controller_optionsToOpenBin(LinkedList* pArrayListPassenger)
+{
+	int cambiarPath;
+	char path[SIZE_STR]="data-procesado.bin";
+	int retorno;
+
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		cambiarPath= tp_continuar("Ubicacion de archivo './data-procesado.bin' Desea cambiar el path de apertura? Y/N");
+		if(cambiarPath)
+		{
+			utn_getAlfaNumerica(path, SIZE_STR, "ingrese nuevo path: ", "ingrese un dato valido", REINTENTOS);
+		}
+		controller_loadFromBinary(path,pArrayListPassenger);
+		retorno = 0;
+	}
+	return retorno;
 }
 
 /** \brief Carga los datos de los pasajeros desde el archivo data-procesado.bin (modo binario).
@@ -352,6 +392,26 @@ int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2)
 	return retorno;
 }*/
 
+int controller_optionsToSaveCsv(LinkedList* pArrayListPassenger)
+{
+	int cambiarPath;
+	char path[SIZE_STR]="data-procesado.txt";
+	int retorno;
+
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		cambiarPath= tp_continuar("Ubicacion de archivo './data-procesado.csv' Desea guardar en otro path? Y/N");
+		if(cambiarPath)
+		{
+			utn_getAlfaNumerica(path, SIZE_STR, "ingrese nuevo path: ", "ingrese un dato valido", REINTENTOS);
+		}
+		controller_saveAsText(path,pArrayListPassenger);
+		retorno = 0;
+	}
+	return retorno;
+}
+
 /** \brief Guarda los datos de los pasajeros en el archivo data.csv (modo texto).
  *
  * \param path char*
@@ -381,6 +441,26 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 			printf("[ERROR] No se ha crear abrir el archivo");
 			retorno = -2;
 		}
+	}
+	return retorno;
+}
+
+int controller_optionsToSaveBin(LinkedList* pArrayListPassenger)
+{
+	int cambiarPath;
+	char path[SIZE_STR]="data-procesado.bin";
+	int retorno;
+
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		cambiarPath= tp_continuar("Ubicacion de archivo './data-procesado.bin' Desea guardar en otro path? Y/N");
+		if(cambiarPath)
+		{
+			utn_getAlfaNumerica(path, SIZE_STR, "ingrese nuevo path: ", "ingrese un dato valido", REINTENTOS);
+		}
+		controller_saveAsBinary(path,pArrayListPassenger);
+		retorno = 0;
 	}
 	return retorno;
 }
@@ -416,6 +496,8 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 	}
 	return retorno;
 }
+
+
 
 //recorro el linkedlist para desencapsular cada *Passenger
 			//** en biblio Passenger**

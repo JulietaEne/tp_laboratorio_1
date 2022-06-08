@@ -19,8 +19,13 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement);
  */
 LinkedList* ll_newLinkedList(void)
 {
-	LinkedList* this;
+	LinkedList* this= NULL;
 	this = (LinkedList*) malloc(sizeof(LinkedList));
+	if(this != NULL)
+	{
+		this->pFirstNode = NULL;
+		this->size = 0;
+	}
 	return this;
 	//printf("New linkedList\n First Node: %p - size Of this%d", this->pFirstNode, this->size);
 }
