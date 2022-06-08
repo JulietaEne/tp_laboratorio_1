@@ -348,7 +348,7 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
  *						0 si opero correctamente
  *
  */
-int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
+int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasajeros)
 {
 	int retorno;
 	int auxId;
@@ -364,7 +364,14 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger)
 
 	retorno = -1;
 	contador =0;
-	controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+	if(controlPasajeros<=1)
+	{
+		controlLista =0;
+	}
+	else
+	{
+		controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+	}
 	//printf("lista: %d", controlLista);
 	if(pArrayListPassenger != NULL)
 	{
@@ -452,14 +459,27 @@ int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode)
 int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
 {
 	int retorno;
+	int codTipoPasajero;
 	retorno =-1;
-	if(statusFlight != NULL && lenStatusFlight>0)
+	if(statusFlight != NULL && lenStatusFlight  >0)
 	{
-		utn_ingresarAlfabetica(statusFlight, lenStatusFlight, "Estado del vuelo: ", "Ingrese un dato valido", REINTENTOS);
+		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- Aterrizado", "2- En Horario", "3- En Vuelo");
+		switch (codTipoPasajero) {
+			case 1:
+				strcpy(statusFlight,"Aterrizado");
+				break;
+			case 2:
+				strcpy(statusFlight,"En Horario");
+				break;
+			case 3:
+				strcpy(statusFlight,"En Vuelo");
+				break;
+		}
 		retorno=0;
 	}
 	return retorno;
 }
+
 
 int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 {
@@ -515,10 +535,22 @@ int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 int parser_getTypePassToBuffer(char* typePass, int lenName)
 {
 	int retorno;
+	int codTipoPasajero;
 	retorno =-1;
 	if(typePass != NULL && lenName >0)
 	{
-		utn_ingresarAlfabetica(typePass, lenName, "ingrese tipo de pasajero (FirstClass,ExecutiveClass,EconomyClass)", "ingrese un dato valido", REINTENTOS);
+		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- EconomyClass", "2- ExecutiveClass", "3- FirstClass");
+		switch (codTipoPasajero) {
+			case 1:
+				strcpy(typePass,"EconomyClass");
+				break;
+			case 2:
+				strcpy(typePass,"ExecutiveClass");
+				break;
+			case 3:
+				strcpy(typePass,"FirstClass");
+				break;
+		}
 		retorno=0;
 	}
 	return retorno;

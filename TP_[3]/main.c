@@ -64,7 +64,6 @@ int main()
 					break;
 			    case 2:
 					//cargar desde archivo binario
-			    	//printf("abriendo archivo data-procesado.bin....\n");
 					if(!controlPasajeros && !controller_optionsToOpenBin(listaPasajeros))
 					{
 						controlPasajeros=1;
@@ -76,9 +75,9 @@ int main()
 					break;
 				case 3:
 					// alta de pasajero
-					if(!controller_addPassenger(listaPasajeros))
+					if(!controller_addPassenger(listaPasajeros, controlPasajeros))
 					{
-						controlPasajeros=1;//falta arreglar el tema del id
+						controlPasajeros++;
 					}
 					break;
 				case 4:

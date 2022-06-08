@@ -118,14 +118,14 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
  * \return int
  */
 
-int controller_addPassenger(LinkedList* pArrayListPassenger)
+int controller_addPassenger(LinkedList* pArrayListPassenger, int controlPasajeros)
 {
 	int retorno;
 	retorno = -1;
 	if(pArrayListPassenger != NULL)
 	{
 		retorno = -2;
-		parser_passengerFromBuffer(pArrayListPassenger); // esta funcion se encarga de levantar por teclado la info y de agregarla al linkedlist en un puntero tipo *ePassenger
+		parser_passengerFromBuffer(pArrayListPassenger, controlPasajeros); // esta funcion se encarga de levantar por teclado la info y de agregarla al linkedlist en un puntero tipo *ePassenger
 		retorno = 0;
 	}
 	return retorno;

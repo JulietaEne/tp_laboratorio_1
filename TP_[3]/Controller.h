@@ -21,7 +21,7 @@ int controller_optionsToOpenCsv(LinkedList* pArrayListPassenger);
 int controller_loadFromText(char* path , LinkedList* pArrayListPassenger);
 int controller_optionsToOpenBin(LinkedList* pArrayListPassenger);
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger);
-int controller_addPassenger(LinkedList* pArrayListPassenger);
+int controller_addPassenger(LinkedList* pArrayListPassenger, int controlPasajeros);
 int controller_findLastIdValue(LinkedList* pArrayListPassenger);
 
 int controller_editPassenger(LinkedList* pArrayListPassenger);
