@@ -161,52 +161,41 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
 	Node* nodoReacomodado = NULL;
 	int sizeThis;
 	int retorno;
-	int i;
+	//int i;
 
+	retorno = -1;
 	sizeThis = ll_len(this);
-//	nodoAnterior= this->pFirstNode;tomo la direccion de memoria del primer nodo a partir de LL
-	retorno =-1;
-	if(this != NULL && nodeIndex>=0 && nodeIndex<=sizeThis && sizeThis >=0)
+	if( this != NULL && nodeIndex >= 0 && nodeIndex <= sizeThis)
 	{
 		newNode = (Node*)malloc(sizeof(Node));
 		if(newNode != NULL)
 		{
-			switch (nodeIndex){
-				case 0://si agrego nodo al primer index de la lista
-					if(nodoAnterior == NULL)// si LL aun no apunta a nada
-					{
-						//nodoAnterior = newNode; cambio el puntero de linked list
-						newNode->pNextNode = NULL;
-						//newNode->pElement = pElement;
-					}
-					else//si el LL ya apunta a algo, tengo que modificarlo
-					{
-						nodoReacomodado = nodoAnterior; //nodo anterior es la direcc de mem que tengo que reacomodar
-						//nodoAnterior = newNode;
-						newNode->pNextNode = nodoReacomodado;
-						//newNode->pElement = pElement;
-					}
-					nodoAnterior = newNode;
-					newNode->pElement = pElement;
-					retorno =0;
+			//acá tengo que poner còmo se completarian los campos de la estructura para cada caso
+			switch (nodeIndex)
+			{
+				case 0://si tengo que cargar el primer nodo
+					this->pFirstNode = newNode;
+					newNode->pNextNode = NULL;
 					break;
-				default://si agrego nodo a un index >0:  tengo que cambiar el puntero a nodo posterior y el anterior al del index señalado
-					nodoReacomodado = nodoAnterior;
-					for (i=1; i<=nodeIndex; i++)//para llegar al nodo que tengo que reacomodar
+				default:
+					if(nodeIndex==sizeThis)//quiere decir que va a ser un elemento que se agregue a lo ultimo
 					{
-						nodoReacomodado=nodoReacomodado->pNextNode;
+						nodoAnterior = getNode(this, nodeIndex);
+						nodoAnterior->pNextNode= newNode;
+						newNode->pNextNode=NULL;
 					}
-					for (i=1; i<nodeIndex; i++)//para llegar al nodo que antecede al nuevo acomodado
+					else//si pongo un nodo entre dos nodos
 					{
-						nodoAnterior = nodoAnterior->pNextNode;
+						nodoReacomodado = getNode(this, nodeIndex);
+						nodoAnterior = getNode(this, nodeIndex-1);
+						nodoAnterior->pNextNode=newNode;
+						newNode->pNextNode=nodoReacomodado;
 					}
-					nodoAnterior->pNextNode = newNode;
-					newNode->pNextNode = nodoReacomodado;
-					newNode->pElement = pElement;
-					retorno =0;
 					break;
 			}
-			sizeThis = sizeThis +1;
+			newNode->pElement= pElement;
+			this->size = sizeThis+1;
+			retorno = 0;
 		}
 	}
 	return retorno;
@@ -236,24 +225,45 @@ int test_addNode(LinkedList* this, int nodeIndex,void* pElement)
  */
 int ll_add(LinkedList* this, void* pElement)
 {
-    int returnAux = -1;
+    int retorno;
+    int sizeThis;
 
-    return returnAux;
+    retorno = -1;
+    if(this != NULL && pElement != NULL)
+    {
+    	sizeThis = ll_len(this);
+    	if(!addNode(this, sizeThis, pElement))
+    	{
+        	retorno = 0;
+    	}
+    }
+    return retorno;
 }
 
-/** \brief Permite realizar el test de la funcion addNode la cual es privada
+/** \brief Retorna un puntero al elemento que se encuentra en el índice especificado
  *
  * \param this LinkedList* Puntero a la lista
- * \param nodeIndex int Ubicacion del elemento a obtener
+ * \param index int Ubicacion del elemento a obtener
  * \return void* Retorna    (NULL) Error: si el puntero a la lista es NULL o (si el indice es menor a 0 o mayor al len de la lista)
                             (pElement) Si funciono correctamente
  *
  */
 void* ll_get(LinkedList* this, int index)
 {
-    void* returnAux = NULL;
+    void* pElemento = NULL;
+    Node* pNodoElemento = NULL;
+    int sizeThis;
 
-    return returnAux;
+    sizeThis = ll_len(this);
+    if(this!= NULL && index)
+    {
+    	pNodoElemento = getNode(this, index);
+    	if(pNodoElemento != NULL)
+    	{
+    		pElemento = pNodoElemento->pElement;
+    	}
+    }
+    return pElemento;
 }
 
 
@@ -268,9 +278,22 @@ void* ll_get(LinkedList* this, int index)
  */
 int ll_set(LinkedList* this, int index,void* pElement)
 {
-    int returnAux = -1;
+    int retorno;
+    int sizeThis;
+    Node* nodoSeteado;
 
-    return returnAux;
+    sizeThis = ll_len(this);
+    retorno = -1;
+    if(this != NULL && index>= 0 && index<sizeThis && pElement != NULL)
+    {
+    	nodoSeteado = getNode(this, index);
+    	if(nodoSeteado != NULL)
+    	{
+    		nodoSeteado->pElement = pElement;
+    		retorno = 0;
+    	}
+    }
+    return retorno;
 }
 
 
