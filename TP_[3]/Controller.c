@@ -1,7 +1,13 @@
 
 #include "Controller.h"
 
-
+/** \brief Interactua con el usuario para determinar el archivo de texto sobre el cual se trabajará
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error
+ * 			   0 si pudo operar exitosamente
+ *
+ */
 int controller_optionsToOpenCsv(LinkedList* pArrayListPassenger)
 {
 	int cambiarPath;
@@ -57,6 +63,13 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)//fopen
     return retorno;
 }
 
+/** \brief Interactua con el usuario para determinar el archivo binario sobre el cual se trabajará
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error
+ * 			   0 si pudo operar exitosamente
+ *
+ */
 int controller_optionsToOpenBin(LinkedList* pArrayListPassenger)
 {
 	int cambiarPath;
@@ -113,9 +126,11 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 
 /** \brief Alta de pasajero
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param LinkedList* pArrayListPassenger Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \param int controlPasajeros indica a la funcion si ya se han cargado datos a partir de un archivo
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no pudo solicitar exitosamente los datos a cargar
+ * 			   0 si opero exitosamente
  */
 
 int controller_addPassenger(LinkedList* pArrayListPassenger, int controlPasajeros)
@@ -127,54 +142,6 @@ int controller_addPassenger(LinkedList* pArrayListPassenger, int controlPasajero
 		retorno = -2;
 		parser_passengerFromBuffer(pArrayListPassenger, controlPasajeros); // esta funcion se encarga de levantar por teclado la info y de agregarla al linkedlist en un puntero tipo *ePassenger
 		retorno = 0;
-	}
-	return retorno;
-}
-
-/** \brief Recorre el array de punteros para analizar sus campos id y hallar el id mas alto
- *
- * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
- * \return int retorno -1 si hubo un error en los parametros
- * 						0 si no hallo datos
- * 						>0 si pudo operar(retorna el valor del ultimo id)
- *
- */
-int controller_findLastIdValue(LinkedList* pArrayListPassenger)
-{
-	int retorno;
-	int i;
-	int lenArray;
-	int mayotId;
-	ePassenger* pAuxPasajero;
-	int idAuxPasajero;
-
-	retorno =-1;
-	lenArray = ll_len(pArrayListPassenger);
-	/*if(lenArray ==0)
-	{
-		printf("HOLA lenArray =0\n");
-	}*/
-	if(pArrayListPassenger!= NULL && lenArray>0)
-	{
-		retorno=0;
-		//recorro la lista y busco el id mas alto
-		for(i=0; i<lenArray; i++)
-		{
-			pAuxPasajero = ll_get(pArrayListPassenger, i);
-			idAuxPasajero = Passenger_getId(pAuxPasajero);
-			//printf("HOLA - nombre: %s -- id: %d\n", pAuxPasajero->nombre, idAuxPasajero);
-			if(i==0)
-			{
-				mayotId = idAuxPasajero;
-				//printf("*** ultimo id: %d -- id: %d\n", ultimoId, idAuxPasajero);
-			}
-			if(mayotId < idAuxPasajero)
-			{
-				mayotId =idAuxPasajero;
-			}
-			//printf("ultimo id: %d\n", mayotId);
-		}
-		retorno = mayotId;
 	}
 	return retorno;
 }
@@ -253,9 +220,9 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 
 /** \brief Listar pasajeros
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error
+ * 				0 si opero exitosamente
  *
  */
 int controller_ListPassenger(LinkedList* pArrayListPassenger, int controlOrden)
@@ -287,9 +254,9 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger, int controlOrden)
 
 /** \brief Ordenar pasajeros
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error
+ * 				0 si opero exitosamente
  *
  */
 int controller_sortPassenger(LinkedList* pArrayListPassenger)
@@ -392,10 +359,17 @@ int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2)
 	return retorno;
 }*/
 
+/** \brief Interactua con el usuario para determinar donde se guardara el archivo de texto
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error
+ * 			   0 si pudo operar exitosamente
+ *
+ */
 int controller_optionsToSaveCsv(LinkedList* pArrayListPassenger)
 {
 	int cambiarPath;
-	char path[SIZE_STR]="data-procesado.txt";
+	char path[SIZE_STR]="data-procesado.csvtxt";
 	int retorno;
 
 	retorno = -1;
@@ -414,9 +388,10 @@ int controller_optionsToSaveCsv(LinkedList* pArrayListPassenger)
 
 /** \brief Guarda los datos de los pasajeros en el archivo data.csv (modo texto).
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no se pudo crear el archivo (no se encontró espacio en memoria)
+ * 			   0 si opero exitosamente
  *
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
@@ -438,13 +413,20 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 		}
 		else
 		{
-			printf("[ERROR] No se ha crear abrir el archivo");
+			printf("[ERROR] No se ha crear el archivo");
 			retorno = -2;
 		}
 	}
 	return retorno;
 }
 
+/** \brief Interactua con el usuario para determinar donde se guardara el archivo binario
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error
+ * 			   0 si pudo operar exitosamente
+ *
+ */
 int controller_optionsToSaveBin(LinkedList* pArrayListPassenger)
 {
 	int cambiarPath;
@@ -465,11 +447,12 @@ int controller_optionsToSaveBin(LinkedList* pArrayListPassenger)
 	return retorno;
 }
 
-/** \brief Guarda los datos de los pasajeros en el archivo data.csv (modo binario).
+/** \brief Guarda los datos de los pasajeros en el archivo bin (modo binario).
  *
- * \param path char*
- * \param pArrayListPassenger LinkedList*
- * \return int
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no se pudo crear el archivo (no se encontró espacio en memoria)
+ * 			   0 si opero exitosamente
  *
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
