@@ -39,20 +39,16 @@ LinkedList* ll_newLinkedList(void)
 int ll_len(LinkedList* this)
 {
 	Node* pAuxNode=NULL;
-    //int returnAux = -1;
-    int contadorLen;
+    int lenghtList;
 
-    contadorLen=-1;
-	//printf("LEN\nNew linkedList %p\n First Node: %p - size Of this:%d\n\n",this, this->pFirstNode, this->size);
-
-   // printf("linkedList: %p\n", this);
+    lenghtList=-1;
     if(this != NULL)
     {
-    	contadorLen=0;
+    	lenghtList = this->size;
+
+    	/*contadorLen=0;
     	pAuxNode = this->pFirstNode;
 
-    	//countNode(pAuxNode, &contadorLen);
-    	//printf("!!!!!!!!!!!!!this->pFirstNode %p =? pAuxNode: %p\n", this->pFirstNode, pAuxNode);
 		if(pAuxNode!= NULL)// si la linkedList apunta a 1 elemento
 		{
 			contadorLen = 1;
@@ -70,10 +66,10 @@ int ll_len(LinkedList* this)
 					break;
 				}
 			}while(pAuxNode!=NULL);
-		}//
+		}//*/
     }
   //  printf("retorno: %d\n\n", contadorLen);
-    return contadorLen;
+    return lenghtList;
 }
 
 /*static void countNode(Node* this, int* counter)
@@ -97,31 +93,26 @@ int ll_len(LinkedList* this)
  * \param this LinkedList* Puntero a la lista
  * \param index int Indice del nodo a obtener
  * \return Node* Retorna  (NULL) Error: si el puntero a la lista es NULL o (si el indice es menor a 0 o mayor al len de la lista)
-                        (pNode) Si funciono correctamente
+ *                       (pGetNode) Si funciono correctamente
  *
  */
 static Node* getNode(LinkedList* this, int nodeIndex)
 {
-    Node* pObtainedNode=NULL;
+    Node* pGetNode=NULL;
     int sizeThis;
     int i;
 
-
-    sizeThis = ll_len(this);//len me da 2 -.-
-    printf("**GETNODE\n nodeIndex: %d, len: %d --", nodeIndex, sizeThis);
+    sizeThis = ll_len(this);
     if(this != NULL && nodeIndex>=0 && nodeIndex<sizeThis && sizeThis >0)
     {
     	//findNodeByIndex(this, nodeIndex,pObtainedNode);
-    	pObtainedNode= this->pFirstNode;
-    	printf("\nprimer nodo:%p \n", pObtainedNode);
+    	pGetNode= this->pFirstNode;
     	for(i=1; i<=nodeIndex; i++)
     	{
-    		printf("i/index=%d nodo:%p \n", i, pObtainedNode->pNextNode);
-    		pObtainedNode = pObtainedNode->pNextNode;
+    		pGetNode = pGetNode->pNextNode;
     	}
     }
-    printf("retorno: %p\n\n", pObtainedNode);
-	return pObtainedNode;
+	return pGetNode;
 }
 
 /*static Node* findNodeByIndex(LinkedList* this, int nodeIndex, Node* pObtainedNode)
@@ -173,7 +164,7 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
 	int i;
 
 	sizeThis = ll_len(this);
-	nodoAnterior= this->pFirstNode;//tomo la direccion de memoria del primer nodo a partir de LL
+//	nodoAnterior= this->pFirstNode;tomo la direccion de memoria del primer nodo a partir de LL
 	retorno =-1;
 	if(this != NULL && nodeIndex>=0 && nodeIndex<=sizeThis && sizeThis >=0)
 	{
@@ -181,39 +172,39 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
 		if(newNode != NULL)
 		{
 			switch (nodeIndex){
-			case 0://si agrego nodo al primer index de la lista
-				if(nodoAnterior == NULL)// si LL aun no apunta a nada
-				{
-					//nodoAnterior = newNode; cambio el puntero de linked list
-					newNode->pNextNode = NULL;
-					//newNode->pElement = pElement;
-				}
-				else//si el LL ya apunta a algo, tengo que modificarlo
-				{
-					nodoReacomodado = nodoAnterior; //nodo anterior es la direcc de mem que tengo que reacomodar
-					//nodoAnterior = newNode;
+				case 0://si agrego nodo al primer index de la lista
+					if(nodoAnterior == NULL)// si LL aun no apunta a nada
+					{
+						//nodoAnterior = newNode; cambio el puntero de linked list
+						newNode->pNextNode = NULL;
+						//newNode->pElement = pElement;
+					}
+					else//si el LL ya apunta a algo, tengo que modificarlo
+					{
+						nodoReacomodado = nodoAnterior; //nodo anterior es la direcc de mem que tengo que reacomodar
+						//nodoAnterior = newNode;
+						newNode->pNextNode = nodoReacomodado;
+						//newNode->pElement = pElement;
+					}
+					nodoAnterior = newNode;
+					newNode->pElement = pElement;
+					retorno =0;
+					break;
+				default://si agrego nodo a un index >0:  tengo que cambiar el puntero a nodo posterior y el anterior al del index señalado
+					nodoReacomodado = nodoAnterior;
+					for (i=1; i<=nodeIndex; i++)//para llegar al nodo que tengo que reacomodar
+					{
+						nodoReacomodado=nodoReacomodado->pNextNode;
+					}
+					for (i=1; i<nodeIndex; i++)//para llegar al nodo que antecede al nuevo acomodado
+					{
+						nodoAnterior = nodoAnterior->pNextNode;
+					}
+					nodoAnterior->pNextNode = newNode;
 					newNode->pNextNode = nodoReacomodado;
-					//newNode->pElement = pElement;
-				}
-				nodoAnterior = newNode;
-				newNode->pElement = pElement;
-				retorno =0;
-				break;
-			default://si agrego nodo a un index >0:  tengo que cambiar el puntero a nodo posterior y el anterior al del index señalado
-				nodoReacomodado = nodoAnterior;
-				for (i=1; i<=nodeIndex; i++)//para llegar al nodo que tengo que reacomodar
-				{
-					nodoReacomodado=nodoReacomodado->pNextNode;
-				}
-				for (i=1; i<nodeIndex; i++)//para llegar al nodo que antecede al nuevo acomodado
-				{
-					nodoAnterior = nodoAnterior->pNextNode;
-				}
-				nodoAnterior->pNextNode = newNode;
-				newNode->pNextNode = nodoReacomodado;
-				newNode->pElement = pElement;
-				retorno =0;
-				break;
+					newNode->pElement = pElement;
+					retorno =0;
+					break;
 			}
 			sizeThis = sizeThis +1;
 		}
