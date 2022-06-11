@@ -298,67 +298,6 @@ int controller_sortPassenger(LinkedList* pArrayListPassenger)
     return retorno;
 }
 
-/*int controller_comparePassenger(LinkedList* pArrayListPassenger)
-{
-	int retorno;
-	int i;
-	int lenArray;
-	int flagSwap;
-	ePassenger* pAuxPass1 = NULL;
-	ePassenger* pAuxPass2 = NULL;
-	int comparacion;
-
-	retorno =-1;
-	lenArray = ll_len(pArrayListPassenger);
-	if(pArrayListPassenger!= NULL && lenArray>0)
-	{
-		lenArray=lenArray-1;
-		printf("estamos en el sort\n");
-		do
-		{
-			flagSwap=0;
-			for(i=0; i<lenArray; i++)
-			{
-				pAuxPass1=(ePassenger*)ll_get(pArrayListPassenger, i);
-				pAuxPass2=(ePassenger*)ll_get(pArrayListPassenger, (i+1));
-				//printf("p1: %p -- p2: %p\n", pAuxPass1, pAuxPass2);
-				if(pAuxPass1 != NULL && pAuxPass2 != NULL)
-				{
-					//printf("pass 1 y pass 2 OK\n");
-					comparacion=Passenger_comparePassengersByName(pAuxPass1, pAuxPass2);
-					if(comparacion>0)
-					{
-						//printf("la comparacion dio %d\n", comparacion);
-						controller_swapPpasajero(pAuxPass1, pAuxPass2);
-						flagSwap=1;
-					}
-				}
-			}
-			lenArray--;
-		}while(flagSwap);
-		printf("lo mostramos: \n");
-		controller_ListPassenger(pArrayListPassenger);
-		retorno =0;
-	}
-	return retorno;
-}
-
-int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2)
-{
-	int retorno;
-	ePassenger* pAuxPasajero;
-	retorno=-1;
-	if(pPasajero1 != NULL && pPasajero2 != NULL)
-	{
-		pAuxPasajero = pPasajero1;
-		pPasajero1 = pPasajero2;
-		pPasajero2= pAuxPasajero;
-		//printf("hicimos el cambio");
-		retorno=0;
-	}
-	return retorno;
-}*/
-
 /** \brief Interactua con el usuario para determinar donde se guardara el archivo de texto
  *
  * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
@@ -482,44 +421,12 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 
 
 
-//recorro el linkedlist para desencapsular cada *Passenger
-			//** en biblio Passenger**
-				// recibo cada puntero y recibo el id ingresado
-				// y analizo igualdad en this->id == idIngresado
-				//cuando encuentro, retorno el index donde se encontro
-	//rompo el bucle de busqueda
-ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado)
-{
-	//int retorno;
-	int i;
-	int lenArray;
-	int auxId;
-	ePassenger* pAuxPass = NULL;
-
-	//retorno =-1;
-	lenArray=ll_len(pArrayListPassenger);
-	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
-	{
-		controller_askToViewList(pArrayListPassenger);
-		utn_GetNumeroInt(&auxId, "ingrese un id: ", "dato incorrecto", FILE_ID_MIN, ID_MAX, REINTENTOS);
-		*idIngresado = auxId;
-		//retorno =-2; //si no encontro ningun elemento
-		for(i=0; i<lenArray; i++)
-		{
-			pAuxPass = ll_get(pArrayListPassenger, i);
-			//printf("%d) %s\n", i+1, pAuxPass->nombre);
-			pAuxPass= Passenger_findIndexById(pAuxPass, *idIngresado);
-			if(pAuxPass!= NULL)
-			{
-				*indexHallado = i;
-				//printf("%d: %s OK \n", pAuxPass->id, pAuxPass->nombre);
-				break;
-			}
-		}
-	}
-	return pAuxPass;
-}
-
+/** \brief Consulta al usuario para mostrar la lista completa
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return void
+ *
+ */
 void controller_askToViewList(LinkedList* pArrayListPassenger)
 {
 	int verLista;
@@ -533,26 +440,7 @@ void controller_askToViewList(LinkedList* pArrayListPassenger)
 	}
 }
 
-/*int controller_recorrerArray(LinkedList* pArrayListPassenger, ePassenger* pAuxPass)
-{
-	int i;
-	int lenArray;
-	int retorno;
-	//ePassenger* pAuxPass = NULL;
-	retorno=-1;
-	if(pArrayListPassenger!= NULL)
-	{
-		lenArray = ll_len(pArrayListPassenger);
-		for(i=0; i<lenArray; i++)
-		{
-			pAuxPass = ll_get(pArrayListPassenger, i);
-			retorno=i;
-		}
-	}
-	return retorno;
-}*/
-
-/** \brief Interactua con el usuario para indicar el campo a modificar
+/** \brief Consulta al usuario el campo a modificar
  *
  * \param ePassenger* pPasajero recibe el pasajero sobre el cual se hara la modificacion
  * \param int idPasajero recive por valor el id del pasajero indicado
@@ -564,32 +452,52 @@ int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero)
 {
 	int retorno;
 	int opcion;
-	char auxNombre[SIZE_STR];
-	char auxTipoPasajero[SIZE_STR];
+	char auxChar[SIZE_STR];
+	float auxPrecio;
 
 	retorno =-1;
 	if(pPasajero!= NULL)
 	{
 		do{
-			opcion= tp_ImprimirMenuTresOpciones("1- Cambiar nombre", "2- Cambiar Tipo de Pasajero", "3- Volver atrás", "");
+			opcion= tp_ImprimirMenuDiezOpciones("elija el campo que desea editar", "1- Cambiar nombre", "2- Cambiar Apellido", "3- Cambiar Precio", "4- Cambiar código vuelo", "5- Cambiar Tipo Pasajero", "6- Cambiar Estado Vuelo", "7- Volver atrás", "", "", "");
 
 			switch (opcion)
 			{
 				case 1:
-					parser_getNameToBuffer(auxNombre, SIZE_STR);
-					Passenger_setNombre(pPasajero, auxNombre);
+					parser_getNameToBuffer(auxChar, SIZE_STR);
+					Passenger_setNombre(pPasajero, auxChar);
 					printf("Ha modificado el nombre del pasajero %d\n\n", idPasajero);
 					break;
 				case 2:
-					parser_getTypePassToBuffer(auxTipoPasajero, SIZE_STR);
-					Passenger_setTipoPasajero(pPasajero, auxTipoPasajero);
-					printf("Ha modificado el Tipo de Pasajero del pasajero %d\n\n", idPasajero);
+					parser_getLastNameToBuffer(auxChar, SIZE_STR);
+					Passenger_setLastName(pPasajero, auxChar);
+					printf("Ha modificado el apellido del pasajero %d\n\n", idPasajero);
 					break;
 				case 3:
+					parser_getPriceToBuffer(&auxPrecio);
+					Passenger_setPrecio(pPasajero, auxPrecio);
+					printf("Ha modificado el precio en el pasajero %d\n\n", idPasajero);
+					break;
+				case 4:
+					parser_getFlyCodeToBuffer(auxChar, SIZE_STR);
+					Passenger_setCodigoVuelo(pPasajero, auxChar);
+					printf("Ha modificado el Código de Vuelo del pasajero %d\n\n", idPasajero);
+					break;
+				case 5:
+					parser_getTypePassToBuffer(auxChar,  SIZE_STR);
+					Passenger_setTipoPasajero(pPasajero, auxChar);
+					printf("Ha modificado el Tipo de Pasajero del pasajero %d\n\n", idPasajero);
+					break;
+				case 6:
+					parser_getStatusFlightToBuffer(auxChar,  SIZE_STR);
+					Passenger_setStatusFlight(pPasajero, auxChar);
+					printf("Ha modificado el Estado de Vuelo del pasajero %d\n\n", idPasajero);
+					break;
+				case 7:
 					printf("Volviendo al menu principal\n\n");
 					break;
 			}
-		}while(opcion!= 3);
+		}while(opcion!= 7);
 		retorno =0;
 	}
 	return retorno;

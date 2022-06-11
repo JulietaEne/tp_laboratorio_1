@@ -364,13 +364,14 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasaj
 
 	retorno = -1;
 	contador =0;
-	if(controlPasajeros<=1)
+	if(controlPasajeros<1)
 	{
 		controlLista =0;
 	}
 	else
 	{
 		controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+
 	}
 	//printf("lista: %d", controlLista);
 	if(pArrayListPassenger != NULL)
@@ -466,13 +467,13 @@ int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
 		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- Aterrizado", "2- En Horario", "3- En Vuelo");
 		switch (codTipoPasajero) {
 			case 1:
-				strcpy(statusFlight,"Aterrizado");
+				strcpy(statusFlight,"Aterrizado   ");
 				break;
 			case 2:
-				strcpy(statusFlight,"En Horario");
+				strcpy(statusFlight,"En Horario   ");
 				break;
 			case 3:
-				strcpy(statusFlight,"En Vuelo");
+				strcpy(statusFlight,"En Vuelo    ");
 				break;
 		}
 		retorno=0;
@@ -480,6 +481,52 @@ int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
 	return retorno;
 }
 
+/** \brief Guarda los datos de los pasajeros en el archivo bin (modo binario).
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no se pudo crear el archivo (no se encontró espacio en memoria)
+ * 			   0 si opero exitosamente
+ *
+ */
+
+//recorro el linkedlist para desencapsular cada *Passenger
+			//** en biblio Passenger**
+				// recibo cada puntero y recibo el id ingresado
+				// y analizo igualdad en this->id == idIngresado
+				//cuando encuentro, retorno el index donde se encontro
+	//rompo el bucle de busqueda
+ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado)
+{
+	//int retorno;
+	int i;
+	int lenArray;
+	int auxId;
+	ePassenger* pAuxPass = NULL;
+
+	//retorno =-1;
+	lenArray=ll_len(pArrayListPassenger);
+	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
+	{
+		controller_askToViewList(pArrayListPassenger);
+		utn_GetNumeroInt(&auxId, "ingrese un id: ", "dato incorrecto", FILE_ID_MIN, ID_MAX, REINTENTOS);
+		*idIngresado = auxId;
+		//retorno =-2; //si no encontro ningun elemento
+		for(i=0; i<lenArray; i++)
+		{
+			pAuxPass = ll_get(pArrayListPassenger, i);
+			//printf("%d) %s\n", i+1, pAuxPass->nombre);
+			pAuxPass= Passenger_findIndexById(pAuxPass, *idIngresado);
+			if(pAuxPass!= NULL)
+			{
+				*indexHallado = i;
+				//printf("%d: %s OK \n", pAuxPass->id, pAuxPass->nombre);
+				break;
+			}
+		}
+	}
+	return pAuxPass;
+}
 
 int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
 {
@@ -575,7 +622,7 @@ int parser_passengerToEdit(LinkedList* pArrayListPassenger)
 	retorno = -1;
 	if(pArrayListPassenger != NULL)
 	{
-		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//OK YO CREO QUE DEBERIA IR EN PARSER si encuentra igualdad, me decuelve el puntero que encapsula ese id
+		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//OK YO CREO QUE DEBERIA IR EN PARSER si encuentra igualdad, me decuelve el puntero que encapsula ese id
 		if(pAuxPassenger != NULL)
 		 {
 			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);//yo creo que este tendria que ir en passenger
@@ -614,7 +661,7 @@ int parser_passengerToDelete(LinkedList* pArrayListPassenger)
 	{
 		retorno =-2;
 
-		pAuxPassenger=controller_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
+		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
 
 		if(pAuxPassenger!= NULL)
 		{
@@ -667,6 +714,7 @@ int parser_loadIdFromFile()
 	{
 		fread(&getId, sizeof(int), 1, pFileIdDeleted);
 		fclose(pFileIdDeleted);
+		printf("getId/retorno: %d",getId);
 		retorno = getId;//retorna el id leido en el archivo
 	}
 	/*else
@@ -689,6 +737,7 @@ int parser_proximoId(int idRecibido)
 	if(idLeido == idRecibido)
 	{
 		retorno= idRecibido+1;
+		printf("nuevo id:%d", retorno);
 		parser_saveIdIntoFile(retorno);
 	}
 	else

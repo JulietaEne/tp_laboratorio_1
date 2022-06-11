@@ -393,7 +393,7 @@ int Passenger_setId(ePassenger* this,int id, int controlLista)
 	{
 		if(!controlLista)
 		{
-			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados en el sistema. Desea comenzar por el ID 1001? Y/N");
+			mantenerIdArchivo=tp_continuar("Aun no hay datos cargados manualmente en el sistema. Desea comenzar por el ID 1001? Y/N");
 			if(mantenerIdArchivo)
 			{
 				auxId = ID_MIN;

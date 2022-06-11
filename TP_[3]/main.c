@@ -45,7 +45,7 @@ int main()
 																, "4- Modificar pasajero"
 																, "5- Dar de baja pasajero"
 																, "6- Listar pasajeros"
-																, "7- Ordenar pasajeros (por nombre)"
+																, "7- Ordenar pasajeros"
 																, "8- Guardar en archivo .csv"
 																, "9- Guardar en archivo binario"
 																, "10- Salir del programa");

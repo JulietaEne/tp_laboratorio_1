@@ -28,6 +28,8 @@ int parser_getPriceToBuffer(float* price);
 int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
 int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
 int parser_getTypePassToBuffer(char* typePass, int lenName);
+ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
+
 
 int parser_passengerToEdit(LinkedList* pArrayListPassenger);
 int parser_passengerToDelete(LinkedList* pArrayListPassenger);
