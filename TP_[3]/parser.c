@@ -4,6 +4,235 @@
 #include "Passenger.h"
 #include "parser.h"
 
+/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
+ *
+ * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorna -1 si no pudo operar.
+ * 						0 si no leyo
+ * 						>0 si leyo (retorna la cantidad de lineas que leyo)
+ *
+*/
+int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
+{
+	int retorno;
+	ePassenger* pAuxPasajero=NULL;
+	char auxId[SIZE_INT];
+	char auxNombre[SIZE_STR];
+	char auxApellido[SIZE_STR];
+	char auxPrice[SIZE_STR];
+	char auxFlyCode[SIZE_STR];
+	char auxTipoPasajero[SIZE_STR];
+	char auxStatusFlight[SIZE_STR];
+	int i;
+
+	retorno = -1;
+	i=0;
+	if(pFile != NULL && pArrayListPassenger != NULL)
+	{
+		retorno = 0;
+		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+		while(!feof(pFile))
+		{
+			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
+			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);//acá ya tendría un pasajero en la lista de punteros
+
+			if(pAuxPasajero != NULL)
+			{
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
+				i++;
+			}
+			else
+			{
+				passenger_delete(pAuxPasajero);
+				break;
+			}
+		}
+		retorno = i;
+	}
+	return retorno;
+}
+
+
+/** \brief Parsea los datos de los pasajeros desde el archivo data.bin (modo binario).
+ *
+ * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ int retorna -1 si no pudo operar.
+ * 						0 si no leyo
+ * 						>0 si leyo (retorna la cantidad de lecturas que hizo)
+ *
+ */
+int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
+{
+	ePassenger unPasajero;
+	ePassenger* pAuxPasajero;
+	int retorno;
+	int lectura;
+
+	retorno = -1;
+	if(pFile!= NULL && pArrayListPassenger != NULL)
+	{
+		retorno =0;
+		do{
+			lectura=fread(&unPasajero, sizeof(ePassenger), 1, pFile);
+			pAuxPasajero = Passenger_newParametrosAllBinary(unPasajero.id, unPasajero.nombre, unPasajero.apellido, unPasajero.precio, unPasajero.flyCode, unPasajero.tipoPasajero, unPasajero.estadoVuelo);
+			if(pAuxPasajero != NULL)
+			{
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
+				retorno ++;
+			}
+			else
+			{
+				passenger_delete(pAuxPasajero);
+				break;
+			}
+		}while(lectura!= 0);
+	}
+	return retorno;
+}
+
+/** \brief recibe por teclado los datos de un nuevo pasajero y lo transforma en un elemento *ePasajero dentro de la lista
+ *
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error en los parametros
+ *					   -2 si no pudo crear el pasajero en memoria
+ *						0 si opero correctamente
+ *
+ */
+int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasajeros)
+{
+	int retorno;
+	int auxId=0;
+	char auxNombre[SIZE_STR];
+	char auxApellido[SIZE_STR];
+	float auxPrice;
+	char auxCodigoVuelo[SIZE_STR];
+	char auxTipoPass[SIZE_STR];
+	char auxEstadoVuelo[SIZE_STR];
+	ePassenger* pAuxPasajero;
+	int contador;
+	int controlLista;
+
+	retorno = -1;
+	contador =0;
+	if(controlPasajeros<1)
+	{
+		controlLista =0;
+	}
+	else
+	{
+		controlLista = parser_controlListaPasajeros(pArrayListPassenger);
+
+	}
+	if(pArrayListPassenger != NULL)
+	{
+		retorno = -2;
+		do//mientras que los datos no estén correctamente cargados, vuelvo a pedir datos
+		{
+			parser_getNameToBuffer(auxNombre, SIZE_STR);
+			parser_getLastNameToBuffer(auxApellido, SIZE_STR);
+			parser_getPriceToBuffer(&auxPrice);
+			parser_getFlyCodeToBuffer(auxCodigoVuelo, SIZE_STR);
+			parser_getTypePassToBuffer(auxTipoPass, SIZE_STR);
+			parser_getStatusFlightToBuffer(auxEstadoVuelo, SIZE_STR);
+
+			pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo, controlLista);
+			if(pAuxPasajero!= NULL)
+			{
+				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
+				Passenger_printMensajeConId("Se ha cargado correctamente el pasajero ", pAuxPasajero);
+				retorno=0;
+			}
+			contador++;
+		}while(pAuxPasajero==NULL);
+	}
+	return retorno;
+}
+
+/** \brief se encarga de pedir el id del pasajero a editar, e interactuar con el usuario para efectuar el cambio del dato indicado
+ *
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error en los parametros
+ *					   -2 si no pudo crear el pasajero en memoria
+ *						0 si opero correctamente
+ *
+ */
+int parser_passengerToEdit(LinkedList* pArrayListPassenger)
+{
+	int idSolicitado;
+	ePassenger* pAuxPassenger=NULL;
+	int indexHallado;
+	int retorno;
+	retorno = -1;
+	if(pArrayListPassenger != NULL)
+	{
+		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//OK YO CREO QUE DEBERIA IR EN PARSER si encuentra igualdad, me decuelve el puntero que encapsula ese id
+		if(pAuxPassenger != NULL)
+		 {
+			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);//yo creo que este tendria que ir en passenger
+			printf("El pasajero %d ha sido editado exitosamente\n", pAuxPassenger->id);//ATENCION :B
+			retorno=0;
+		 }
+		else
+		{
+			retorno=-2;
+		}
+	}
+    return retorno;
+}
+
+/** \brief Guarda los datos de los pasajeros en el archivo bin (modo binario).
+ *
+ * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \return int -1 si hubo un error en los parametros recibidos
+ * 			   -2 si no se pudo crear el archivo (no se encontró espacio en memoria)
+ * 			   0 si opero exitosamente
+ *
+ */
+
+//recorro el linkedlist para desencapsular cada *Passenger
+			//** en biblio Passenger**
+				// recibo cada puntero y recibo el id ingresado
+				// y analizo igualdad en this->id == idIngresado
+				//cuando encuentro, retorno el index donde se encontro
+	//rompo el bucle de busqueda
+ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado)
+{
+	//int retorno;
+	int i;
+	int lenArray;
+	//int auxId;
+	ePassenger* pAuxPass = NULL;
+
+	//retorno =-1;
+	lenArray=ll_len(pArrayListPassenger);
+	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
+	{
+		*idIngresado = parser_getIdToBuffer(pArrayListPassenger);
+		for(i=0; i<lenArray; i++)
+		{
+			pAuxPass = ll_get(pArrayListPassenger, i);
+			pAuxPass= Passenger_findIndexById(pAuxPass, *idIngresado);
+			if(pAuxPass!= NULL)
+			{
+				*indexHallado = i;
+				break;
+			}
+		}
+	}
+	return pAuxPass;
+}
+
+/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
+ *
+ * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorna -1 si no pudo operar.
+ * 						0 si no leyo
+ * 						>0 si leyo (retorna la cantidad de lineas que leyo)
+ *
+*/
 int parser_controlListaPasajeros(LinkedList* pArrayListPassenger)
 {
 	int retorno;
@@ -17,63 +246,8 @@ int parser_controlListaPasajeros(LinkedList* pArrayListPassenger)
 	}
 	return retorno;
 }
-/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
- *
- * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
- * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
- * \return int retorna -1 si no pudo operar.
- * 						0 si no leyo
- * 						>0 si leyo (retorna la cantidad de lineas que leyo)
- *
-*/
-int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
-{
-	int retorno;
-
-	ePassenger* pAuxPasajero=NULL;
-	char auxId[SIZE_INT];
-	char auxNombre[SIZE_STR];
-	char auxApellido[SIZE_STR];
-	char auxPrice[SIZE_STR];
-	char auxFlyCode[SIZE_STR];
-	char auxTipoPasajero[SIZE_STR];
-	char auxStatusFlight[SIZE_STR];
-	int i;
-	//int controlLista;
 
 
-	retorno = -1;
-	i=0;
-	//controlLista = parser_controlListaPasajeros(pArrayListPassenger);
-	//printf("[DEBUGGGGG]control lista: %d", controlPrimerCarga);
-	if(pFile != NULL && pArrayListPassenger != NULL)
-	{
-		retorno = 0;
-		fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-		//parser_countLenFile(pFile);
-
-		while(!feof(pFile))
-		{
-			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-			//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
-			//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
-			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);//acá ya tendría un pasajero en la lista de punteros
-
-			if(pAuxPasajero != NULL)
-			{
-				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
-				i++;
-			}
-			else
-			{
-				//printf("Error en la lectura de la linea %d", i);
-				break;
-			}
-		}
-		retorno = i;
-	}
-	return retorno;
-}
 
 /** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
  *
@@ -200,53 +374,6 @@ int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
 	return retorno;
 }*/
 
-/** \brief Parsea los datos de los pasajeros desde el archivo data.bin (modo binario).
- *
- * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
- * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
- int retorna -1 si no pudo operar.
- * 						0 si no leyo
- * 						>0 si leyo (retorna la cantidad de lecturas que hizo)
- *
- */
-int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger)
-{
-	ePassenger unPasajero;
-	ePassenger* pAuxPasajero;
-	int retorno;
-	int lectura;
-	//int controlLista;
-
-	retorno = -1;
-	//controlLista = parser_controlListaPasajeros(pArrayListPassenger);
-	if(pFile!= NULL && pArrayListPassenger != NULL)
-	{
-		retorno =0;
-		do{
-			//printf("entramos al do OK\n");
-
-			lectura=fread(&unPasajero, sizeof(ePassenger), 1, pFile);
-			//printf("lectura: %d", lectura);
-			//pAuxPasajero = Passenger_newParametros(unPasajero.id, unPasajero.nombre, unPasajero.tipoPasajero);
-			pAuxPasajero = Passenger_newParametrosAllBinary(unPasajero.id, unPasajero.nombre, unPasajero.apellido, unPasajero.precio, unPasajero.flyCode, unPasajero.tipoPasajero, unPasajero.estadoVuelo);
-			if(pAuxPasajero != NULL)
-			{
-				//printf("se cargó en lista");
-				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
-				//printf("la carga se realizó con exito\n");
-				//printf("%d - %s - %s\n", pAuxPasajero->id, pAuxPasajero->nombre, pAuxPasajero->tipoPasajero);
-				retorno ++;
-			}
-			else
-			{
-				//printf("ha habido un error en la lectura de los datos del archivo.\n");
-				break;
-			}
-
-		}while(lectura!= 0);
-	}
-	return retorno;
-}
 
 
 /** \brief Transcribe al archivo binario los datos alojados en memoria
@@ -340,303 +467,16 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 	return retorno;
 }
 
-/** \brief recibe por teclado los datos de un nuevo pasajero y lo transforma en un elemento *ePasajero dentro de la lista
- *
- * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
- * \return int retorno -1 si hubo un error en los parametros
- *					   -2 si no pudo crear el pasajero en memoria
- *						0 si opero correctamente
- *
- */
-int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasajeros)
-{
-	int retorno;
-	int auxId;
-	char auxNombre[SIZE_STR];
-	char auxApellido[SIZE_STR];
-	float auxPrice;
-	char auxCodigoVuelo[SIZE_STR];
-	char auxTipoPass[SIZE_STR];
-	char auxEstadoVuelo[SIZE_STR];
-	ePassenger* pAuxPasajero;
-	int contador;
-	int controlLista;
-
-	retorno = -1;
-	contador =0;
-	if(controlPasajeros<1)
-	{
-		controlLista =0;
-	}
-	else
-	{
-		controlLista = parser_controlListaPasajeros(pArrayListPassenger);
-
-	}
-	//printf("lista: %d", controlLista);
-	if(pArrayListPassenger != NULL)
-	{
-		retorno = -2;
-		do//mientras que los datos no estén correctamente cargados, vuelvo a pedir datos
-		{
-			parser_getIdToBuffer(&auxId, pArrayListPassenger);
-			parser_getNameToBuffer(auxNombre, SIZE_STR);
-			parser_getLastNameToBuffer(auxApellido, SIZE_STR);
-			parser_getPriceToBuffer(&auxPrice);
-			parser_getFlyCodeToBuffer(auxCodigoVuelo, SIZE_STR);
-			parser_getTypePassToBuffer(auxTipoPass, SIZE_STR);
-			parser_getStatusFlightToBuffer(auxEstadoVuelo, SIZE_STR);
-			//printf("en parser getid: %d", auxId);
-			//voy a pedir los datos que el usuario quiere cargar.
-
-			pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo, controlLista);
-			//pAuxPasajero=Passenger_newParametrosAll(auxId, auxNombre, auxApellido, auxPrice, auxCodigoVuelo, auxTipoPass, auxEstadoVuelo, contr);
-
-			//int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo
-			if(pAuxPasajero!= NULL)
-			{
-				ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);
-				Passenger_printMensajeConId("Se ha cargado correctamente el pasajero ", pAuxPasajero);
-				retorno=0;
-			}
-			contador++;
-		}while(pAuxPasajero==NULL /*|| contador!=5*/);
-	}
-	return retorno;
-}
-
-
-int parser_getNameToBuffer(char* name, int lenName)
-{
-	int retorno;
-	retorno =-1;
-	if(name != NULL && lenName>0)
-	{
-		utn_ingresarAlfabetica(name, lenName, "Nombre de pasajero: ", "Ingrese un dato valido", REINTENTOS);
-		retorno=0;
-	}
-	return retorno;
-}
-
-int parser_getLastNameToBuffer(char* lastName, int lenLastName)
-{
-	int retorno;
-	retorno =-1;
-	if(lastName != NULL && lenLastName>0)
-	{
-		utn_ingresarAlfabetica(lastName, lenLastName, "Apellido de pasajero: ", "Ingrese un dato valido", REINTENTOS);
-		retorno=0;
-	}
-	return retorno;
-}
-
-
-int parser_getPriceToBuffer(float* price)
-{
-	int retorno;
-	float auxPrice;
-	retorno =-1;
-	if(price != NULL)
-	{
-		utn_GetNumeroFloat(&auxPrice, "Ingrese precio de vuelo: $", "ingrese un dato valido", MIN_PRICE, MAX_PRICE, REINTENTOS);
-		*price = auxPrice;
-		retorno=0;
-	}
-	return retorno;
-}
-
-int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode)
-{
-	int retorno;
-	retorno =-1;
-	if(flyCode != NULL && lenFlyCode>0)
-	{
-		utn_getAlfaNumerica(flyCode, lenFlyCode,  "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS);
-		retorno=0;
-	}
-	return retorno;
-}
-
-int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
-{
-	int retorno;
-	int codTipoPasajero;
-	retorno =-1;
-	if(statusFlight != NULL && lenStatusFlight  >0)
-	{
-		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- Aterrizado", "2- En Horario", "3- En Vuelo");
-		switch (codTipoPasajero) {
-			case 1:
-				strcpy(statusFlight,"Aterrizado   ");
-				break;
-			case 2:
-				strcpy(statusFlight,"En Horario   ");
-				break;
-			case 3:
-				strcpy(statusFlight,"En Vuelo    ");
-				break;
-		}
-		retorno=0;
-	}
-	return retorno;
-}
-
-/** \brief Guarda los datos de los pasajeros en el archivo bin (modo binario).
- *
- * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
- * \return int -1 si hubo un error en los parametros recibidos
- * 			   -2 si no se pudo crear el archivo (no se encontró espacio en memoria)
- * 			   0 si opero exitosamente
- *
- */
-
-//recorro el linkedlist para desencapsular cada *Passenger
-			//** en biblio Passenger**
-				// recibo cada puntero y recibo el id ingresado
-				// y analizo igualdad en this->id == idIngresado
-				//cuando encuentro, retorno el index donde se encontro
-	//rompo el bucle de busqueda
-ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado)
-{
-	//int retorno;
-	int i;
-	int lenArray;
-	int auxId;
-	ePassenger* pAuxPass = NULL;
-
-	//retorno =-1;
-	lenArray=ll_len(pArrayListPassenger);
-	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
-	{
-		controller_askToViewList(pArrayListPassenger);
-		utn_GetNumeroInt(&auxId, "ingrese un id: ", "dato incorrecto", FILE_ID_MIN, ID_MAX, REINTENTOS);
-		*idIngresado = auxId;
-		//retorno =-2; //si no encontro ningun elemento
-		for(i=0; i<lenArray; i++)
-		{
-			pAuxPass = ll_get(pArrayListPassenger, i);
-			//printf("%d) %s\n", i+1, pAuxPass->nombre);
-			pAuxPass= Passenger_findIndexById(pAuxPass, *idIngresado);
-			if(pAuxPass!= NULL)
-			{
-				*indexHallado = i;
-				//printf("%d: %s OK \n", pAuxPass->id, pAuxPass->nombre);
-				break;
-			}
-		}
-	}
-	return pAuxPass;
-}
-
-int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenger)
-{
-	int retorno;
-	//int auxId;
-	//int mantenerIdArchivo;
-	//int lenArray;
-	retorno =-1;
-	//lenArray = ll_len(pArrayListPassenger);
-	if(id != NULL)
-	{
-
-		/*auxId = ID_MIN;
-		auxId = parser_proximoId(auxId);//si hay archivos cargados,si o si tengo que ser correlativa al id del archivo
-
-
-		auxId=  parser_proximoId(auxId);
-		retorno=0;
-
-		if(auxId > ID_MAX || auxId < ID_MIN)
-		{
-			retorno = -2;
-			printf("\n[DEBUG] ***WARNING*** el id recibido esta fuera de los parametros esperados para un id. Valor: %d - maximoId: %d\n", auxId, ID_MAX);
-		}
 
 
 
-		//voy a buscar el id mas alto en los datos dentro de mi array de punteros
-		auxId = 0;
-		auxId=  parser_proximoId(auxId);
-		if(auxId >0)
-		{
-			*id = auxId+1;
-		}
-		else
-		{
-			if(lenArray > 0)
-			{
-				printf("[ERROR ID]ha habido un error en el campo ID\n");
-			}
 
 
-				*id=0;
 
 
-		}*/
-		retorno=0;
-
-	}
-	return retorno;
-}
-
-int parser_getTypePassToBuffer(char* typePass, int lenName)
-{
-	int retorno;
-	int codTipoPasajero;
-	retorno =-1;
-	if(typePass != NULL && lenName >0)
-	{
-		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- EconomyClass", "2- ExecutiveClass", "3- FirstClass");
-		switch (codTipoPasajero) {
-			case 1:
-				strcpy(typePass,"EconomyClass");
-				break;
-			case 2:
-				strcpy(typePass,"ExecutiveClass");
-				break;
-			case 3:
-				strcpy(typePass,"FirstClass");
-				break;
-		}
-		retorno=0;
-	}
-	return retorno;
-}
 
 
-/** \brief se encarga de pedir el id del pasajero a editar, e interactuar con el usuario para efectuar el cambio del dato indicado
- *
- * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
- * \return int retorno -1 si hubo un error en los parametros
- *					   -2 si no pudo crear el pasajero en memoria
- *						0 si opero correctamente
- *
- */
-int parser_passengerToEdit(LinkedList* pArrayListPassenger)
-{
-	int idSolicitado;
-	ePassenger* pAuxPassenger=NULL;
-	//char auxNombre[SIZE_STR];
-	int indexHallado;
-	int retorno;
-	retorno = -1;
-	if(pArrayListPassenger != NULL)
-	{
-		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//OK YO CREO QUE DEBERIA IR EN PARSER si encuentra igualdad, me decuelve el puntero que encapsula ese id
-		if(pAuxPassenger != NULL)
-		 {
-			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);//yo creo que este tendria que ir en passenger
-			printf("editado: %s", pAuxPassenger->nombre);//ATENCION :B
-		 }
-		else
-		{
-			retorno=-2;
-			//printf("no se ha encontrado coincidencias con el valor ingresado\n");
-		}
-		retorno=0;
-	}
-    return retorno;
-}
+
 
 /** \brief se encarga de pedir el id del pasajero a eliminar, e interactuar con el usuario para efectuar la baja
  *
@@ -780,3 +620,166 @@ int parser_proximoId(int idRecibido)
 	return retorno;
 }
 
+//---------------------Getters que interactuan con el usuario---------------------//
+/** \brief se encarga de solicitar al usuario un id
+ *
+ * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
+ * \return int retorno -1 si hubo un error
+ *						>0 si opero correctamente (retorna el id ingresado)
+ *
+ */
+int parser_getIdToBuffer(LinkedList* pArrayListPassenger)
+{
+	int idIngresado;
+	if(pArrayListPassenger != NULL)
+	{
+		controller_askToViewList(pArrayListPassenger);
+		utn_GetNumeroInt(&idIngresado, "ingrese un id: ", "dato incorrecto", FILE_ID_MIN, ID_MAX, REINTENTOS);
+	}
+	return idIngresado;
+}
+
+/** \brief se encarga de solicitar al usuario el nombre del pasajero a cargar
+ *
+ * \param char* name Recibe la direccion de memoria de la variable donde se alojará el dato recibido
+ * \param int lenName Recibe el tamaño de la cadena
+ * \return int retorno -1 si hubo un error
+ *						0 si opero correctamente
+ *
+ */
+int parser_getNameToBuffer(char* name, int lenName)
+{
+	int retorno;
+	retorno =-1;
+	if(name != NULL && lenName>0)
+	{
+		utn_ingresarAlfabetica(name, lenName, "Nombre de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+/** \brief se encarga de solicitar al usuario el apellido del pasajero a cargar
+ *
+ * \param char* lastName Recibe la direccion de memoria de la variable donde se alojará el dato recibido
+ * \param int lenLastName Recibe el tamaño de la cadena
+ * \return int retorno -1 si hubo un error
+ *						0 si opero correctamente
+ *
+ */
+int parser_getLastNameToBuffer(char* lastName, int lenLastName)
+{
+	int retorno;
+	retorno =-1;
+	if(lastName != NULL && lenLastName>0)
+	{
+		utn_ingresarAlfabetica(lastName, lenLastName, "Apellido de pasajero: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+/** \brief se encarga de solicitar al usuario el precio para el pasajero a cargar
+ *
+ * \param float* price Recibe la direccion de memoria de la variable donde se alojará el dato recibido
+ * \return int retorno -1 si hubo un error
+ *						0 si opero correctamente
+ *
+ */
+int parser_getPriceToBuffer(float* price)
+{
+	int retorno;
+	float auxPrice;
+	retorno =-1;
+	if(price != NULL)
+	{
+		utn_GetNumeroFloat(&auxPrice, "Ingrese precio de vuelo: $", "ingrese un dato valido", MIN_PRICE, MAX_PRICE, REINTENTOS);
+		*price = auxPrice;
+		retorno=0;
+	}
+	return retorno;
+}
+
+/** \brief se encarga de solicitar al usuario el codigo de vuelo del pasajero a cargar
+ *
+ * \param char* flyCode Recibe la direccion de memoria de la variable donde se alojará el dato recibido
+ * \param int lenFlyCode Recibe el tamaño de la cadena
+ * \return int retorno -1 si hubo un error
+ *						0 si opero correctamente
+ *
+ */
+int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode)
+{
+	int retorno;
+	retorno =-1;
+	if(flyCode != NULL && lenFlyCode>0)
+	{
+		utn_getAlfaNumerica(flyCode, lenFlyCode,  "Codigo de vuelo: ", "Ingrese un dato valido", REINTENTOS);
+		retorno=0;
+	}
+	return retorno;
+}
+
+/** \brief se encarga de solicitar al usuario el estado de vuelo del pasajero a cargar
+ *
+ * \param char* statusFlight Recibe la direccion de memoria de la variable donde se alojará el dato recibido
+ * \param int lenStatusFlight Recibe el tamaño de la cadena
+ * \return int retorno -1 si hubo un error
+ *						0 si opero correctamente
+ *
+ */
+int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight)
+{
+	int retorno;
+	int codTipoPasajero;
+	retorno =-1;
+	if(statusFlight != NULL && lenStatusFlight  >0)
+	{
+		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- Aterrizado", "2- En Horario", "3- En Vuelo");
+		switch (codTipoPasajero) {
+			case 1:
+				strcpy(statusFlight,"Aterrizado   ");
+				break;
+			case 2:
+				strcpy(statusFlight,"En Horario   ");
+				break;
+			case 3:
+				strcpy(statusFlight,"En Vuelo    ");
+				break;
+		}
+		retorno=0;
+	}
+	return retorno;
+}
+
+/** \brief se encarga de solicitar al usuario el tipo de pasajero del pasajero a cargar
+ *
+ * \param char* typePass Recibe la direccion de memoria de la variable donde se alojará el dato recibido
+ * \param int lenName Recibe el tamaño de la cadena
+ * \return int retorno -1 si hubo un error
+ *						0 si opero correctamente
+ *
+ */
+int parser_getTypePassToBuffer(char* typePass, int lenName)
+{
+	int retorno;
+	int codTipoPasajero;
+	retorno =-1;
+	if(typePass != NULL && lenName >0)
+	{
+		codTipoPasajero=tp_ImprimirMenuTresOpciones("indique tipo pasajero: ", "1- EconomyClass", "2- ExecutiveClass", "3- FirstClass");
+		switch (codTipoPasajero) {
+			case 1:
+				strcpy(typePass,"EconomyClass");
+				break;
+			case 2:
+				strcpy(typePass,"ExecutiveClass");
+				break;
+			case 3:
+				strcpy(typePass,"FirstClass   ");
+				break;
+		}
+		retorno=0;
+	}
+	return retorno;
+}

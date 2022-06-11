@@ -161,6 +161,7 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 	if(pArrayListPassenger != NULL)
 	{
 		retornoFuncion = parser_passengerToEdit(pArrayListPassenger);
+
 		switch (retornoFuncion) {
 			case -1:
 				printf("error -1\n");
@@ -502,3 +503,5 @@ int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero)
 	}
 	return retorno;
 }
+
+

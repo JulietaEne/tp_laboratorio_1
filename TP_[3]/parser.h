@@ -20,8 +20,9 @@ int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger);
 int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger);
 int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger);
 int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasajeros);
+int parser_controlListaPasajeros(LinkedList* pArrayListPassenger);
 
-int parser_getIdToBuffer(int* id, LinkedList* pArrayListPassenge);
+int parser_getIdToBuffer(LinkedList* pArrayListPassenger);
 int parser_getNameToBuffer(char* name, int lenName);
 int parser_getLastNameToBuffer(char* lastName, int lenLastame);
 int parser_getPriceToBuffer(float* price);
