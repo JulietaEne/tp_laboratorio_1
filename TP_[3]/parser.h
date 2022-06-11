@@ -15,13 +15,14 @@
 #include "Controller.h"
 
 int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger);
-//int parser_countLenFile(FILE* pFile);
 int parser_PassengerFromBinary(FILE* pFile , LinkedList* pArrayListPassenger);
+int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasajeros);
+int parser_passengerToEdit(LinkedList* pArrayListPassenger);
+ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
+int parser_controlListaPasajeros(LinkedList* pArrayListPassenger);
 int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger);
 int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger);
-int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasajeros);
-int parser_controlListaPasajeros(LinkedList* pArrayListPassenger);
-
+int parser_passengerToDelete(LinkedList* pArrayListPassenger);
 int parser_getIdToBuffer(LinkedList* pArrayListPassenger);
 int parser_getNameToBuffer(char* name, int lenName);
 int parser_getLastNameToBuffer(char* lastName, int lenLastame);
@@ -29,17 +30,10 @@ int parser_getPriceToBuffer(float* price);
 int parser_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
 int parser_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
 int parser_getTypePassToBuffer(char* typePass, int lenName);
-ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
-
-
-int parser_passengerToEdit(LinkedList* pArrayListPassenger);
-int parser_passengerToDelete(LinkedList* pArrayListPassenger);
 int parser_saveIdIntoFile(int ultimoId);
-//int parser_saveIdIntoFile(int ultimoId);
-int parser_loadIdFromFile();
+int parser_loadIdFromFile(void);
 int parser_proximoId(int unId);
 
-int parser_sortPassenger(LinkedList* pArrayListPassenger);
 
 
 

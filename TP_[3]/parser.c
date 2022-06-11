@@ -144,6 +144,10 @@ int parser_passengerFromBuffer(LinkedList* pArrayListPassenger, int controlPasaj
 				Passenger_printMensajeConId("Se ha cargado correctamente el pasajero ", pAuxPasajero);
 				retorno=0;
 			}
+			else
+			{
+				passenger_delete(pAuxPasajero);
+			}
 			contador++;
 		}while(pAuxPasajero==NULL);
 	}
@@ -167,11 +171,11 @@ int parser_passengerToEdit(LinkedList* pArrayListPassenger)
 	retorno = -1;
 	if(pArrayListPassenger != NULL)
 	{
-		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);//OK YO CREO QUE DEBERIA IR EN PARSER si encuentra igualdad, me decuelve el puntero que encapsula ese id
+		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
 		if(pAuxPassenger != NULL)
 		 {
-			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);//yo creo que este tendria que ir en passenger
-			printf("El pasajero %d ha sido editado exitosamente\n", pAuxPassenger->id);//ATENCION :B
+			controller_chooseCampToEdit(pAuxPassenger, idSolicitado);
+			printf("El pasajero %d ha sido editado exitosamente\n", pAuxPassenger->id);
 			retorno=0;
 		 }
 		else
@@ -182,32 +186,25 @@ int parser_passengerToEdit(LinkedList* pArrayListPassenger)
     return retorno;
 }
 
-/** \brief Guarda los datos de los pasajeros en el archivo bin (modo binario).
+/** \brief Solicita al usuario un id, lo busca en la lista y retorna el pasajero si encontro coincidencias
  *
  * \param pArrayListPassenger LinkedList* Recibe la direccion de memoria del primer elemento del array de punteros a memoria dinamica
+ * \param idIngresado int* Recibe la direccion donde se alojará el id indicado por el usuario
+ * \param indexHallado int* Recibe la direccion donde se alojará el index en el cual encontro las coincidencias
  * \return int -1 si hubo un error en los parametros recibidos
  * 			   -2 si no se pudo crear el archivo (no se encontró espacio en memoria)
  * 			   0 si opero exitosamente
  *
  */
-
-//recorro el linkedlist para desencapsular cada *Passenger
-			//** en biblio Passenger**
-				// recibo cada puntero y recibo el id ingresado
-				// y analizo igualdad en this->id == idIngresado
-				//cuando encuentro, retorno el index donde se encontro
-	//rompo el bucle de busqueda
 ePassenger* parser_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado)
 {
-	//int retorno;
 	int i;
 	int lenArray;
-	//int auxId;
+
 	ePassenger* pAuxPass = NULL;
 
-	//retorno =-1;
 	lenArray=ll_len(pArrayListPassenger);
-	if(pArrayListPassenger!= NULL && idIngresado != NULL && indexHallado!= NULL && lenArray >0)
+	if(pArrayListPassenger!= NULL && idIngresado != NULL &&indexHallado!= NULL && lenArray >0)
 	{
 		*idIngresado = parser_getIdToBuffer(pArrayListPassenger);
 		for(i=0; i<lenArray; i++)
@@ -247,135 +244,6 @@ int parser_controlListaPasajeros(LinkedList* pArrayListPassenger)
 	return retorno;
 }
 
-
-
-/** \brief Parsea los datos los datos de los pasajeros desde el archivo data.csv (modo texto).
- *
- * \param pFile FILE* recibe el puntero al archivo sobre el cual realizara la operacion
- * \param pArrayListPassenger LinkedList* recibe la lista donde alojara los elementos parseados
- * \return int retorna -1 si no pudo operar.
- * 						0 si no leyo
- * 						>0 si leyo (retorna la cantidad de lineas que leyo)
- *
-
-int parser_PassengerFromText(FILE* pFile , LinkedList* pArrayListPassenger)
-{
-	int retorno;
-
-	ePassenger* pAuxPasajero=NULL;
-	char auxId[SIZE_INT];
-	char auxNombre[SIZE_STR];
-	char auxApellido[SIZE_STR];
-	char auxPrice[SIZE_STR];
-	char auxFlyCode[SIZE_STR];
-	char auxTipoPasajero[SIZE_STR];
-	char auxStatusFlight[SIZE_STR];
-	int i;
-	int controlLista;
-	int aceptarModificarId;
-
-	retorno = -1;
-	i=0;
-	controlLista = parser_controlListaPasajeros(pArrayListPassenger);
-	//printf("[DEBUGGGGG]control lista: %d", controlPrimerCarga);
-	if(pFile != NULL && pArrayListPassenger != NULL)
-	{
-		retorno =0;
-		if(controlLista)
-		{
-			printf("Ya hay datos guardados en el programa. Es posible que modifique el dato ID del archivo recibido. Desea continuar?");
-			aceptarModificarId=tp_continuar("Y/N");
-			if(aceptarModificarId)
-			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-			//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
-			//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
-			//printf("parser ok\n");
-			pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, &controlLista);//acá ya tendría un pasajero en la lista de punteros
-
-			if(pAuxPasajero != NULL)
-			{
-				fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-				//parser_countLenFile(pFile);
-
-				while(!feof(pFile))
-				{
-					fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-					//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
-					//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
-					pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, &controlLista);//acá ya tendría un pasajero en la lista de punteros
-
-					if(pAuxPasajero != NULL)
-					{
-						ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
-						i++;
-					}
-					else
-					{
-						//printf("Error en la lectura de la linea %d", i);
-						break;
-					}
-				}
-				retorno = i;
-			}
-			else
-			{
-				printf("se ha cancelado la lectura del archivo. Se sugiere hacer backUp de los datos del archivo antes de volver a intentar la lectura");
-			}
-		}
-		else
-		{
-			fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-			//parser_countLenFile(pFile);
-
-			while(!feof(pFile))
-			{
-				fscanf(pFile, "%[^,],%[^,],%[^,],%[^,],%[^,],%[^,],%[^\n]",auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight);
-				//pAuxPasajero = Passenger_newParametrosString(auxId, auxNombre, auxTipoPasajero);
-				//printf("status fly: %s", auxStatusFlight); //TIENE UN ENTER QUE YO NO SE LO PUSE :(
-				pAuxPasajero = Passenger_newParametrosStringAll(auxId, auxNombre, auxApellido, auxPrice, auxFlyCode, auxTipoPasajero, auxStatusFlight, &controlLista);//acá ya tendría un pasajero en la lista de punteros
-
-				if(pAuxPasajero != NULL)
-				{
-					ll_add(pArrayListPassenger, (ePassenger*)pAuxPasajero);//guarda en la lista linkedList cada elementoç
-					i++;
-				}
-				else
-				{
-					//printf("Error en la lectura de la linea %d", i);
-					break;
-				}
-			}
-			retorno = i;
-		}
-
-
-		//printf("se pudo leer hasta la linea %d",i);
-	}
-    return retorno;
-}*/
-
-/*int parser_countLenFile(FILE* pFile)
-{
-	int retorno;
-	int contadorLineas;
-	char auxChar[1500];
-
-	retorno = -1;
-	contadorLineas=0;
-	if(pFile!= NULL)
-	{
-		do{
-			fscanf(pFile,"%[^\n]",auxChar);
-			contadorLineas++;
-		}while(!feof(pFile));
-		retorno = contadorLineas;
-		printf("contador de lineas: %d", contadorLineas);
-	}
-	return retorno;
-}*/
-
-
-
 /** \brief Transcribe al archivo binario los datos alojados en memoria
  *
  * \param FILE* pFile recibe el puntero al archivo sobre el cual realizara la operacion
@@ -391,9 +259,6 @@ int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger)
 	int lenPArrayListaPassenger;
 	int i;
 	ePassenger* this=NULL;
-	//int auxId;
-	//char auxNombre[SIZE_STR];
-	//int auxTypePassenger;
 
 	retorno = -1;
 	if(pFile != NULL && pArrayListPassenger != NULL)
@@ -414,7 +279,6 @@ int parser_BinaryFromPassenger(FILE* pFile , LinkedList* pArrayListPassenger)
 			printf("\n[DEBUG] ERROR la lista ingresada no contiene elementos\n");
 		}
 	}
-	//printf("retorno binario desde archivo --> %d", retorno);
 	return retorno;
 }
 
@@ -452,9 +316,7 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 			for(i=0; i<lenPArray; i++)
 			{
 				this=ll_get(pArrayListPassenger, i);
-				//Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxTipoPasajero);
 				Passenger_getDatosDePasajero(this, &auxId, auxNombre, auxApellido, &auxPrecio, auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
-				//printf("%d) %d - %s - %s\n", i, auxId, auxNombre, auxTipoPasajero);
 				fprintf(pFile, "%d,%s,%s,%.2f,%s,%s,%s\n", auxId, auxNombre, auxApellido, auxPrecio, auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
 				retorno++;
 			}
@@ -466,17 +328,6 @@ int parser_TextFromPassenger(FILE* pFile, LinkedList* pArrayListPassenger)
 	}
 	return retorno;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /** \brief se encarga de pedir el id del pasajero a eliminar, e interactuar con el usuario para efectuar la baja
  *
@@ -494,18 +345,13 @@ int parser_passengerToDelete(LinkedList* pArrayListPassenger)
 	int indexHallado;
 	ePassenger* pAuxPassenger;
 
-
 	retorno=-1;
-
 	if(pArrayListPassenger!= NULL)
 	{
 		retorno =-2;
-
 		pAuxPassenger=parser_findIndexById(pArrayListPassenger, &idSolicitado, &indexHallado);
-
 		if(pAuxPassenger!= NULL)
 		{
-
 			if(!passenger_delete(pAuxPassenger))
 			{
 				ll_remove(pArrayListPassenger, indexHallado);
@@ -515,108 +361,8 @@ int parser_passengerToDelete(LinkedList* pArrayListPassenger)
 			{
 				retorno =-3;
 			}
-
 		}
 	}
-	return retorno;
-}
-
-
-
-
-int parser_saveIdIntoFile(int ultimoId)
-{
-	int retorno;
-	FILE* pFileLastId;
-
-	retorno=-1;
-	pFileLastId = fopen("ultimoId.bin", "wb");
-	if(pFileLastId != NULL)
-	{
-		fwrite(&ultimoId, sizeof(int), 1, pFileLastId); //escribe el idRecibido en archivo
-		fclose(pFileLastId);
-		retorno =0;
-	}
-	return retorno;
-}
-
-int parser_loadIdFromFile()
-{
-	int retorno;
-	int getId;
-	FILE* pFileIdDeleted;
-
-	getId=0;
-	retorno=-1;
-	pFileIdDeleted = fopen("ultimoId.bin", "rb");
-
-	if(pFileIdDeleted != NULL)
-	{
-		fread(&getId, sizeof(int), 1, pFileIdDeleted);
-		fclose(pFileIdDeleted);
-		printf("getId/retorno: %d",getId);
-		retorno = getId;//retorna el id leido en el archivo
-	}
-	/*else
-	{
-		printf("DEBUG ERROR DE LECTURA ARCHIVO ULTIMOID");
-	}*/
-
-	return retorno;
-}
-
-int parser_proximoId(int idRecibido)
-{
-	int retorno;
-	int idLeido;
-
-	retorno=-1;
-	idLeido= parser_loadIdFromFile();//me trae el idLeido
-
-	//printf("id recibido:%d - ", idRecibido);
-	if(idLeido == idRecibido)
-	{
-		retorno= idRecibido+1;
-		printf("nuevo id:%d", retorno);
-		parser_saveIdIntoFile(retorno);
-	}
-	else
-	{
-		if(idLeido>idRecibido)
-		{
-			retorno = idLeido+1;
-			parser_saveIdIntoFile(retorno);
-		}
-		else
-		{
-			retorno=idRecibido;
-			parser_saveIdIntoFile(retorno);
-		}
-	}
-		/*if(idLeido < idRecibido)
-		{
-			printf("valor leido %d es menor al valor recibido %d", idLeido, idRecibido);
-			retorno = idRecibido+1;
-			parser_saveIdIntoFile(retorno);
-			printf(" sobreescribo el archivo\n");
-		}
-		else //si idRecibido es menor entonces el ultimo id fue el idLeido
-		{
-			printf("valor leido %d es mayor al valor recibido %d", idRecibido, idLeido);
-			if(idLeido == idRecibido)
-			{
-				retorno = idLeido+1;
-				parser_saveIdIntoFile(retorno);
-				printf(" son iguales asi que le +1 = retorno: %d\n", retorno);
-				//parser_saveIdIntoFile(retorno);
-			}
-			else
-			{
-				printf(" el valor leido %d es mayor al recibido %d , entonces devuelvo el valor del archivo +1 = retorno %d\n",idRecibido, idLeido, retorno);
-				retorno = idLeido; //retorna >0 si levantò el ultimoId
-			}
-		}*/
-	//}
 	return retorno;
 }
 
@@ -780,6 +526,91 @@ int parser_getTypePassToBuffer(char* typePass, int lenName)
 				break;
 		}
 		retorno=0;
+	}
+	return retorno;
+}
+
+//----------------------- ARCHIVO ULTIMOID -----------------------//
+/** \brief abre un archivo para guardar el ultimo id para los datos cargados manualmente
+ *
+ * \param ultimoId int recibe por valor el ultimo ID utilizado
+ * \return int retorno -1 si hubo un error en los parametros
+ *						0 si opero correctamente
+ *
+ */
+int parser_saveIdIntoFile(int ultimoId)
+{
+	int retorno;
+	FILE* pFileLastId;
+
+	retorno=-1;
+	pFileLastId = fopen("ultimoId.bin", "wb");
+	if(pFileLastId != NULL)
+	{
+		fwrite(&ultimoId, sizeof(int), 1, pFileLastId); //escribe el idRecibido en archivo
+		fclose(pFileLastId);
+		retorno =0;
+	}
+	return retorno;
+}
+
+/** \brief abre un archivo para leer el ultimo id usado en los datos cargados manualmente
+ *
+ * \return int retorno -1 si hubo un error en los parametros
+ *						>0 si opero correctamente (retorna el ID leido)
+ *
+ */
+int parser_loadIdFromFile(void)
+{
+	int retorno;
+	int getId;
+	FILE* pFileIdDeleted;
+
+	getId=0;
+	retorno=-1;
+	pFileIdDeleted = fopen("ultimoId.bin", "rb");
+
+	if(pFileIdDeleted != NULL)
+	{
+		fread(&getId, sizeof(int), 1, pFileIdDeleted);
+		fclose(pFileIdDeleted);
+		retorno = getId;//retorna el id leido en el archivo
+	}
+	return retorno;
+}
+
+/** \brief Manipula un archivo para analizar cual es el ID que se utilizara en la carga manual
+ *
+ * \return int retorno -1 si hubo un error en los parametros
+ *						>0 si opero correctamente (retorna el ID que le corresponde al elemento que esta siendo cargado manualmente)
+ *
+ */
+int parser_proximoId(int idRecibido)
+{
+	int retorno;
+	int idLeido;
+
+	retorno=-1;
+	idLeido= parser_loadIdFromFile();//me trae el idLeido
+
+	if(idLeido == idRecibido)
+	{
+		retorno= idRecibido+1;
+		printf("nuevo id:%d", retorno);
+		parser_saveIdIntoFile(retorno);
+	}
+	else
+	{
+		if(idLeido>idRecibido)
+		{
+			retorno = idLeido+1;
+			parser_saveIdIntoFile(retorno);
+		}
+		else
+		{
+			retorno=idRecibido;
+			parser_saveIdIntoFile(retorno);
+		}
 	}
 	return retorno;
 }

@@ -44,60 +44,40 @@ typedef struct
 }ePassenger;
 
 ePassenger* Passenger_new();
-ePassenger* Passenger_newParametrosString(char* idStr,char* nombreStr,char* tipoPasajeroStr);
-//ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr, int* controlLista);
 ePassenger* Passenger_newParametrosStringAll(char* idStr,char* nombreStr,char* apellidoStr, char* precioStr, char* codigoVueloStr, char* tipoPasajeroStr, char* estadoVueloStr);
-ePassenger* Passenger_newParametros(int id,char* nombre,char* tipoPasajero);
-ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo, int controlLista);
 ePassenger* Passenger_newParametrosAllBinary(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo);
-//ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo);
-
-void Passenger_printMensajeConId(char* mensaje,  ePassenger* pAuxPasajero);
-//int Passenger_getDatosDePasajero(ePassenger* this, int* id, char* nombre, char* typePasajero);
-int Passenger_getDatosDePasajero(ePassenger* this, int* id,char* nombre,char* apellido,float* precio, char* codigoVuelo, char* tipoPasajero,char* estadoVuelo);
-int passenger_delete(ePassenger* this);
-int Passenger_initPasajero(ePassenger* this);
-int Passenger_printPasajero(ePassenger* this);
-void Passenger_printEncabezado();
-
-
-int Passenger_setId(ePassenger* this,int id, int controlLista);
-//int Passenger_setIdStr(ePassenger* this,char* idStr, int* controlLista);
-int Passenger_setIdStr(ePassenger* this,char* idStr);
-int Passenger_setIdBinary(ePassenger* this,int idStr);
-int Passenger_getId(ePassenger* this/*,int* id*/);
-
-
-int Passenger_setNombre(ePassenger* this,char* nombre);
-int Passenger_getNombre(ePassenger* this,char* nombre);
-/*
-int Passenger_setApellido(ePassenger* this,char* apellido);
-int Passenger_setPrecio(ePassenger* this,float precio);
-int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo);*/
-int Passenger_setEstadoVuelo(ePassenger* this,char* estadoVuelo);
-
-int Passenger_setApellido(ePassenger* this,char* apellido);
-int Passenger_getApellido(ePassenger* this,char* apellido);
-
-int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo);
-int Passenger_getCodigoVuelo(ePassenger* this,char* codigoVuelo);
-
-int Passenger_setTipoPasajero(ePassenger* this,char* tipoPasajero);
-//int Passenger_setTipoPasajeroStr(ePassenger* this,char* tipoPasajero);
-int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero);
-
-int Passenger_setPrecio(ePassenger* this,float precio);
-float Passenger_getPrice(ePassenger* this);
-
-int Passenger_setPrice(ePassenger* this,char* priceStr);
-int Passenger_getEstadoVuelo(ePassenger* this,char* estadoVuelo);
-int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
-int Passenger_setLastName(ePassenger* this,char* apellidoStr);
+ePassenger* Passenger_newParametrosAll(int id,char* nombre,char* apellido, float precio, char* codigoVuelo, char* tipoPasajero, char* estadoVuelo, int controlLista);
 
 ePassenger* Passenger_findIndexById(ePassenger* this, int idBusqueda);
+int passenger_delete(ePassenger* this);
+int Passenger_printPasajero(ePassenger* this);
+void Passenger_printEncabezado(void);
+void Passenger_printMensajeConId(char* mensaje,  ePassenger* pAuxPasajero);
+
+int Passenger_setId(ePassenger* this,int id, int controlLista);
+int Passenger_setIdBinary(ePassenger* this,int idStr);
+int Passenger_setIdStr(ePassenger* this,char* idStr);
+int Passenger_setNombre(ePassenger* this,char* nombre);
+int Passenger_setLastName(ePassenger* this,char* apellidoStr);
+int Passenger_setPrecio(ePassenger* this,float precio);
+int Passenger_setPriceStr(ePassenger* this,char* priceStr);
+int Passenger_setCodigoVuelo(ePassenger* this,char* codigoVuelo);
+int Passenger_setStatusFlight(ePassenger* this,char*estadoVueloStr);
+int Passenger_setTipoPasajero(ePassenger* this,char* tipoPasajero);
+
+int Passenger_getDatosDePasajero(ePassenger* this, int* id,char* nombre,char* apellido,float* precio, char* codigoVuelo, char* tipoPasajero,char* estadoVuelo);
+int Passenger_getId(ePassenger* this);
+int Passenger_getNombre(ePassenger* this,char* nombre);
+int Passenger_getApellido(ePassenger* this,char* apellido);
+int Passenger_getCodigoVuelo(ePassenger* this,char* codigoVuelo);
+float Passenger_getPrice(ePassenger* this);
+int Passenger_getTipoPasajero(ePassenger* this,char* tipoPasajero);
+int Passenger_getEstadoVuelo(ePassenger* this,char* estadoVuelo);
+
 int Passenger_compareById(void* this, void* that);
 int Passenger_comparePrice(void* this, void* that);
 int Passenger_compareByName(void* this, void* that);
+
 
 
 #endif /* PASSENGER_H_ */
