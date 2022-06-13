@@ -157,49 +157,53 @@ Node* test_getNode(LinkedList* this, int nodeIndex)
 static int addNode(LinkedList* this, int nodeIndex,void* pElement)
 {
 	Node* newNode=NULL;
-	Node* nodoAnterior = NULL;
-	Node* nodoReacomodado = NULL;
+	Node* auxNode = NULL;
+	Node* auxNextNode = NULL;
+	Node* auxPreviousNode = NULL;
 	int sizeThis;
 	int retorno;
-	//int i;
+
 
 	retorno = -1;
-	sizeThis = ll_len(this);
-	if( this != NULL && nodeIndex >= 0 && nodeIndex <= sizeThis)
+
+	if( this != NULL && nodeIndex >= 0)
 	{
+		sizeThis = ll_len(this);
 		newNode = (Node*)malloc(sizeof(Node));
-		if(newNode != NULL)
+
+		if(nodeIndex <= sizeThis && newNode != NULL)
 		{
-			//acá tengo que poner còmo se completarian los campos de la estructura para cada caso
-			switch (nodeIndex)
+			auxNode = getNode(this, nodeIndex);
+
+			if(auxNode != NULL)
 			{
-				case 0://si tengo que cargar el primer nodo
-					this->pFirstNode = newNode;
-					newNode->pNextNode = NULL;
-					break;
-				default:
-					if(nodeIndex==sizeThis)//quiere decir que va a ser un elemento que se agregue a lo ultimo
-					{
-						nodoAnterior = getNode(this, nodeIndex);
-						nodoAnterior->pNextNode= newNode;
-						newNode->pNextNode=NULL;
-					}
-					else//si pongo un nodo entre dos nodos
-					{
-						nodoReacomodado = getNode(this, nodeIndex);
-						nodoAnterior = getNode(this, nodeIndex-1);
-						nodoAnterior->pNextNode=newNode;
-						newNode->pNextNode=nodoReacomodado;
-					}
-					break;
+				auxNextNode = auxNode->pNextNode;
+				switch (nodeIndex) {
+					case 0:
+						this->pFirstNode=newNode;
+						newNode->pNextNode=auxNextNode;
+						break;
+					default:
+						auxPreviousNode = getNode(this, nodeIndex-1);
+						auxPreviousNode->pNextNode=newNode;
+						newNode->pNextNode=auxNode;
+						break;
+				}
+				newNode->pElement = pElement;
+				this->size = sizeThis+1;
+				retorno = 0;
 			}
-			newNode->pElement= pElement;
-			this->size = sizeThis+1;
-			retorno = 0;
+			else
+			{
+				free(newNode);
+			}
 		}
+
 	}
 	return retorno;
 }
+
+
 
 /** \brief Permite realizar el test de la funcion addNode la cual es privada
  *
@@ -252,10 +256,10 @@ void* ll_get(LinkedList* this, int index)
 {
     void* pElemento = NULL;
     Node* pNodoElemento = NULL;
-    int sizeThis;
+   // int sizeThis;
 
-    sizeThis = ll_len(this);
-    if(this!= NULL && index)
+    //sizeThis = ll_len(this);
+    if(this!= NULL && index>= 0 && index< ll_len(this))
     {
     	pNodoElemento = getNode(this, index);
     	if(pNodoElemento != NULL)
@@ -279,12 +283,12 @@ void* ll_get(LinkedList* this, int index)
 int ll_set(LinkedList* this, int index,void* pElement)
 {
     int retorno;
-    int sizeThis;
+   // int sizeThis;
     Node* nodoSeteado;
 
-    sizeThis = ll_len(this);
+    //sizeThis = ll_len(this);
     retorno = -1;
-    if(this != NULL && index>= 0 && index<sizeThis && pElement != NULL)
+    if(this != NULL && index>= 0 && index<ll_len(this) && pElement != NULL)
     {
     	nodoSeteado = getNode(this, index);
     	if(nodoSeteado != NULL)
@@ -307,9 +311,38 @@ int ll_set(LinkedList* this, int index,void* pElement)
  */
 int ll_remove(LinkedList* this,int index)
 {
-    int returnAux = -1;
+    int retorno = -1;
+    //int lenThis;
+    Node* auxNodeRemoved = NULL;
+    Node* auxNextNode = NULL;
+    Node* auxPreviousNode = NULL;
 
-    return returnAux;
+
+    if(this != NULL && index>=0 && index < ll_len(this))
+    {
+    	//lenThis = ll_len(this);
+    	auxNodeRemoved = getNode(this, index);
+    	if(auxNodeRemoved != NULL)
+    	{
+    		auxNextNode = auxNodeRemoved->pNextNode; //puede estar apuntando a null o puede estar apuntando a otro nodo
+
+    		switch (index) {
+				case 0:
+					//trabajo con linkedList
+					this->pFirstNode = auxNextNode;
+					break;
+				default:
+					auxPreviousNode = getNode(this, index-1);
+					auxPreviousNode->pNextNode = auxNextNode;
+				break;
+    		}
+    		free(auxNodeRemoved);
+    		this->size=this->size-1;
+    		retorno =0;
+    	}
+    	//si no entra al if, quiere decir que no se encontró el nodo en el index indicado
+    }
+    return retorno;
 }
 
 
@@ -322,9 +355,25 @@ int ll_remove(LinkedList* this,int index)
  */
 int ll_clear(LinkedList* this)
 {
-    int returnAux = -1;
+    int retorno = -1;
+    int lenThis;
+    Node* auxNode= NULL;
+    int i;
 
-    return returnAux;
+    if(this != NULL)
+    {
+    	lenThis = ll_len(this);
+    	if(lenThis > 0)
+    	{
+    		for(i=0; i<lenThis; i++)
+			{
+				auxNode = getNode(this, i);
+				ll_remove(this, i);//se encargará de eliminar el que llamamos sin perder la referencia a toda la lista que la continua
+			}
+			retorno = 0;
+    	}
+    }
+    return retorno;
 }
 
 

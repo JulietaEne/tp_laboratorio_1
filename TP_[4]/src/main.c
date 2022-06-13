@@ -26,15 +26,12 @@
 
 int main(void)
 {
-	/*LinkedList* lista=ll_newLinkedList();
+
 	startTesting(1);  // ll_newLinkedList
-
-	printf("MAIN\nNew linkedList %p\n First Node: %p - size Of this:%d\n\n",lista, lista->pFirstNode, lista->size);
-
-	startTesting(2);  // ll_len
-	startTesting(3);  // getNode - test_getNode*/
+	/*startTesting(2);  // ll_len
+	startTesting(3);  // getNode - test_getNode
 	startTesting(4);  // addNode - test_addNode
-	/*startTesting(5);  // ll_add
+	startTesting(5);  // ll_add
 	startTesting(6);  // ll_get
 	startTesting(7);  // ll_set
 	startTesting(8);  // ll_remove
