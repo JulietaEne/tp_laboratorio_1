@@ -25,19 +25,18 @@
 int main()
 {
 		int option = 0;
-		//int retornoFuncion;
+
 
 		LinkedList* listaPasajeros = ll_newLinkedList();
 		int controlGuardado;
 		int controlPasajeros;
 		int controlListaOrdenada;
-		//int controlDelet;
-		//int primeraCargaArchivo;
+		int controlPasajeroCargado;
 		controlGuardado = 0;
 		controlPasajeros=0;
 		controlListaOrdenada = 1;
-		//primeraCargaArchivo=0;
-		//printf("cantidad de elementos: %d", parser_controlListaPasajeros(listaPasajeros));
+		controlPasajeroCargado =0;
+
 		do{
 				option = tp_ImprimirMenuDiezOpciones("\n[MENU]\n", "1- Abrir archivo de texto"
 																, "2- Abrir archivo binario"
@@ -45,7 +44,7 @@ int main()
 																, "4- Modificar pasajero"
 																, "5- Dar de baja pasajero"
 																, "6- Listar pasajeros"
-																, "7- Ordenar pasajeros (por nombre)"
+																, "7- Ordenar pasajeros"
 																, "8- Guardar en archivo .csv"
 																, "9- Guardar en archivo binario"
 																, "10- Salir del programa");
@@ -75,9 +74,9 @@ int main()
 					break;
 				case 3:
 					// alta de pasajero
-					if(!controller_addPassenger(listaPasajeros, controlPasajeros))
+					if(!controller_addPassenger(listaPasajeros, controlPasajeroCargado))
 					{
-						controlPasajeros++;
+						controlPasajeroCargado++;
 					}
 					break;
 				case 4:

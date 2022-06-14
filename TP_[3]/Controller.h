@@ -21,33 +21,22 @@ int controller_optionsToOpenCsv(LinkedList* pArrayListPassenger);
 int controller_loadFromText(char* path , LinkedList* pArrayListPassenger);
 int controller_optionsToOpenBin(LinkedList* pArrayListPassenger);
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger);
+
 int controller_addPassenger(LinkedList* pArrayListPassenger, int controlPasajeros);
-int controller_findLastIdValue(LinkedList* pArrayListPassenger);
 
 int controller_editPassenger(LinkedList* pArrayListPassenger);
+int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero);
+
 int controller_removePassenger(LinkedList* pArrayListPassenger);
+
 int controller_ListPassenger(LinkedList* pArrayListPassenger, int controlOrden);
 int controller_sortPassenger(LinkedList* pArrayListPassenger);
-//int controller_comparePassenger(LinkedList* pArrayListPassenger);
-int controller_swapPpasajero(ePassenger* pPasajero1, ePassenger* pPasajero2);
 
 int controller_optionsToSaveCsv(LinkedList* pArrayListPassenger);
 int controller_saveAsText(char* path , LinkedList* pArrayListPassenger);
 int controller_optionsToSaveBin(LinkedList* pArrayListPassenger);
 int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger);
-/*
-int controller_getIdToBuffer(int* id, LinkedList* pArrayListPassenger);
-int controller_getNameToBuffer(char* name, int lenName);
-int controller_getLastNameToBuffer(char* lastName, int lenLastame);
-int controller_getPriceToBuffer(float* price);
-int controller_getFlyCodeToBuffer(char* flyCode, int lenFlyCode);
-int controller_getStatusFlightToBuffer(char* statusFlight, int lenStatusFlight);
-int controller_getTypePassToBuffer(char* typePass, int lenName);*/
 
-ePassenger* controller_findIndexById(LinkedList* pArrayListPassenger, int* idIngresado, int* indexHallado);
 void controller_askToViewList(LinkedList* pArrayListPassenger);
-int controller_chooseCampToEdit(ePassenger* pPasajero, int idPasajero);
-
-//int controller_findIndexById(LinkedList* pArrayListPassenger, ePassenger** pPassengerHallado, int idIngresado);
 
 #endif /* PARSER_H_ */
