@@ -52,6 +52,7 @@ void setTestCase02(void)
     ll_add(list,NULL);
     ll_set(list,0,pElement2);
     pElement = ll_get(list,0);
+
     utest_assertEqualsPointerMsg(pElement,pElement2,"\nError en el valor de retorno de <get> al solicitar el primer elemento steado con <set>\n");
 
 }

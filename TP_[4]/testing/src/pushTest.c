@@ -44,9 +44,10 @@ void pushTestSetup(void)
 void pushTestCase01(void)
 {
     LinkedList* list;
-
+   // printf("solo anda mal el case1\n");
     list = ll_newLinkedList();
     ll_push(list,0,NULL);
+   // printf("a la lista, agregamos un elem en index 0 y el elem es null\n");
     utest_assertEqualsIntMsg(1,list->size,"\nError en el valor de size de la lista se debe incrementar al agregar un nuevo elemento\n");
 
 }

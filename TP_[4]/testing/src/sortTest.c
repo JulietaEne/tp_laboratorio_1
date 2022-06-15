@@ -46,6 +46,7 @@ void sortTestSetup(void)
 
 void sortTestCase01(void)
 {
+	printf("CASE 1\n");
     int r;
     int i;
     LinkedList* list;
@@ -65,6 +66,7 @@ void sortTestCase01(void)
 
 void sortTestCase02(void)
 {
+	printf("\n\nCASE 2\n");
     int i;
     LinkedList* list;
     Employee* pAux[LENGTH];
@@ -77,19 +79,21 @@ void sortTestCase02(void)
         pAux[i] = newEmployee(id[i],unsortedList[i],unsortedList[i],salary[i],sector[i]);
         ll_add(list,pAux[i]);
     }
-
+    //printf("salario de %d : $%f\n",i,pAux[i]->salary);
     ll_sort(list, compareEmployee,0);
 
     for(i=0; i < LENGTH; i++)
     {
         pAuxGet[i] = ll_get(list,i);
         utest_assertNotNullMsg(pAuxGet[i],"Error al intentar obtener un elemento luego de ordenar");
+        //printf("\n%f - i=%d",pAuxGet[i]->salary,i);
         utest_assertEqualsFloatMsg(((Employee*)pAuxGet[i])->salary,salarySortedUp[i],"El orden de la lista es incorrecto");
     }
 
 }
 void sortTestCase03(void)
 {
+	printf("\n\nCASE 3");
     int r;
     r = ll_sort(NULL, compareEmployee,1);
     utest_assertEqualsIntMsg(r,-1,"\nError en el valor de retorno de <sort> si el puntero a la lista es NULL\n la funcion retorna -1\n");
@@ -99,6 +103,7 @@ void sortTestCase03(void)
 
 void sortTestCase04(void)
 {
+	printf("\n\nCASE 4");
     int r;
     int i;
     LinkedList* list;
@@ -117,6 +122,7 @@ void sortTestCase04(void)
 
 void sortTestCase05(void)
 {
+	printf("\n\nCASE 5");
     int r;
     int i;
     LinkedList* list;

@@ -49,9 +49,9 @@ void subListTestCase01(void)
 
     list = ll_newLinkedList();
     ll_add(list,NULL);
-
+    printf("case 1********\n");
     utest_assertNotNullMsg(ll_subList(list,0,1),"\nError en el valor de retorno de <subList> si los parametros son correctos\nno debe retornar NULL\n");
-
+    printf("********fin case 1\n");
 }
 
 void subListTestCase02(void)
