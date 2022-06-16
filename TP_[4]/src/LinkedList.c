@@ -643,7 +643,7 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
     int i;
     Node* pAux1= NULL;
     Node* pAux2= NULL;
-    Node* pAux = NULL;
+    void* pAuxElement = NULL;
     int flagSwap;
     int retornoFuncion;
 
@@ -667,18 +667,18 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 						case 1:
 							if(retornoFuncion>0)
 							{
-								pAux = pAux1;
-								pAux1 = pAux2;
-								pAux2 = pAux;
+								pAuxElement = pAux1->pElement;
+								pAux1->pElement = pAux2->pElement;
+								pAux2->pElement = pAuxElement;
 								flagSwap = 1;
 							}
 							break;
 						case 0:
 							if(retornoFuncion<0)
 							{
-								pAux = pAux1;
-								pAux1 = pAux2;
-								pAux2 = pAux;
+								pAuxElement = pAux1->pElement;
+								pAux1->pElement = pAux2->pElement;
+								pAux2->pElement = pAuxElement;
 								flagSwap = 1;
 							}
 							break;
