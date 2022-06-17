@@ -51,7 +51,7 @@ int main(void) {
 		if(contadorCargados == -1)
 		{
 			inicioPrograma(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaGenero, QTY_GENERO, listaType, QTY_TYPE, listaTipoAlbum, QTY_TIPO_ALBUM);
-			contadorCargados = 0;
+			contadorCargados = 1;//0
 			//printf("init ok");
 		}
 		//alb_contadorAlbumesCargados(listAlbum, QTY_ALBUM, &contadorCargados);
@@ -76,7 +76,7 @@ int main(void) {
 				printf("\nMODIFICAR ALBUM\n");
 				if(contadorCargados > 0)
 				{
-					modificarAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM);
+					modificarAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
 				}
 				else
 				{

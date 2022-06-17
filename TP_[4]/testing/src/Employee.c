@@ -22,7 +22,7 @@ int compareEmployee(void* pEmployeeA,void* pEmployeeB)
     {
     	retorno = -1;
     }
-    printf(" | retorno = %d****\n", retorno);
+    //printf(" | retorno = %d****\n", retorno);
     return retorno;
 
 

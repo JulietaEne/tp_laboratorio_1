@@ -46,7 +46,7 @@ void sortTestSetup(void)
 
 void sortTestCase01(void)
 {
-	printf("CASE 1\n");
+	//printf("CASE 1\n");
     int r;
     int i;
     LinkedList* list;
@@ -66,7 +66,7 @@ void sortTestCase01(void)
 
 void sortTestCase02(void)
 {
-	printf("\n\nCASE 2\n");
+	//printf("\n\nCASE 2\n");
     int i;
     LinkedList* list;
     Employee* pAux[LENGTH];
@@ -93,7 +93,7 @@ void sortTestCase02(void)
 }
 void sortTestCase03(void)
 {
-	printf("\n\nCASE 3");
+	//printf("\n\nCASE 3");
     int r;
     r = ll_sort(NULL, compareEmployee,1);
     utest_assertEqualsIntMsg(r,-1,"\nError en el valor de retorno de <sort> si el puntero a la lista es NULL\n la funcion retorna -1\n");
@@ -103,7 +103,7 @@ void sortTestCase03(void)
 
 void sortTestCase04(void)
 {
-	printf("\n\nCASE 4");
+	//printf("\n\nCASE 4");
     int r;
     int i;
     LinkedList* list;
@@ -122,7 +122,7 @@ void sortTestCase04(void)
 
 void sortTestCase05(void)
 {
-	printf("\n\nCASE 5");
+	//printf("\n\nCASE 5");
     int r;
     int i;
     LinkedList* list;

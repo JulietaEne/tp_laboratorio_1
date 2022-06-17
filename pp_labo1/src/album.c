@@ -113,8 +113,8 @@ int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* can
  * \param sizeListaAlbum int Recibe por valor el tamaño del array
  * \return retorna int -1 si hubo un error en los parametros recibidos
  * 						0 si la operacion se realizo correctamente
- *
  */
+
 int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum)
 {
 	int retorno;
@@ -202,7 +202,7 @@ int alb_printPosicionConArtista(eAlbum* listaAlbum, int indiceAlbum, eArtista* l
  */
 void alb_printEncabezado(void)
 {
-	printf("\nTIPO ALBUM\tID\tTITULO\t\t\tFECHA\t\tPRECIO\t\tNOMBRE DE ARTISTA\n");
+	printf("\nTIPO ALBUM\tID\tTITULO\t\t\tFECHA\t\tPRECIO\t\tNOMBRE DE ARTISTA\tGENERO\n");
 }
 
 /**
@@ -406,7 +406,6 @@ int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum)
 * 	     with the last id wich it has finded
 * \param listaAlbum eAlbum* receives the list where will write the struct
 * \param sizeListaAlbum int to indicate array size
-
 * \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
 *					  (0) if Ok
 *
@@ -492,7 +491,7 @@ int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbu
 	if(idSolicitado != NULL)
 	{
 		retorno =0;
-		utn_GetNumeroInt(&auxId, "Ingrese el Codigo del Album: ", "ingrese un dato valido", ID_INICIAL, ID_MAXIMO, REINTENTOS);
+		utn_GetNumeroInt(&auxId, "Ingrese el Codigo del Album: ", "El dato ingresado no corresponde a un album cargado.", ID_INICIAL, ID_MAXIMO, REINTENTOS);
 		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
 		if(auxId <= ultimoId)
 		{
@@ -1667,34 +1666,6 @@ int tipoAlbum_printViniloSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eA
 	return retorno;
 }
 
-/*
-int alb_indicarUltimoId(eAlbum* listaAlbum, int sizeListaAlbum, int* ultimoId);
-int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* cantidadCargados);
-*/
+//---------------------------------//
 
-
-/* aca van todas las funciones que necesito para interactuar con el usuario al cargar un albom*/
-/*int alb_pedirTitulo(char* titulo, int sizeTitulo);
-//int fecha??
-float alb_pedirImporte(float* importe);
-int alb_pedirArtista(int* artista);*/ //este va a invocar a la estructura eArtista porque precisa mostrar su contenido para dar opciones al usuario (que ingresa una opcion por numero)
-
-/*2) Modificar titulo fecha importe
-int alb_cambiarTitulo(char* titulo, int sizeTitulo);
-// cambiar fecha??
-float alb_cambiarImporte(float* importe);
-
-//__________________________________________________________________-
-
-int alb_pedirCodigo(int ultimoId); //2 y 3
-int alb_findPorCodigo(eAlbum* listaAlbum, int sizeListaAlbum, int idConsulta); //2 y 3*/
-
-/*3) baja segun codigo
-int alb_removeSegunId(eAlbum* listaAlbum, int idConsulta); //3 realizar baja logica
-
-//__________________________________________________________________-
-//funciones de auxilio
-
-int alb_swap(eAlbum* listaAlbum, int indice1, int indece2);// 5- E
-int alb_sortByImporte(eAlbum* listaAlbum, int sizeListaAlbum);
-int alb_sortByTitulo(eAlbum* listaAlbum, int sizeListaAlbum);*/
+//-----------------------------------//
