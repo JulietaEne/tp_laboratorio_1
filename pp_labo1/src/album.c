@@ -6,6 +6,7 @@
  */
 
 #include "album.h"
+#include "correcciones.h"
 
 /**
  * \brief Recorre el array recibido para asignar valor inicial al campo isEmpty de todos sus elementos
@@ -29,6 +30,387 @@ int alb_initLista(eAlbum* listaAlbum, int sizeListaAlbum)
 	}
 	return retorno;
 }
+
+int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int retorno;
+	int i;
+
+	eAlbum cargaAlbum[] = {
+			{101, "Fantaisie-Impromptu",{1,1,1851},2500,1,2,1,1, NOT_EMPTY},
+			{102, "El disco de tu corazon", {1,1,2017}, 2050, 4,1,2,2,NOT_EMPTY},
+			{103, "Sin restricciones",{1,5,2004},2000,4,3,1,3, NOT_EMPTY},
+			{104, "El templo del pop",{1,8,2014},2500,4,4,2,1, NOT_EMPTY},
+			{105, "Have a Nice day",{1,10,2014},1900,5,1,1,2,NOT_EMPTY},
+			{106, "Master of puppets",{1,10,1986}, 1800,6,3,2,3,NOT_EMPTY},
+			{107, "Made in Heaven",{1,11,1991},2100, 8,4,1,1,NOT_EMPTY},
+			{108, "a Kind of magic",{12,11,1986}, 2150, 6,4,2,2,NOT_EMPTY}
+			};
+
+	retorno = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		retorno = -2;
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			listaAlbum[i]= cargaAlbum[i];
+		}
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+/**
+* \brief realiza un hardcodeo de 5 elementos a cargar en el array de tipo eAlbum
+* \param arrayPasajeros eAlbum* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
+* \param sizeListaArtista int Recibe por valor tamaño de la lista
+* \return Return 0 si opero correctamente
+* 			   (-1) si hubo un error en los parametros recibidos
+*
+*/
+int art_cargaForzadaDeDatos(eArtista* listaArtistas, int sizeListaArtista)
+{
+	int retorno;
+	int i;
+	eArtista cargaArtistas[] = {
+								{1, "Federic Chopin", NOT_EMPTY},
+								{2, "Lali Esposito", NOT_EMPTY},
+								{3, "Babasonicos", NOT_EMPTY},
+								{4, "Miranda", NOT_EMPTY},
+								{5, "Bon Jovi", NOT_EMPTY},
+								{6, "Metallica", NOT_EMPTY},
+								{7, "Kiss", NOT_EMPTY},
+								{8, "Queen", NOT_EMPTY},
+								{9, "Paramore", NOT_EMPTY},
+								{10, "Avril Lavigne", NOT_EMPTY}
+							};
+	retorno = -1;
+	if(listaArtistas!= NULL && sizeListaArtista>0)
+	{
+		retorno = -2;
+		for(i=0; i<sizeListaArtista; i++)
+		{
+			listaArtistas[i]= cargaArtistas[i];
+		}
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+int genero_cargaForzadaDeDatos(eGenero* listaGeneros, int sizeGeneros)
+{
+	int retorno;
+	int i;
+	eGenero cargaGeneros[] = {
+								{1, "Clasico", NOT_EMPTY},
+								{2, "Pop", NOT_EMPTY},
+								{3, "Metal Rock", NOT_EMPTY},
+								{4, "Pop Rock", NOT_EMPTY}
+							};
+	retorno = -1;
+	if(listaGeneros!= NULL && sizeGeneros>0)
+	{
+		retorno = -2;
+		for(i=0; i<sizeGeneros; i++)
+		{
+			listaGeneros[i]= cargaGeneros[i];
+		}
+		retorno = 0;
+	}
+
+	return retorno;
+}
+
+int type_cargaForzadaDeDatos(eTipoArtista* listaTypes, int sizeTypes)
+{
+	int retorno;
+	int i;
+	eTipoArtista cargaTipos[] = {
+								{1, "Solista", NOT_EMPTY},
+								{2, "Banda", NOT_EMPTY},
+							};
+	retorno = -1;
+	if(listaTypes!= NULL && sizeTypes>0)
+	{
+		retorno = -2;
+		for(i=0; i<sizeTypes; i++)
+		{
+			listaTypes[i]= cargaTipos[i];
+		}
+		retorno = 0;
+	}
+	return retorno;
+}
+
+/**
+* \brief add in a existing list of Album the values received as parameters
+* 	     in the first empty position(with alb_cargarUnNuevoAlbumAlArray)
+* 	     with the last id wich it has finded
+* \param listaAlbum eAlbum* receives the list where will write the struct
+* \param sizeListaAlbum int to indicate array size
+* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
+*					  (0) if Ok
+*
+*/
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros/*, int ultimoId*/)
+{
+	int retorno;
+	int idArtistaAlbum;
+	eFecha unaFechaAlbum;
+	float importeAlbum;
+	char tituloAlbum[STR_SIZE];
+	int tipoArtista;
+	int tipoAlbum;
+	int askPrintLista;
+	int generoFk;
+
+	retorno = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum >0 && listaArtista != NULL && sizeListaArtista >0)
+	{
+		retorno = -2;
+		alb_getTitulo(tituloAlbum, STR_SIZE);
+		alb_getFecha(&unaFechaAlbum);
+		alb_getImporte(&importeAlbum);
+		alb_getArtista(listaArtista, sizeListaArtista, &idArtistaAlbum);
+		alb_getTipoArtista(&tipoArtista);
+		alb_getTipoAlbum(listaTipoAlbum, sizeListTipoAlbum, &tipoAlbum);
+		alb_getGenero(listaGeneros, sizeListaGeneros, &generoFk);
+
+		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, tipoArtista, tipoAlbum))
+		{
+			retorno=0;
+			printf("se ha cargado con éxito");
+			askPrintLista = continuar("desea imprimir la lista? Y/N");
+			if(askPrintLista)
+			{
+				//alb_printLista(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeListaGeneros);
+				printListaAlbum(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeListaGeneros);
+			}
+		}
+	}
+	return retorno;
+}
+
+
+/**
+ * \brief interactua con el usuario para solicitar el titulo del album
+ * \param titulo char* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \param sizeTitulo int Recibe por valor el tamaño del array
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		   		   -2 si hubo un error en la interaccion con el usuario
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_getTitulo(char* titulo, int sizeTitulo)
+{
+	int retorno;
+	char auxNombre[sizeTitulo];
+
+	retorno =-1;
+	if(titulo!= NULL && sizeTitulo >0)
+	{
+		do{
+			utn_ingresarAlfabetica(auxNombre, sizeTitulo, "Titulo del Album: ", "Ingrese un dato valido", REINTENTOS);
+			strncpy(titulo, auxNombre, sizeTitulo);
+			retorno =0;
+			if(validaciones_esNombre(titulo, sizeTitulo))
+			{
+				retorno = -2;
+				printf("[ERROR]Ingrese un título válido\n");
+			}
+		}while(retorno);
+
+	}
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar la fecha del album
+ * \param fechaAlbum eFecha* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_getFecha(eFecha* fechaAlbum)
+{
+	int retorno;
+	//eFecha fecha;
+	retorno = -1;
+	if(fechaAlbum != NULL )
+	{
+		printf("\nFecha de emision \n");
+		*fechaAlbum= fecha_newFecha();
+		retorno =0;
+	}
+
+	return retorno;
+}
+
+eFecha fecha_newFecha(void)
+{
+	eFecha unaFecha;
+	int formatoFecha;
+	//int aceptarConsulta;
+
+	do{
+		formatoFecha = 1;
+		utn_GetNumeroInt(&unaFecha.day, "ingrese dia: ", "Ingrese una fecha día entre 1 y 31\n", 1, MAX_DAY, REINTENTOS);
+		utn_GetNumeroInt(&unaFecha.month, "ingrese mes: ", "Ingrese un mes entre 1 y 12\n", 1, MAX_MONTH, REINTENTOS);
+		utn_GetNumeroInt(&unaFecha.year, "ingrese año: ", "Ingrese un año entre 1930 y 2022\n", MIN_YEAR, MAX_YEAR, REINTENTOS);
+		if(!(unaFecha.day <= 31 && unaFecha.day >0 && unaFecha.month <=12 && unaFecha.month > 0 && unaFecha.year<= MAX_YEAR && unaFecha.year >= MIN_PRECIO))
+		{
+			formatoFecha = 0;
+			printf("\n[ERROR]La carga de fecha no es correcta. Por favor ingrese un dato válido.\n");
+			//aceptarConsulta = continuar("Desea cancelar la operacion? Y/N");
+		}
+	}while(!formatoFecha);
+
+	return unaFecha;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el precio del album
+ * \param importa float* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_getImporte(float* importe)
+{
+	int retorno;
+	float auxImporte;
+
+	retorno = -1;
+	if(importe != NULL)
+	{
+		do{
+			utn_GetNumeroFloat(&auxImporte, "\ningrese el precio: $", "ingrese un dato valido ($700 a $5000)", MIN_PRECIO, MAX_PRECIO, REINTENTOS);
+			if(auxImporte > MIN_PRECIO && auxImporte < MAX_PRECIO)
+			{
+				*importe = auxImporte;
+				retorno=0;
+			}
+		}while(retorno);
+	}
+
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar la fecha del album
+ * \param fechaAlbum eFecha* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 				   -2 si no se pudo solicitar id de artista
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista)
+{
+	int retorno;
+	int auxArtista;
+	retorno=-1;
+	if(listaArtistas!= NULL && sizeListaArtista>0 && idArtista!= NULL)
+	{
+		auxArtista = art_pedirArtista(listaArtistas, sizeListaArtista);
+		*idArtista = auxArtista;
+		retorno =0;
+	}
+	return retorno;
+}
+
+/**
+* \brief solicita por buffer el codigo de un artista de la lista
+* \param listaArtistas eArtista* recibe la direccion de memoria del array a analizar
+* \param sizeListaArtista int recibe por valor el tamaño del array
+* \return int Return (-1) si hubo un error en los parametros recibidos
+* 		     		 (>=0) si opero correctamente - el valor del indice que se encontro
+*
+*/
+int art_pedirArtista(eArtista* listaArtistas, int sizeListaArtista)
+{
+	int unId;
+	int idArtista;
+
+	unId =-1;
+	if(listaArtistas != NULL && sizeListaArtista>0)
+	{
+		do{
+			unId =0;
+			art_printListaArtista(listaArtistas, sizeListaArtista);
+			utn_GetNumeroInt(&unId, "ingrese el codigo del Artista: ", "ingrese un codigo valido\n", MIN_ARTISTA, MAX_ARTISTA, REINTENTOS);
+			if(!(unId<= art_idUltimoArtista(listaArtistas, sizeListaArtista) && unId >0))
+			{
+				idArtista= unId;
+			}
+		}while(!unId);
+	}
+	return idArtista;
+}
+
+int alb_getTipoArtista(int* tipoArtista)
+{
+	int retorno;
+	int auxTipoArtista;
+	retorno=-1;
+	if(tipoArtista!= NULL)
+	{
+		retorno=-2;
+		do{
+			printf("ingrese tipo de artista: 1- solista / 2-banda\n");
+			utn_GetNumeroInt(&auxTipoArtista, "indique: ", "indique un dato valido", 1, 2, REINTENTOS);
+			*tipoArtista = auxTipoArtista;
+			retorno =0;
+		}while(retorno);
+	}
+	return retorno;
+}
+
+/**
+* \brief solicita por buffer el codigo de un artista de la lista
+* \param listaArtistas eArtista* recibe la direccion de memoria del array a analizar
+* \param sizeListaArtista int recibe por valor el tamaño del array
+* \return int Return (-1) si hubo un error en los parametros recibidos
+* 		     		 (>=0) si opero correctamente - el valor del indice que se encontro
+*
+*/
+int genero_pedirGenero(eGenero* listaGeneros, int sizeListaGeneros)
+{
+	int unId;
+	int idGenero;
+
+	unId =-1;
+	if(listaGeneros != NULL && sizeListaGeneros>0)
+	{
+		do{
+			unId =0;
+			genero_printListaGenero(listaGeneros, sizeListaGeneros);
+			utn_GetNumeroInt(&unId, "ingrese el codigo del Genero: ", "ingrese un codigo valido\n", 1, 4, REINTENTOS);
+			if(!(unId<4 && unId >0))
+			{
+				idGenero= unId;
+			}
+		}while(!unId);
+	}
+	return idGenero;
+}
+
+int alb_getGenero(eGenero* listaGeneros, int sizeListaGeneros,int* generoFk)
+{
+	int retorno;
+	//int auxGenero;
+	retorno=-1;
+	if(generoFk!= NULL)
+	{
+		*generoFk = genero_pedirGenero(listaGeneros, sizeListaGeneros);
+		retorno=0;
+	}
+	return retorno;
+}
+
+
+
 
 /**
  * \breif To assign a init value to array's a particular possition
@@ -115,7 +497,7 @@ int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* can
  * 						0 si la operacion se realizo correctamente
  */
 
-int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum)
+int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
 {
 	int retorno;
 	int i;
@@ -133,7 +515,7 @@ int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita
 				tipoAlbum_printTipoAlbumSegunId(listaTipoAlbum, sizeListaTipoAlbum, listaAlbum[i].tipoAlbumFk);
 				alb_printPosicion(listaAlbum, i);
 				art_printNombreArtista(listaArtita, sizeListaArtista, listaAlbum[i].artistaFk);
-
+				genero_printIdGenero(listaGenero, sizeListaGenero, listaAlbum[i].generoFk);
 
 			}
 		}
@@ -239,125 +621,15 @@ int alb_findPorCodigo(eAlbum* listaAlbum, int sizeListaAlbum, int idConsulta)
 //______________________________________________________________-
 /*1) alta de algunos albumes*/
 
-/**
- * \brief interactua con el usuario para solicitar el titulo del album
- * \param titulo char* Recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \param sizeTitulo int Recibe por valor el tamaño del array
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		   		   -2 si hubo un error en la interaccion con el usuario
- * 		  			0 si la operacion se realizo correctamente
- *
- */
-int alb_getTitulo(char* titulo, int sizeTitulo)
-{
-	int retorno;
-	char auxNombre[sizeTitulo];
 
-	retorno =-1;
-	if(titulo!= NULL && sizeTitulo >0)
-	{
-		do{
-			utn_ingresarAlfabetica(auxNombre, sizeTitulo, "Titulo del Album: ", "Ingrese un dato valido", REINTENTOS);
-			strncpy(titulo, auxNombre, sizeTitulo);
-			retorno =0;
-			if(validaciones_esNombre(titulo, sizeTitulo))
-			{
-				retorno = -2;
-				printf("hola");
-			}
-		}while(retorno);
 
-	}
-	return retorno;
-}
 
-/**
- * \brief interactua con el usuario para solicitar el precio del album
- * \param importa float* Recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		  			0 si la operacion se realizo correctamente
- *
- */
-int alb_getImporte(float* importe)
-{
-	int retorno;
-	float auxImporte;
 
-	retorno = -1;
-	do{
-		utn_GetNumeroFloat(&auxImporte, "\ningrese el precio: $", "ingrese un dato valido ($700 a $5000)", MIN_PRECIO, MAX_PRECIO, REINTENTOS);
-		*importe = auxImporte;
-		retorno=0;
-	}while(retorno);
-	return retorno;
-}
 
-/**
- * \brief interactua con el usuario para solicitar la fecha del album
- * \param fechaAlbum eFecha* Recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 		  			0 si la operacion se realizo correctamente
- *
- */
-int alb_getFecha(eFecha* fechaAlbum)
-{
-	int retorno;
-	//eFecha fecha;
-	retorno = -1;
-	printf("\nFecha de emision: \n");
-	do{
-		*fechaAlbum= fecha_newFecha();
-		retorno =0;
-	}while(retorno);
-	return retorno;
-}
 
-/**
- * \brief interactua con el usuario para solicitar la fecha del album
- * \param fechaAlbum eFecha* Recibe la direccion de memoria del array donde se guardara el dato ingresado
- * \return retorna -1 si hubo un error en los parametros recibidos
- * 				   -2 si no se pudo solicitar id de artista
- * 		  			0 si la operacion se realizo correctamente
- *
- */
-int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista)
-{
-	int retorno;
-	int auxArtista;
-	retorno=-1;
-	if(listaArtistas!= NULL && sizeListaArtista>0 && idArtista!= NULL)
-	{
-		retorno=-2;
-		do{
-			auxArtista = art_pedirArtista(listaArtistas, sizeListaArtista);
-			*idArtista = auxArtista;
-			if(auxArtista>0)
-			{
-				retorno =0;
-			}
-		}while(retorno);
 
-	}
-	return retorno;
-}
 
-int alb_getTipoArtista(int* tipoArtista)
-{
-	int retorno;
-	int auxTipoArtista;
-	retorno=-1;
-	if(tipoArtista!= NULL)
-	{
-		retorno=-2;
-		do{
-			printf("ingrese tipo de artista: 1- solista / 2-banda\n");
-			utn_GetNumeroInt(&auxTipoArtista, "indique: ", "indique un dato valido", 1, 2, REINTENTOS);
-			*tipoArtista = auxTipoArtista;
-			retorno =0;
-		}while(retorno);
-	}
-	return retorno;
-}
+
 
 /**
 * \brief Recibe un array de estructuras para recorrerlo en el campo isEmpty hasta encontrar el valor 0,
@@ -400,51 +672,7 @@ int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum)
 	return retorno;
 }
 
-/**
-* \brief add in a existing list of Album the values received as parameters
-* 	     in the first empty position(with alb_cargarUnNuevoAlbumAlArray)
-* 	     with the last id wich it has finded
-* \param listaAlbum eAlbum* receives the list where will write the struct
-* \param sizeListaAlbum int to indicate array size
-* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
-*					  (0) if Ok
-*
-*/
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum/*, int ultimoId*/)
-{
-	int retorno;
-	int idArtistaAlbum;
-	eFecha unaFechaAlbum;
-	float importeAlbum;
-	char tituloAlbum[STR_SIZE];
-	int tipoArtista;
-	int tipoAlbum;
-	int printLista;
 
-	retorno = -1;
-	if(listaAlbum!= NULL && sizeListaAlbum >0 && listaArtista != NULL && sizeListaArtista >0)
-	{
-		retorno = -2;
-		alb_getTitulo(tituloAlbum, STR_SIZE);
-		alb_getFecha(&unaFechaAlbum);
-		alb_getImporte(&importeAlbum);
-		alb_getArtista(listaArtista, sizeListaArtista, &idArtistaAlbum);
-		alb_getTipoArtista(&tipoArtista);
-		alb_getTipoAlbum(listaTipoAlbum, sizeListTipoAlbum, &tipoAlbum);
-
-		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, tipoArtista, tipoAlbum))
-		{
-			retorno=0;
-			printf("se ha cargado con éxito");
-			printLista = continuar("desea imprimir la lista? Y/N");
-			if(printLista)
-			{
-				alb_printLista(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum);
-			}
-		}
-	}
-	return retorno;
-}
 
 int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum)
 {
@@ -506,35 +734,7 @@ int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbu
 }
 
 
-int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
-{
-	int retorno;
-	int i;
 
-	eAlbum cargaAlbum[] = {
-			{101, "Fantaisie-Impromptu",{1,1,1851},2500,1,1,1,1, NOT_EMPTY},
-			{102, "El disco de tu corazon", {1,1,2017}, 2050, 4,1,2,2,NOT_EMPTY},
-			{103, "Sin restricciones",{1,5,2004},2000,4,1,1,3, NOT_EMPTY},
-			{104, "El templo del pop",{1,8,2014},2500,4,1,2,1, NOT_EMPTY},
-			{105, "Have a Nice day",{1,10,2014},1900,5,1,1,2,NOT_EMPTY},
-			{106, "Master of puppets",{1,10,1986}, 1800,6,1,2,3,NOT_EMPTY},
-			{107, "Made in Heaven",{1,11,1991},2100, 8,1,1,1,NOT_EMPTY},
-			{108, "a Kind of magic",{12,11,1986}, 2150, 6,1,2,2,NOT_EMPTY}
-			};
-
-	retorno = -1;
-	if(listaAlbum!= NULL && sizeListaAlbum>0)
-	{
-		retorno = -2;
-		for(i=0; i<sizeListaAlbum; i++)
-		{
-			listaAlbum[i]= cargaAlbum[i];
-		}
-		retorno = 0;
-	}
-
-	return retorno;
-}
 
 int alb_setTitulo(eAlbum* listaAlbum, int indexCambio)
 {
@@ -955,29 +1155,7 @@ int listar_printAlbumeSegunAnio(eAlbum* listaAlbum, int sizeListaAlbum)
 }
 //*************************************************************
 
-eFecha fecha_newFecha(void)
-{
-	eFecha unaFecha;
-	/*int newday;
-	int newmonth;
-	int newyear;*/
-	utn_GetNumeroInt(&unaFecha.day, "ingrese dia: ", "ingrese un dato valido", 1, MAX_DAY, REINTENTOS);
-	utn_GetNumeroInt(&unaFecha.month, "ingrese mes: ", "ingrese un dato valido", 1, MAX_MONTH, REINTENTOS);
-	utn_GetNumeroInt(&unaFecha.year, "ingrese anio: ", "ingrese un dato valido", MIN_YEAR, MAX_YEAR, REINTENTOS);
 
-	/*printf("ingrese dia: ");
-	scanf("%d", &unaFecha.day);
-	printf("dia: %d\n",unaFecha.day);
-	printf("ingrese mes: ");
-	scanf("%d", &unaFecha.month);
-	printf("month: %d\n",unaFecha.month);
-	printf("ingrese anio: ");
-	scanf("%d", &unaFecha.year);*/
-	//printf("una fecha: %d-%d-%d\n",unaFecha.year, unaFecha.day, unaFecha.month);
-
-
-	return unaFecha;
-}
 
 int art_idUltimoArtista(eArtista* listaArtistas, int sizeListaArtista)
 {
@@ -1011,36 +1189,7 @@ int art_idUltimoArtista(eArtista* listaArtistas, int sizeListaArtista)
 	return ultimoId;
 }
 
-/**
-* \brief Recibe un array de entidad artista para imprimirlo y luego solicita un id entre los mostrados
-* \param listaArtistas eArtista* recibe la direccion de memoria del array a analizar
-* \param sizeListaArtista int recibe por valor el tamaño del array
-* \return int Return (-1) si hubo un error en los parametros recibidos
-* 					 (-2) si no encontro ningun index libre
-* 		     		 (>=0) si opero correctamente - el valor del indice que se encontro
-*
-*/
-int art_pedirArtista(eArtista* listaArtistas, int sizeListaArtista)
-{
-	int unId;
-	int idArtista;
 
-	unId =-1;
-	if(listaArtistas != NULL && sizeListaArtista>0)
-	{
-		unId =-2;
-		if(!art_printListaArtista(listaArtistas, sizeListaArtista))
-		{
-			utn_GetNumeroInt(&unId, "ingrese el codigo del Artista: ", "ingrese un codigo valido", MIN_ARTISTA, MAX_ARTISTA, REINTENTOS);
-			if(unId<= art_idUltimoArtista(listaArtistas, sizeListaArtista))
-			{
-				idArtista= unId;
-				//printf("DEBUG**** artista: %d", unId);
-			}
-		}
-	}
-	return idArtista;
-}
 
 int art_printListaArtista(eArtista* listaArtistas, int sizeListaArtista)
 {
@@ -1139,69 +1288,28 @@ int art_findArtistaPorId(eArtista* listaArtistas, int sizeListaArtista, int idCo
 	return retorno;
 }
 
-/**
-* \brief realiza un hardcodeo de 5 elementos a cargar en el array de tipo eAlbum
-* \param arrayPasajeros eAlbum* Recibe la direccion de memoria del primer elemento del array sobre el cual se operara
-* \param sizeListaArtista int Recibe por valor tamaño de la lista
-* \return Return 0 si opero correctamente
-* 			   (-1) si hubo un error en los parametros recibidos
-*
-*/
-int art_cargaForzadaDeDatos(eArtista* listaArtistas, int sizeListaArtista)
-{
-	int retorno;
-	int i;
-	eArtista cargaArtistas[] = {
-								{1, "Federic Chopin", NOT_EMPTY},
-								{2, "Lali Esposito", NOT_EMPTY},
-								{3, "Babasonicos", NOT_EMPTY},
-								{4, "Miranda", NOT_EMPTY},
-								{5, "Bon Jovi", NOT_EMPTY},
-								{6, "Metallica", NOT_EMPTY},
-								{7, "Kiss", NOT_EMPTY},
-								{8, "Queen", NOT_EMPTY},
-								{9, "Paramore", NOT_EMPTY},
-								{10, "Avril Lavigne", NOT_EMPTY}
-							};
-	retorno = -1;
-	if(listaArtistas!= NULL && sizeListaArtista>0)
-	{
-		retorno = -2;
-		for(i=0; i<sizeListaArtista; i++)
-		{
-			listaArtistas[i]= cargaArtistas[i];
-		}
-		retorno = 0;
-	}
 
-	return retorno;
-}
 
 //____________________________________________--
-int genero_cargaForzadaDeDatos(eGenero* listaGeneros, int sizeGeneros)
+int genero_printIdGenero(eGenero* listaGenero, int sizeListaGenero, int idGenero)
 {
 	int retorno;
 	int i;
-	eGenero cargaGeneros[] = {
-								{1, "Clasico", NOT_EMPTY},
-								{2, "Pop", NOT_EMPTY},
-								{3, "Metal Rock", NOT_EMPTY},
-								{4, "Pop Rock", NOT_EMPTY}
-							};
 	retorno = -1;
-	if(listaGeneros!= NULL && sizeGeneros>0)
+	if(listaGenero != NULL && sizeListaGenero>0)
 	{
-		retorno = -2;
-		for(i=0; i<sizeGeneros; i++)
+		retorno =0;
+		for (i=0; i<sizeListaGenero ; i++)
 		{
-			listaGeneros[i]= cargaGeneros[i];
+			if(idGenero == listaGenero[i].idGenero)
+			{
+				printf("-%s\n", listaGenero[i].descripcion);
+				break;
+			}
 		}
-		retorno = 0;
 	}
-
 	return retorno;
 }
-
 int genero_printListaGenero(eGenero* listaGeneros, int sizeGenero)
 {
 	int retorno;
@@ -1248,26 +1356,7 @@ void genero_printEncabezado(void)
 	printf("\nCODIGO\t\tTIPO\n");
 }
 //______________________________________________________________
-int type_cargaForzadaDeDatos(eTipoArtista* listaTypes, int sizeTypes)
-{
-	int retorno;
-	int i;
-	eTipoArtista cargaTipos[] = {
-								{1, "Solista", NOT_EMPTY},
-								{2, "Banda", NOT_EMPTY},
-							};
-	retorno = -1;
-	if(listaTypes!= NULL && sizeTypes>0)
-	{
-		retorno = -2;
-		for(i=0; i<sizeTypes; i++)
-		{
-			listaTypes[i]= cargaTipos[i];
-		}
-		retorno = 0;
-	}
-	return retorno;
-}
+
 
 int type_printListaType(eTipoArtista* listaTypes, int sizeTypes)
 {
@@ -1329,7 +1418,7 @@ int alb_swap(eAlbum* listaAlbum, int index1, int index2)
 	}
 	return retorno;
 }
-int listar_sortAlbum(eAlbum* listaAlbum, int sizeListAlbu, eArtista* listaArtista, int sizeListArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum)
+int listar_sortAlbum(eAlbum* listaAlbum, int sizeListAlbu, eArtista* listaArtista, int sizeListArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
 {
 	int retorno;
 	int criterio;
@@ -1340,7 +1429,7 @@ int listar_sortAlbum(eAlbum* listaAlbum, int sizeListAlbu, eArtista* listaArtist
 		printf("Indique el criterio de orden: \n1-Descendente segun importe\n2-Ascendente segun titulo\n");
 		utn_GetNumeroInt(&criterio, "ingrese el criterio: ", "ingrese un dato valido", 1, 2, REINTENTOS);
 		listar_sortAlbumSegunCriterio(listaAlbum, sizeListAlbu, criterio);
-		alb_printLista(listaAlbum, sizeListAlbu, listaArtista, sizeListArtista, listaTipoAlbum, sizeListaTipoAlbum);
+		alb_printLista(listaAlbum, sizeListAlbu, listaArtista, sizeListArtista, listaTipoAlbum, sizeListaTipoAlbum,listaGenero, sizeListaGenero);
 	}
 	return retorno;
 }
@@ -1429,6 +1518,57 @@ int tipoAlbum_cargaForzadaDeDatos(eTipoAlbum* listaTipoALbum, int sizelistaTipoA
 	return retorno;
 }
 
+int alb_getTipoAlbum(eTipoAlbum* listaTipoAlbum, int sizelistaTipoALbum, int* idTipoAlbum)
+{
+	int retorno;
+	//int auxIdTipoAlbum;
+	retorno=-1;
+	if(listaTipoAlbum!= NULL && sizelistaTipoALbum>0 && idTipoAlbum!= NULL)
+	{
+		retorno=-2;
+		//do{
+		*idTipoAlbum = tipoAlbum_pedirTipoAlbum(listaTipoAlbum, sizelistaTipoALbum);
+
+		//}while(retorno);
+
+	}
+	return retorno;
+}
+
+/**
+* \brief Recibe un array de entidad tipoAlbun para imprimirlo y luego solicita un id entre los mostrados
+* \param listaTipoALbum eTipoAlbum* recibe la direccion de memoria del array a analizar
+* \param sizeListaArtista int recibe por valor el tamaño del array
+* \return int Return (-1) si hubo un error en los parametros recibidos
+* 					 (-2) si no encontro ningun index libre
+* 		     		 (>=0) si opero correctamente - el valor del indice que se encontro
+*
+*/
+int tipoAlbum_pedirTipoAlbum(eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum)
+{
+	int unId;
+	int idTipoAlbum;
+
+	unId =-1;
+	if(listaTipoALbum != NULL && sizelistaTipoALbum>0)
+	{
+		do{
+			unId =0;
+			if(!tipoAlbum_printListaTipoAlbum(listaTipoALbum, sizelistaTipoALbum))
+			{
+				utn_GetNumeroInt(&unId, "ingrese el codigo del Tipo de Album: ", "ingrese un codigo valido", 1, QTY_TIPO_ALBUM, REINTENTOS);
+				if(unId>0 && unId<3)
+				{
+					//*idTipoAlbum = unId;
+					idTipoAlbum= unId;
+				}
+					//printf("DEBUG**** artista: %d", unId);
+			}
+		}while(!unId);
+	}
+	return idTipoAlbum;
+}
+
 int tipoAlbum_printListaTipoAlbum(eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum)
 {
 	int retorno;
@@ -1475,52 +1615,8 @@ void tipoAlbum_printEncabezado(void)
 	printf("\nCODIGO\t\tTIPO ALBUM\n");
 }
 
-/**
-* \brief Recibe un array de entidad tipoAlbun para imprimirlo y luego solicita un id entre los mostrados
-* \param listaTipoALbum eTipoAlbum* recibe la direccion de memoria del array a analizar
-* \param sizeListaArtista int recibe por valor el tamaño del array
-* \return int Return (-1) si hubo un error en los parametros recibidos
-* 					 (-2) si no encontro ningun index libre
-* 		     		 (>=0) si opero correctamente - el valor del indice que se encontro
-*
-*/
-int tipoAlbum_pedirTipoAlbum(eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum)
-{
-	int unId;
-	int idTipoAlbum;
 
-	unId =-1;
-	if(listaTipoALbum != NULL && sizelistaTipoALbum>0)
-	{
-		unId =-2;
-		if(!tipoAlbum_printListaTipoAlbum(listaTipoALbum, sizelistaTipoALbum))
-		{
-			utn_GetNumeroInt(&unId, "ingrese el codigo del Tipo de Album: ", "ingrese un codigo valido", 1, QTY_TIPO_ALBUM, REINTENTOS);
-			idTipoAlbum= unId;
-				//printf("DEBUG**** artista: %d", unId);
-		}
-	}
-	return idTipoAlbum;
-}
 
-int alb_getTipoAlbum(eTipoAlbum* listaTipoAlbum, int sizelistaTipoALbum, int* idTipoAlbum)
-{
-	int retorno;
-	int auxIdTipoAlbum;
-	retorno=-1;
-	if(listaTipoAlbum!= NULL && sizelistaTipoALbum>0 && idTipoAlbum!= NULL)
-	{
-		retorno=-2;
-		auxIdTipoAlbum = tipoAlbum_pedirTipoAlbum(listaTipoAlbum, sizelistaTipoALbum);
-		if(auxIdTipoAlbum>0)
-		{
-			*idTipoAlbum = auxIdTipoAlbum;
-			//printf("un tipoAlbum: %d", *idTipoArtista);
-			retorno =0;
-		}
-	}
-	return retorno;
-}
 
 int alb_setTipoAlbum(eAlbum* listaAlbum, int indexCambio, eTipoAlbum* listaTipoAlbum, int sizelistaTipoALbum)
 {

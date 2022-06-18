@@ -233,7 +233,7 @@ int utn_GetNumeroInt(int* pRespuesta, char* mensaje, char* mensajeError, int min
 				retorno = 0;
 				break; //porque ya no precisaría continuar el bucle do-while ya que llegué al caso de éxito
 			}
-			printf("[ERROR] %s. ", mensajeError);
+			printf("[ERROR] %s", mensajeError);
 			reintentos--;
 		}while(reintentos >= 0);
 	}

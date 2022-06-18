@@ -31,37 +31,24 @@ int main(void) {
 	int menuSecundario;
 	int respContinuar;
 
-	contadorCargados= -1;
 	printf("Alumna: NAKASONE JULIETA\nPrograma para Administrar albumes de artistas musicales\n");
-	//alb_initLista(listAlbum, QTY_ALBUM);
-	contadorCargados = -1;
-	/***carga forzada**
-	alb_initLista(listAlbum, QTY_ALBUM);
-	alb_cargaForzadaDeDatos(listAlbum, QTY_ALBUM);
-	art_cargaForzadaDeDatos(listArtista, QTY_ARTIST);
-	genero_cargaForzadaDeDatos(listaGenero, QTY_GENERO);
-	type_cargaForzadaDeDatos(listaType, QTY_TYPE);
-
-	**carga forzada**
-	********PARTE 2***********
-	tipoAlbum_cargaForzadaDeDatos(listaTipoAlbum, QTY_TIPO_ALBUM);
-	alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM, listaTipoAlbum, QTY_TIPO_ALBUM);*/
+	contadorCargados= -1;
 	do
 	{
 		if(contadorCargados == -1)
 		{
 			inicioPrograma(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaGenero, QTY_GENERO, listaType, QTY_TYPE, listaTipoAlbum, QTY_TIPO_ALBUM);
-			contadorCargados = 1;//0
+			contadorCargados = 0;//1
 			//printf("init ok");
 		}
 		//alb_contadorAlbumesCargados(listAlbum, QTY_ALBUM, &contadorCargados);
-		printf("\n***contador %d", contadorCargados);
+		//printf("\n***contador %d", contadorCargados);
 		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN");
 		switch (menuPrincipal)
 		{
 			case 1:
 				printf("\n\nALTA DE ALBUM\n");
-				if(!alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM))
+				if(!alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO))
 				{
 					contadorCargados ++;
 					//alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM, listaTipoAlbum, QTY_TIPO_ALBUM);
@@ -97,7 +84,7 @@ int main(void) {
 						if(respContinuar && !alb_removerAlbum(listAlbum, auxIndex))
 						{
 							printf("se ha eliminado exitosamente");
-							alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM, listaTipoAlbum, QTY_TIPO_ALBUM);
+							alb_printLista(listAlbum, QTY_ALBUM, listArtista, QTY_ALBUM, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
 						}
 						else
 						{
@@ -145,7 +132,7 @@ int main(void) {
 							case 5:
 								//ordenar albumes por criterio -importe (descendente) -Titulo(ascendente)
 								//ARREGLAR EN UNA SOLA LISTA !
-								listar_sortAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM);
+								listar_sortAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
 								break;
 							case 6:
 								//mostrar previos al 2000

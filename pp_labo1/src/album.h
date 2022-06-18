@@ -13,6 +13,7 @@
 #include "utn.h"
 #include "tp.h"
 #include "arrays.h"
+
 #include <string.h>
 
 
@@ -104,7 +105,7 @@ int alb_initLista(eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_initPosicion(eAlbum* listaAlbum, int indice, int valorInicial);
 int alb_indicarUltimoId(eAlbum* listaAlbum, int sizeListaAlbum, int* ultimoId);
 int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* cantidadCargados);
-int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum);
+int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
 int alb_printPosicion(eAlbum* listaAlbum, int indiceAlbum);
 int alb_printPosicionConArtista(eAlbum* listaAlbum, int indiceAlbum, eArtista* listaArtita, int indiceArtista);
 void alb_printEncabezado(void);
@@ -115,10 +116,12 @@ int alb_getImporte(float* importe);
 int alb_getFecha(eFecha* fechaAlbum);
 int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista);
 int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum);
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum);
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros/*, int ultimoId*/);
 int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum);
 int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum);
+int alb_getTipoArtista(int* tipoArtista);
+int alb_getGenero(eGenero* listaGeneros, int sizeListaGeneros,int* generoFk);
 
 int alb_setTitulo(eAlbum* listaAlbum, int indexCambio);
 int alb_setFecha(eAlbum* listaAlbum, int indexCambio);
@@ -157,9 +160,11 @@ void art_printEncabezado(void);
 int art_cargaForzadaDeDatos(eArtista* listaArtistas, int sizeListaArtista);
 //_________________________________________________________________________--
 int genero_cargaForzadaDeDatos(eGenero* listaGeneros, int sizeGeneros);
+int genero_printIdGenero(eGenero* listaGenero, int sizeListaGenero, int idGenero);
 int genero_printListaGenero(eGenero* listaGeneros, int sizeGenero);
 int genero_printPosicion(eGenero* listaGeneros, int indice);
 void genero_printEncabezado(void);
+int genero_pedirGenero(eGenero* listaGeneros, int sizeListaGeneros);
 //__________________________________________________________________________--
 int type_cargaForzadaDeDatos(eTipoArtista* listaTypes, int sizeTypes);
 int type_printListaType(eTipoArtista* listaTypes, int sizeTypes);
@@ -168,7 +173,7 @@ void type_printEncabezado(void);
 
 int alb_swap(eAlbum* listaAlbum, int index1, int index2);
 int listar_sortAlbumSegunCriterio(eAlbum* listaAlbum, int sizeListAlbu, int criterio);
-int listar_sortAlbum(eAlbum* listaAlbum, int sizeListAlbu, eArtista* listaArtista, int sizeListArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum);
+int listar_sortAlbum(eAlbum* listaAlbum, int sizeListAlbu, eArtista* listaArtista, int sizeListArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
 //*******************************************************************************
 //CONSIGNAS PP LABO PARTE 2
 int tipoAlbum_cargaForzadaDeDatos(eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum);

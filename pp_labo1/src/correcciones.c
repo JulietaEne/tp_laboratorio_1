@@ -31,15 +31,15 @@ int modificarAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtist
 	int aceptarConsulta;
 	int idSolicitado;
 	int auxIndex;
-	int flagSalir;
+	//int flagSalir;
 	int menuSecundario;
 
 	retorno = -1;
-	flagSalir = 0;
+	//flagSalir = 0;
 		aceptarConsulta = continuar("desea imprimir la lista de albumes? Y/N");
 		if(aceptarConsulta)
 		{
-			alb_printLista(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum);
+			alb_printLista(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
 		}
 		alb_solicitarCodigo(&idSolicitado, listaAlbum, sizeListaAlbum);
 		auxIndex = alb_findPorCodigo(listaAlbum, sizeListaAlbum, idSolicitado);
@@ -77,7 +77,7 @@ int modificarAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtist
 						break;
 					case 6:
 						//camiar tipo album
-						flagSalir = 1;
+						//flagSalir = 1;
 						break;
 				}
 			}while(menuSecundario<6 );
@@ -203,7 +203,7 @@ int printPosicion(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtis
 		getNombreArtista(indexAlbum, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, auxArtista);
 		getTipoAlbum(indexAlbum, listaAlbum, sizeListaAlbum, listaTipoAlbum, sizeListTipoAlbum, auxTipoAlbum);
 		getGenero(indexAlbum, listaAlbum, sizeListaAlbum, listaGeneros, sizeGeneros, auxGenero);
-		alb_printEncabezado();
+		//alb_printEncabezado();
 		printf("%s %9d %15s %d/%d/%d %15.2f %18s %s\n",  auxTipoAlbum,
 													listaAlbum[indexAlbum].idAlbum,
 													listaAlbum[indexAlbum].titulo,
@@ -213,6 +213,35 @@ int printPosicion(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtis
 													listaAlbum[indexAlbum].importe,
 													auxArtista,
 													auxGenero);
+	}
+	return retorno;
+}
+
+/*
+ * \brief Recorre el array recibido para imprimir los indices que estan cargados
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaAlbum int Recibe por valor el tamaño del array
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 						0 si la operacion se realizo correctamente
+ */
+
+int printListaAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
+{
+	int retorno;
+	int i;
+	//int j;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtita != NULL && sizeListaArtista>0 && listaTipoAlbum != NULL && sizeListaTipoAlbum >0 && listaGenero != NULL && sizeListaGenero >0)
+	{
+		retorno = 0;
+		alb_printEncabezado();
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty==NOT_EMPTY)
+			{
+				printPosicion(i, listaAlbum, sizeListaAlbum, listaArtita, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+			}
+		}
 	}
 	return retorno;
 }
