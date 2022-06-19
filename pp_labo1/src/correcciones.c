@@ -7,11 +7,12 @@
 
 #include "correcciones.h"
 
-int inicioPrograma(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtista, eGenero* listaGeneros, int sizeGeneros, eTipoArtista* listaTypes, int sizeTypes, eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum)
+int inicioPrograma(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtista, eGenero* listaGeneros, int sizeGeneros, eTipoArtista* listaTypes, int sizeTypes, eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum, int* ultimoId)
 {
 	int retorno;
+	int auxId;
 	retorno = -1;
-
+	auxId = *ultimoId;
 	if(listaAlbum != NULL && listaArtistas != NULL && listaGeneros && listaTypes != NULL)
 	{
 		alb_initLista(listaAlbum, QTY_ALBUM);
@@ -20,6 +21,10 @@ int inicioPrograma(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtist
 		genero_cargaForzadaDeDatos(listaGeneros, QTY_GENERO);
 		type_cargaForzadaDeDatos(listaTypes, QTY_TYPE);
 		tipoAlbum_cargaForzadaDeDatos(listaTipoALbum, sizelistaTipoALbum);
+		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &auxId);
+		*ultimoId=auxId;
+		//printListaAlbum(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtista, listaTipoALbum, sizelistaTipoALbum, listaGeneros, sizeGeneros);
+
 		retorno =0;
 	}
 	return retorno;
@@ -31,62 +36,76 @@ int modificarAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtist
 	int aceptarConsulta;
 	int idSolicitado;
 	int auxIndex;
-	//int flagSalir;
-	int menuSecundario;
 
 	retorno = -1;
-	//flagSalir = 0;
-		aceptarConsulta = continuar("desea imprimir la lista de albumes? Y/N");
-		if(aceptarConsulta)
+	aceptarConsulta = continuar("desea imprimir la lista de albumes? Y/N");
+	if(aceptarConsulta)
+	{
+		printListaAlbum(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
+	}
+	do
+	{
+		if(!alb_solicitarCodigo(&idSolicitado, listaAlbum, sizeListaAlbum))
 		{
-			alb_printLista(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
-		}
-		alb_solicitarCodigo(&idSolicitado, listaAlbum, sizeListaAlbum);
-		auxIndex = alb_findPorCodigo(listaAlbum, sizeListaAlbum, idSolicitado);
-		if(auxIndex>=0)
-		{
-			//alb_printEncabezado();
-			//alb_printPosicion(listaAlbum, auxIndex);arreglar
-			printPosicion(auxIndex,listaAlbum,sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
-
-			do
+			printf("codigo solicitado :%d", idSolicitado);
+			auxIndex = alb_findPorCodigo(listaAlbum, sizeListaAlbum, idSolicitado);
+			if(auxIndex>=0)
 			{
-				menuSecundario= tp_ImprimirMenuSeisOpciones("\n\nIndique el campo que desea modificar: ", "1- Titulo", "2- Fecha de Publicacion", "3- Importe", "4- Imprimir cambios", "5- Tipo Album", "6- Volver atras");
-				switch (menuSecundario) {
-					case 1:
-						//modificar titulo
-						alb_setTitulo(listaAlbum, auxIndex);
-						break;
-					case 2:
-						//modificar fecha
-						alb_setFecha(listaAlbum, auxIndex);
-						break;
-					case 3:
-						//modificar importe
-						alb_setImporte(listaAlbum, auxIndex);
-						break;
-					case 4:
-						//imprimo los cambios
-						alb_printEncabezado();
-						printPosicion(auxIndex,listaAlbum,sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
-						//alb_printPosicion(listaAlbum, auxIndex);
-						break;
-					case 5:
-						//camiar tipo album
-						alb_setTipoAlbum(listaAlbum, auxIndex, listaTipoAlbum, QTY_TIPO_ALBUM);
-						break;
-					case 6:
-						//camiar tipo album
-						//flagSalir = 1;
-						break;
-				}
-			}while(menuSecundario<6 );
+				printPosicion(auxIndex,listaAlbum,sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
+				modificarAlbumOpciones(auxIndex, listaAlbum, sizeListaAlbum, listaArtista,  sizeListaArtista,  listaTipoAlbum,sizeListTipoAlbum,listaGeneros, sizeGeneros);
+				aceptarConsulta = (!continuar("Desea modificar otro?"));
+			}
 		}
 		else
 		{
 			aceptarConsulta = continuar("Desea cancelar la operacion? Y/N");
 		}
+	}while(!aceptarConsulta);
 
+	return retorno;
+}
+
+int modificarAlbumOpciones(int auxIndex, eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeGeneros)
+{
+	int retorno;
+	int menuSecundario;
+	retorno=-1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtista != NULL && sizeListaArtista> 0 && listaTipoAlbum != NULL && sizeListTipoAlbum >0 && listaGeneros != NULL && sizeGeneros>0)
+	{
+		retorno=0;
+		do
+		{
+			menuSecundario= tp_ImprimirMenuSeisOpciones("\n\nIndique el campo que desea modificar: ", "1- Titulo", "2- Fecha de Publicacion", "3- Importe", "4- Imprimir cambios", "5- Tipo Album", "6- Volver atras");
+			switch (menuSecundario) {
+				case 1:
+					//modificar titulo
+					alb_setTitulo(listaAlbum, auxIndex);
+					break;
+				case 2:
+					//modificar fecha
+					alb_setFecha(listaAlbum, auxIndex);
+					break;
+				case 3:
+					//modificar importe
+					alb_setImporte(listaAlbum, auxIndex);
+					break;
+				case 4:
+					//imprimo los cambios
+					alb_printEncabezado();
+					printPosicion(auxIndex,listaAlbum,sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
+					//alb_printPosicion(listaAlbum, auxIndex);
+					break;
+				case 5:
+					//camiar tipo album
+					alb_setTipoAlbum(listaAlbum, auxIndex, listaTipoAlbum, QTY_TIPO_ALBUM);
+					break;
+				case 6:
+					//camiar tipo album
+					//flagSalir = 1;
+					break;
+			}
+		}while(menuSecundario<6 );
+	}
 	return retorno;
 }
 
@@ -204,12 +223,12 @@ int printPosicion(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtis
 		getTipoAlbum(indexAlbum, listaAlbum, sizeListaAlbum, listaTipoAlbum, sizeListTipoAlbum, auxTipoAlbum);
 		getGenero(indexAlbum, listaAlbum, sizeListaAlbum, listaGeneros, sizeGeneros, auxGenero);
 		//alb_printEncabezado();
-		printf("%s %9d %15s %d/%d/%d %15.2f %18s %s\n",  auxTipoAlbum,
+		printf("%7s %11d %24s %4d/%d/%d %14.2f %25s %20s\n",  auxTipoAlbum,
 													listaAlbum[indexAlbum].idAlbum,
 													listaAlbum[indexAlbum].titulo,
 													listaAlbum[indexAlbum].fecha.day,
 													listaAlbum[indexAlbum].fecha.month,
-													listaAlbum[indexAlbum].fecha.month,
+													listaAlbum[indexAlbum].fecha.year,
 													listaAlbum[indexAlbum].importe,
 													auxArtista,
 													auxGenero);
@@ -242,6 +261,109 @@ int printListaAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtit
 				printPosicion(i, listaAlbum, sizeListaAlbum, listaArtita, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
 			}
 		}
+	}
+	return retorno;
+}
+
+void consultaMostrarLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeGeneros)
+{
+	int aceptarConsulta;
+	aceptarConsulta = continuar("desea imprimir la lista de albumes? Y/N");
+	if(aceptarConsulta)
+	{
+		printListaAlbum(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
+	}
+}
+
+
+int deleteAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
+{
+    int retorno;
+    int auxCodigo;
+    int indexHallado;
+    int respContinuar;
+
+    retorno = -1;
+    if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtita != NULL && sizeListaArtista>0 && listaTipoAlbum != NULL && sizeListaTipoAlbum >0 && listaGenero != NULL && sizeListaGenero >0)    {
+
+    	consultaMostrarLista(listaAlbum, sizeListaAlbum, listaArtita, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+    	alb_solicitarCodigo(&auxCodigo, listaAlbum, sizeListaAlbum);
+        indexHallado = alb_findPorCodigo(listaAlbum, sizeListaAlbum, auxCodigo);
+
+        if(indexHallado>=0)
+		{
+		    retorno = -2;
+			alb_printEncabezado();
+			printPosicion(indexHallado, listaAlbum, sizeListaAlbum, listaArtita, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+			respContinuar=continuar("\nConfirma eliminar el album?");
+			if(respContinuar==1)
+			{
+			    alb_removerAlbum(listaAlbum, indexHallado);
+			    retorno =0;
+				printf("se ha eliminado exitosamente");
+			}
+		}
+    }
+    return retorno;
+}
+
+int puntoCinco(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero, eTipoArtista* listaType, int sizeListType)
+{
+	int retorno;
+	int menuSecundario;
+	retorno=-1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtista != NULL && sizeListaArtista>0 && listaTipoAlbum != NULL && sizeListaTipoAlbum >0 && listaGenero != NULL && sizeListaGenero >0)
+	{
+		retorno=0;
+		do
+		{
+			menuSecundario= tp_ImprimirMenuOnceOpciones("\n\nIndique el tipo de lista que desea visualizar: ", "1- Generos", "2- Tipos Artistas", "3- Artistas", "4- Albumes", "5- Ordenar Albumes", "6- Mostrar Album previos al 2000","7- Albumes que superan promedio de importes","8- Albumes por artista","9- Albumes segun anio","10- ALbum mas caro", "11- Volver Atras");
+			switch (menuSecundario) {
+				case 1:
+					//listar Generos
+					genero_printListaGenero(listaGenero, QTY_GENERO);
+					break;
+				case 2:
+					//listar Tipo Artistas
+					type_printListaType(listaType, sizeListType);
+
+					break;
+				case 3:
+					//listar artistas
+					art_printListaArtista(listaArtista, sizeListaArtista);
+					break;
+
+				case 4:
+					//listar albumes
+					alb_printListaAlbumes(listaAlbum, sizeListaAlbum);
+					break;
+				case 5:
+					//ordenar albumes por criterio -importe (descendente) -Titulo(ascendente)
+					//ARREGLAR EN UNA SOLA LISTA !
+					listar_sortAlbum(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+					break;
+				case 6:
+					//mostrar previos al 2000
+					listar_printAlbumPrevioAlDosMil(listaAlbum, sizeListaAlbum);
+					break;
+				case 7:
+					//albumes que superan el promedio
+					listar_calcularTotalyPromedioDeImportes(listaAlbum, sizeListaAlbum);
+					break;
+				case 8:
+					//albumes por artista
+					listar_printAlbumPorArtista(listaArtista, sizeListaArtista, listaAlbum, sizeListaAlbum);
+					break;
+				case 9:
+					//Albumes segun añio: indicar año
+					listar_printAlbumeSegunAnio(listaAlbum, sizeListaAlbum);
+					break;
+				case 10:
+					//album mas caro
+					listar_printAlbumesMasCaros(listaAlbum, sizeListaAlbum);
+					break;
+			}
+		}while(menuSecundario<11 );
 	}
 	return retorno;
 }

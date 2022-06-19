@@ -31,6 +31,28 @@ int alb_initLista(eAlbum* listaAlbum, int sizeListaAlbum)
 	return retorno;
 }
 
+/**
+ * \breif To assign a init value to array's a particular possition
+ * \param listaAlbum eAlbum* receives the array which will be operated
+ * \param indice int receives the value who indicates where the data will be assigned
+ * \param valorInicial int Receives by value the data that is assigned
+ * \return retorna int -1 if  Error [Invalid length or NULL pointer or withoufree space]
+ * 						0 if Ok - el valor del indice que se encontro
+ *
+*/
+int alb_initPosicion(eAlbum* listaAlbum, int indice, int valorInicial)
+{
+	int retorno;
+
+	retorno = -1;
+	if(listaAlbum != NULL && indice>=0)
+	{
+		retorno = 0;
+		listaAlbum[indice].isEmpty= valorInicial;
+	}
+	return retorno;
+}
+
 int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
 {
 	int retorno;
@@ -43,8 +65,7 @@ int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
 			{104, "El templo del pop",{1,8,2014},2500,4,4,2,1, NOT_EMPTY},
 			{105, "Have a Nice day",{1,10,2014},1900,5,1,1,2,NOT_EMPTY},
 			{106, "Master of puppets",{1,10,1986}, 1800,6,3,2,3,NOT_EMPTY},
-			{107, "Made in Heaven",{1,11,1991},2100, 8,4,1,1,NOT_EMPTY},
-			{108, "a Kind of magic",{12,11,1986}, 2150, 6,4,2,2,NOT_EMPTY}
+			{107, "Made in Heaven",{1,11,1991},2100, 8,4,1,1,NOT_EMPTY}
 			};
 
 	retorno = -1;
@@ -144,6 +165,62 @@ int type_cargaForzadaDeDatos(eTipoArtista* listaTypes, int sizeTypes)
 	return retorno;
 }
 
+int alb_indicarUltimoId(eAlbum* listaAlbum, int sizeListaAlbum, int* ultimoId)
+{
+	int auxMayorId;
+	int i;
+	auxMayorId = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum >0 && ultimoId != NULL)
+	{
+		auxMayorId=ID_INICIAL;
+		for (i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty== NOT_EMPTY && listaAlbum[i].idAlbum>auxMayorId)
+			{
+				auxMayorId=listaAlbum[i].idAlbum;
+			}
+		}
+		*ultimoId = auxMayorId;
+		//printf("\nULTIMO ID: %d\n", *ultimoId);
+	}
+
+	return *ultimoId;
+}
+
+/*
+ * \brief Recorre el array recibido para analizar si el campo isEmpty está usado, y si lo está los contabiliza
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaAlbum int Recibe por valor el tamaño del array
+ * \param cantidadCargados *int recibe la direccion de memoria donde guardara la cantidad contabilizada
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 					   -2 si no pudo recorrer el array
+ * 					   >=0 si la operacion se realizo correctamente(retorna la cantidad contabilizada)
+ *
+ */
+int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum/*, int* cantidadCargados*/)
+{
+	int retorno;
+	int i;
+	int contador;
+	//int cantidadCargados;
+	retorno= -1;
+	contador=0;
+
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		retorno=-2;
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY))
+			{
+				contador++;
+			}
+		}
+		retorno=contador;
+	}
+	return retorno;
+}
+
 /**
 * \brief add in a existing list of Album the values received as parameters
 * 	     in the first empty position(with alb_cargarUnNuevoAlbumAlArray)
@@ -178,7 +255,7 @@ int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArt
 		alb_getTipoAlbum(listaTipoAlbum, sizeListTipoAlbum, &tipoAlbum);
 		alb_getGenero(listaGeneros, sizeListaGeneros, &generoFk);
 
-		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, tipoArtista, tipoAlbum))
+		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, tipoArtista, tipoAlbum, generoFk))
 		{
 			retorno=0;
 			printf("se ha cargado con éxito");
@@ -409,85 +486,98 @@ int alb_getGenero(eGenero* listaGeneros, int sizeListaGeneros,int* generoFk)
 	return retorno;
 }
 
-
-
-
-/**
- * \breif To assign a init value to array's a particular possition
- * \param listaAlbum eAlbum* receives the array which will be operated
- * \param indice int receives the value who indicates where the data will be assigned
- * \param valorInicial int Receives by value the data that is assigned
- * \return retorna int -1 if  Error [Invalid length or NULL pointer or withoufree space]
- * 						0 if Ok - el valor del indice que se encontro
- *
-*/
-int alb_initPosicion(eAlbum* listaAlbum, int indice, int valorInicial)
+int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum, int generofk)
 {
 	int retorno;
+	int ultimoId;
+	int indexCarga;
 
 	retorno = -1;
-	if(listaAlbum != NULL && indice>=0)
+	if(tituloAlbum!= NULL && sizeTituloAlbum >0 && listaAlbum!= NULL && sizeListaAlbum >0 )
 	{
-		retorno = 0;
-		listaAlbum[indice].isEmpty= valorInicial;
+		retorno = -2;
+		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
+		ultimoId=ultimoId+1;
+
+		indexCarga= alb_findPrimerEspacioLibreEnLista(listaAlbum, sizeTituloAlbum);
+
+		if(indexCarga>= 0)
+		{
+			listaAlbum[indexCarga].idAlbum=ultimoId;
+			listaAlbum[indexCarga].importe=importeAlbum;
+			listaAlbum[indexCarga].fecha=*fechaAlbum;
+			listaAlbum[indexCarga].isEmpty=NOT_EMPTY;
+			listaAlbum[indexCarga].artistaFk=idArtistaAlbum;
+			strncpy(listaAlbum[indexCarga].titulo,tituloAlbum, STR_SIZE);
+			listaAlbum[indexCarga].tipoArtistaFk = tipoArtista;
+			listaAlbum[indexCarga].tipoAlbumFk=tipoAlbum;
+			listaAlbum[indexCarga].generoFk=generofk;
+			retorno=0;
+		}
+
 	}
 	return retorno;
 }
 
-int alb_indicarUltimoId(eAlbum* listaAlbum, int sizeListaAlbum, int* ultimoId)
+int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbum)
 {
-	int auxMayorId;
-	int i;
-	auxMayorId = -1;
-	if(listaAlbum!= NULL && sizeListaAlbum >0 && ultimoId != NULL)
-	{
-		auxMayorId=ID_INICIAL;
-		for (i=0; i<sizeListaAlbum; i++)
-		{
-			if(listaAlbum[i].isEmpty== NOT_EMPTY && listaAlbum[i].idAlbum>auxMayorId)
-			{
-				auxMayorId=listaAlbum[i].idAlbum;
-			}
-		}
-		*ultimoId = auxMayorId;
-		//printf("\nULTIMO ID: %d\n", *ultimoId);
-	}
+	int retorno;
+	int auxId;
+	int ultimoId;
 
-	return *ultimoId;
+	retorno = -1;
+	if(idSolicitado != NULL)
+	{
+		utn_GetNumeroInt(&auxId, "Ingrese el Codigo del Album: ", "El dato ingresado no corresponde a un album cargado.\n", ID_INICIAL, ID_MAXIMO, REINTENTOS);
+		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
+		if(auxId <= ultimoId)
+		{
+			*idSolicitado= auxId;
+			retorno =0;
+		}
+		else
+		{
+			printf("ingrese el codigo de un album existente");
+		}
+	}
+	return retorno;
 }
 
-/*
- * \brief Recorre el array recibido para analizar si el campo isEmpty está usado, y si lo está los contabiliza
- * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
- * \param sizeListaAlbum int Recibe por valor el tamaño del array
- * \param cantidadCargados *int recibe la direccion de memoria donde guardara la cantidad contabilizada
+/**
+ * \brief Recibe el array de entidad Album y analiza el campo .id de cada elemento hasta encontrar coincidencia con el valor recibido por parametro
+ * \param listaAlbum *eAlbum recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaAlbum int Recibe tamaño del array
+ * \param idConsulta int recibe por valor el dato contra el cual compara
  * \return retorna int -1 si hubo un error en los parametros recibidos
  * 					   -2 si no pudo recorrer el array
- * 					   >=0 si la operacion se realizo correctamente(retorna la cantidad contabilizada)
+ * 					   >=0 si la operacion se realizo correctamente (retorna el indice donde encontro la coincidencia)
  *
  */
-int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* cantidadCargados)
+int alb_findPorCodigo(eAlbum* listaAlbum, int sizeListaAlbum, int idConsulta)
 {
 	int retorno;
 	int i;
-	int contador;
-	retorno= -1;
-	contador=0;
-	if(listaAlbum!= NULL && sizeListaAlbum>0 && cantidadCargados!= NULL)
+	retorno = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum >0 && idConsulta> ID_INICIAL)
 	{
-		retorno=-2;
-		for(i=0; i<sizeListaAlbum; i++)
+		retorno = -2;
+		for (i=0; i<sizeListaAlbum; i++)
 		{
-			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY))
+			if(validacionesInt_sonIdenticos(listaAlbum[i].idAlbum, idConsulta))
 			{
-				contador++;
+				retorno=i;
+				break;
 			}
 		}
-		*cantidadCargados=contador;
-		retorno=i;
 	}
 	return retorno;
 }
+
+
+
+
+
+
 
 /*
  * \brief Recorre el array recibido para imprimir los indices que estan cargados
@@ -584,38 +674,10 @@ int alb_printPosicionConArtista(eAlbum* listaAlbum, int indiceAlbum, eArtista* l
  */
 void alb_printEncabezado(void)
 {
-	printf("\nTIPO ALBUM\tID\tTITULO\t\t\tFECHA\t\tPRECIO\t\tNOMBRE DE ARTISTA\tGENERO\n");
+	printf("\nTIPO ALBUM\tID\t\tTITULO\t\tFECHA\t\tPRECIO\t\tNOMBRE DE ARTISTA\t\tGENERO\n");
 }
 
-/**
- * \brief Recibe el array de entidad Album y analiza el campo .id de cada elemento hasta encontrar coincidencia con el valor recibido por parametro
- * \param listaAlbum *eAlbum recibe la direccion de memoria del array sobre el cual va a trabajar
- * \param sizeListaAlbum int Recibe tamaño del array
- * \param idConsulta int recibe por valor el dato contra el cual compara
- * \return retorna int -1 si hubo un error en los parametros recibidos
- * 					   -2 si no pudo recorrer el array
- * 					   >=0 si la operacion se realizo correctamente (retorna el indice donde encontro la coincidencia)
- *
- */
-int alb_findPorCodigo(eAlbum* listaAlbum, int sizeListaAlbum, int idConsulta)
-{
-	int retorno;
-	int i;
-	retorno = -1;
-	if(listaAlbum!= NULL && sizeListaAlbum >0 && idConsulta> ID_INICIAL)
-	{
-		retorno = -2;
-		for (i=0; i<sizeListaAlbum; i++)
-		{
-			if(validacionesInt_sonIdenticos(listaAlbum[i].idAlbum, idConsulta))
-			{
-				retorno=i;
-				break;
-			}
-		}
-	}
-	return retorno;
-}
+
 
 
 //______________________________________________________________-
@@ -672,70 +734,6 @@ int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum)
 	return retorno;
 }
 
-
-
-int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum)
-{
-	int retorno;
-	//int qtyAlbumCargados;
-	int ultimoId;
-	int indexCarga;
-
-	retorno = -1;
-	if(tituloAlbum!= NULL && sizeTituloAlbum >0 && listaAlbum!= NULL && sizeListaAlbum >0 )
-	{
-		retorno = -2;
-		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
-		ultimoId=ultimoId+1;
-
-		indexCarga= alb_findPrimerEspacioLibreEnLista(listaAlbum, sizeTituloAlbum);
-		//printf("\nDEBUG*****\nultimo id: %d\n index carga: %d\n", ultimoId, indexCarga);
-		//printf("%s - %d/%d/%d - %2.f - idArt:%d\n\n", tituloAlbum, fechaAlbum->day, fechaAlbum->month, fechaAlbum->year,
-				//								  importeAlbum, idArtistaAlbum);
-		if(indexCarga>= 0)
-		{
-			listaAlbum[indexCarga].idAlbum=ultimoId;
-			listaAlbum[indexCarga].importe=importeAlbum;
-			listaAlbum[indexCarga].fecha=*fechaAlbum;
-			listaAlbum[indexCarga].isEmpty=NOT_EMPTY;
-			listaAlbum[indexCarga].artistaFk=idArtistaAlbum;
-			strncpy(listaAlbum[indexCarga].titulo,tituloAlbum, STR_SIZE);
-			listaAlbum[indexCarga].tipoArtistaFk = tipoArtista;
-			listaAlbum[indexCarga].tipoAlbumFk=tipoAlbum;
-			retorno=0;
-		}
-
-	}
-	return retorno;
-}
-
-int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbum)
-{
-	int retorno;
-	int auxId;
-	int ultimoId;
-
-	retorno = -1;
-	if(idSolicitado != NULL)
-	{
-		retorno =0;
-		utn_GetNumeroInt(&auxId, "Ingrese el Codigo del Album: ", "El dato ingresado no corresponde a un album cargado.", ID_INICIAL, ID_MAXIMO, REINTENTOS);
-		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
-		if(auxId <= ultimoId)
-		{
-			*idSolicitado= auxId;
-		}
-		else
-		{
-			printf("ingrese el codigo de un album existente");
-		}
-	}
-	return retorno;
-}
-
-
-
-
 int alb_setTitulo(eAlbum* listaAlbum, int indexCambio)
 {
 	int retorno;
@@ -791,10 +789,11 @@ int alb_removerAlbum(eAlbum* listaAlbum, int indexCambio)
 {
 	int retorno;
 	retorno = -1;
-	if(listaAlbum!= NULL && indexCambio>0)
+	if(listaAlbum!= NULL && indexCambio>=0)
 	{
 		listaAlbum[indexCambio].isEmpty = IS_DELETED;
 		retorno=0;
+		//printf("*****deleted ok retorno %d\n", retorno);
 	}
 	return retorno;
 }
@@ -1205,8 +1204,6 @@ int art_printListaArtista(eArtista* listaArtistas, int sizeListaArtista)
 		{
 			if( !validacionesInt_sonIdenticos(listaArtistas[i].isEmpty,IS_EMPTY))
 			{
-
-				//printf("DEBUG** print pasajeros\n");
 				art_printPosicion(listaArtistas, i);
 			}
 		}
@@ -1244,7 +1241,7 @@ int art_printPosicion(eArtista* listaArtistas, int indice)
 		retorno = 0;
 
 		//printf("DEBUG*** print un pasajero\n");
-		printf("%5d %22s\n",
+		printf("%3d %25s\n",
 				listaArtistas[indice].idArtista,
 				listaArtistas[indice].nombre);
 	}
@@ -1324,8 +1321,6 @@ int genero_printListaGenero(eGenero* listaGeneros, int sizeGenero)
 		{
 			if( !validacionesInt_sonIdenticos(listaGeneros[i].isEmpty,IS_EMPTY))
 			{
-
-				//printf("DEBUG** print pasajeros\n");
 				genero_printPosicion(listaGeneros, i);
 			}
 		}
@@ -1343,7 +1338,7 @@ int genero_printPosicion(eGenero* listaGeneros, int indice)
 		retorno = 0;
 
 		//printf("DEBUG*** print un pasajero\n");
-		printf("%5d %18s\n",
+		printf("%3d %15s\n",
 				listaGeneros[indice].idGenero,
 				listaGeneros[indice].descripcion);
 	}
@@ -1372,8 +1367,6 @@ int type_printListaType(eTipoArtista* listaTypes, int sizeTypes)
 		{
 			if( !validacionesInt_sonIdenticos(listaTypes[i].isEmpty,IS_EMPTY))
 			{
-
-				//printf("DEBUG** print pasajeros\n");
 				type_printPosicion(listaTypes, i);
 			}
 		}
@@ -1389,9 +1382,8 @@ int type_printPosicion(eTipoArtista* listaTypes, int indice)
 	if(listaTypes!= NULL && indice >=0)
 	{
 		retorno = 0;
-
 		//printf("DEBUG*** print un pasajero\n");
-		printf("%5d %18s\n",
+		printf("%3d %20s\n",
 				listaTypes[indice].idTipoArtista,
 				listaTypes[indice].descripcion);
 	}

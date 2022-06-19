@@ -104,7 +104,7 @@ struct{
 int alb_initLista(eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_initPosicion(eAlbum* listaAlbum, int indice, int valorInicial);
 int alb_indicarUltimoId(eAlbum* listaAlbum, int sizeListaAlbum, int* ultimoId);
-int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum, int* cantidadCargados);
+int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum/*, int* cantidadCargados*/);
 int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
 int alb_printPosicion(eAlbum* listaAlbum, int indiceAlbum);
 int alb_printPosicionConArtista(eAlbum* listaAlbum, int indiceAlbum, eArtista* listaArtita, int indiceArtista);
@@ -117,7 +117,7 @@ int alb_getFecha(eFecha* fechaAlbum);
 int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista);
 int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros/*, int ultimoId*/);
-int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum);
+int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum, int generofk);
 int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_getTipoArtista(int* tipoArtista);
@@ -256,15 +256,11 @@ int alb_pedirArtista(int* idArtista, eArtista* listaArtista, int sizeListaArtist
 {
 	int retorno;
 	int auxIdArtista;
-
 	retorno = -1;
 	auxIdArtista= art_pedirArtista(listaArtista, sizeListaArtista);
-
-
 	//int auxIndex;
 	//auxIndex = art_findArtistaPorId(listaArtista, sizeListaArtista, auxIdArtista);
 	//printf("DEBUG******** un artista: %s\n", listaArtista[auxIndex].nombre);
-
 	if(auxIdArtista>0)
 	{
 		*idArtista=auxIdArtista;
