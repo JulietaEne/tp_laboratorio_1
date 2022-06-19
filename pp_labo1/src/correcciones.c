@@ -122,32 +122,11 @@ int getForeingeKeys(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArt
     if( indexAlbum >0 && listaAlbum!= NULL && sizeListaAlbum>0 && listaArtista!= NULL && sizeListaArtista  >0 && listaTipoAlbum!= NULL && sizeListTipoAlbum >0 && listaGeneros!= NULL && sizeGeneros>0 && auxArtista != NULL && auxGenero != NULL && auxTipoAlbum != NULL)
 	{
 	    getNombreArtista(indexAlbum, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, auxArtista);
-	    /*for(i=0;i<sizeListaArtista; i++)
-	    {
-	        if(listaAlbum[indexAlbum].artistaFk == listaArtista[i].idArtista)
-	        {
-	            strncpy(auxArtista, listaArtista[i].nombre, STR_SIZE);
-	            break;
-	        }
-	    }*/
+
 	    getTipoAlbum(indexAlbum,listaAlbum, sizeListaAlbum,listaTipoAlbum, sizeListTipoAlbum,auxTipoAlbum);
-	    /*for(i=0;i<sizeListTipoAlbum; i++)
-	    {
-	        if(listaAlbum[indexAlbum].tipoAlbumFk== listaTipoAlbum[i].idTipoAlbum)
-	        {
-	            strncpy(auxTipoAlbum, listaTipoAlbum[i].descripcion, STR_SIZE);
-	            break;
-	        }
-	    }*/
+
 	    getGenero(indexAlbum,listaAlbum,sizeListaAlbum,listaGeneros, sizeGeneros,auxGenero);
-	    /*for(i=0;i<sizeGeneros; i++)
-	    {
-	        if(listaAlbum[indexAlbum].tipoAlbumFk== listaGeneros[i].idGenero)
-	        {
-	            strncpy(auxGenero, listaGeneros[i].descripcion, STR_SIZE);
-	            break;
-	        }
-	    }*/
+
 	}
     return retorno;
 }
@@ -274,7 +253,6 @@ void consultaMostrarLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* list
 		printListaAlbum(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeGeneros);
 	}
 }
-
 
 int deleteAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
 {
