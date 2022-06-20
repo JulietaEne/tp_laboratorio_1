@@ -43,9 +43,10 @@ int main(void) {
 		{
 			case 1:
 				printf("\n\nALTA DE ALBUM\n");
-				if(!alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO))
+				if(!alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO, ultimoId))
 				{
-					ultimoId ++;
+					ultimoId++;
+					contadorCargados ++;
 				}
 				else
 				{

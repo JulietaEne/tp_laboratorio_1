@@ -72,7 +72,7 @@ int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
 	if(listaAlbum!= NULL && sizeListaAlbum>0)
 	{
 		retorno = -2;
-		for(i=0; i<sizeListaAlbum; i++)
+		for(i=0; i<7; i++)
 		{
 			listaAlbum[i]= cargaAlbum[i];
 		}
@@ -231,7 +231,7 @@ int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum/*, int* c
 *					  (0) if Ok
 *
 */
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros/*, int ultimoId*/)
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros, int ultimoId)
 {
 	int retorno;
 	int idArtistaAlbum;
@@ -255,7 +255,7 @@ int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArt
 		alb_getTipoAlbum(listaTipoAlbum, sizeListTipoAlbum, &tipoAlbum);
 		alb_getGenero(listaGeneros, sizeListaGeneros, &generoFk);
 
-		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, tipoArtista, tipoAlbum, generoFk))
+		if(!alb_cargarUnNuevoAlbumAlArray(tituloAlbum,STR_SIZE, &unaFechaAlbum, importeAlbum, idArtistaAlbum, listaAlbum, sizeListaAlbum, tipoArtista, tipoAlbum, generoFk, ultimoId))
 		{
 			retorno=0;
 			printf("se ha cargado con éxito");
@@ -410,18 +410,21 @@ int art_pedirArtista(eArtista* listaArtistas, int sizeListaArtista)
 	int unId;
 	int idArtista;
 
-	unId =-1;
+	idArtista =-1;
 	if(listaArtistas != NULL && sizeListaArtista>0)
 	{
 		do{
-			unId =0;
+			idArtista =0;
 			art_printListaArtista(listaArtistas, sizeListaArtista);
 			utn_GetNumeroInt(&unId, "ingrese el codigo del Artista: ", "ingrese un codigo valido\n", MIN_ARTISTA, MAX_ARTISTA, REINTENTOS);
-			if(!(unId<= art_idUltimoArtista(listaArtistas, sizeListaArtista) && unId >0))
+			if(unId<= art_idUltimoArtista(listaArtistas, sizeListaArtista) && unId >0)
 			{
+				//printf("artista: %d", unId);
 				idArtista= unId;
+				//printf("artista ret: %d", idArtista);
 			}
-		}while(!unId);
+		}while(!idArtista);
+		//printf("artista ret: %d", idArtista);
 	}
 	return idArtista;
 }
@@ -486,17 +489,17 @@ int alb_getGenero(eGenero* listaGeneros, int sizeListaGeneros,int* generoFk)
 	return retorno;
 }
 
-int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum, int generofk)
+int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum, int generofk, int ultimoId)
 {
 	int retorno;
-	int ultimoId;
+	//int ultimoId;
 	int indexCarga;
 
 	retorno = -1;
 	if(tituloAlbum!= NULL && sizeTituloAlbum >0 && listaAlbum!= NULL && sizeListaAlbum >0 )
 	{
 		retorno = -2;
-		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
+		//alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
 		ultimoId=ultimoId+1;
 
 		indexCarga= alb_findPrimerEspacioLibreEnLista(listaAlbum, sizeTituloAlbum);
@@ -561,10 +564,13 @@ int alb_findPorCodigo(eAlbum* listaAlbum, int sizeListaAlbum, int idConsulta)
 	if(listaAlbum!= NULL && sizeListaAlbum >0 && idConsulta> ID_INICIAL)
 	{
 		retorno = -2;
+		//printf("****ID CONSULTA %d", idConsulta);
 		for (i=0; i<sizeListaAlbum; i++)
 		{
-			if(validacionesInt_sonIdenticos(listaAlbum[i].idAlbum, idConsulta))
+			//printf(" -- idAlbum %d", listaAlbum[i].idAlbum );
+			if(listaAlbum[i].idAlbum == idConsulta)
 			{
+				//printf("i=%d ****", i);
 				retorno=i;
 				break;
 			}
@@ -850,7 +856,7 @@ int informes_informarTotalyPromedioDeImportes(eAlbum* listaAlbum, int sizeListAl
 		{
 			promedio= tp_calcularPromedio(totalImporte, cantidadImportes);
 			cantidadQueSuperaPromedio = informes_cacularCantidadQueSuperaPromedio(listaAlbum, sizeListAlbum, promedio);
-			printf("Total de importes: %.2f\nPromedio de importes: %.2f\nCantidad que supera el promedio: %d",totalImporte, promedio, cantidadQueSuperaPromedio);
+			printf("Total de importes: %.2f\nPromedio de importes: %.2f\nCantidad que supera el promedio: %d\n",totalImporte, promedio, cantidadQueSuperaPromedio);
 			retorno=0;
 		}
 	}
@@ -868,7 +874,7 @@ int informes_cacularCantidadQueSuperaPromedio(eAlbum* listaAlbum, int sizeListAl
 		contador=0;
 		for(i=0; i<sizeListAlbum; i++)
 		{
-			if(listaAlbum[i].importe>promedio)
+			if(listaAlbum[i].isEmpty == NOT_EMPTY && listaAlbum[i].importe>promedio)
 			{
 				contador++;
 			}
@@ -888,7 +894,7 @@ int informes_informarCantAlbumPrevioAlDosMil(eAlbum* listaAlbum, int sizeListAlb
 		contador=0;
 		for (i=0; i<sizeListAlbum; i++)
 		{
-			if(listaAlbum[i].fecha.year<2000)
+			if(listaAlbum[i].isEmpty == NOT_EMPTY && listaAlbum[i].fecha.year<2000)
 			{
 				contador++;
 			}
@@ -968,28 +974,7 @@ int listar_printAlbumPrevioAlDosMil(eAlbum* listaAlbum, int sizeListAlbum)
 	}
 	return contador;
 }
-int listar_calcularTotalyPromedioDeImportes(eAlbum* listaAlbum, int sizeListAlbum)
-{
-	int retorno;
-	float totalImporte;
-	int cantidadImportes;
-	float promedio;
 
-	retorno =-1;
-	if(listaAlbum!= NULL && sizeListAlbum)
-	{
-		retorno=-2;
-		cantidadImportes = informes_totalImportes(listaAlbum, sizeListAlbum, &totalImporte);
-		if(cantidadImportes>0)
-		{
-			promedio= tp_calcularPromedio(totalImporte, cantidadImportes);
-			//printf("DEBUG**** %.2f", promedio);
-			listar_printAlbumQueSuperaPromedio(listaAlbum, sizeListAlbum, promedio);
-			retorno=0;
-		}
-	}
-	return retorno;
-}
 
 int listar_printAlbumQueSuperaPromedio(eAlbum* listaAlbum, int sizeListAlbum, float promedio)
 {
@@ -1069,7 +1054,6 @@ int listar_printAlbumPorArtista(eArtista* listaArtistas, int sizeListaArtista, e
 	int i;
 	int j;
 	int bandera;
-
 
 	retorno=-1;
 	if( listaArtistas!= NULL && sizeListaArtista>0 && listaAlbum != NULL && sizeListaAlbum>0)
@@ -1553,6 +1537,7 @@ int tipoAlbum_pedirTipoAlbum(eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum)
 				{
 					//*idTipoAlbum = unId;
 					idTipoAlbum= unId;
+					//printf("idTipoAlbum %d", unId);
 				}
 					//printf("DEBUG**** artista: %d", unId);
 			}
