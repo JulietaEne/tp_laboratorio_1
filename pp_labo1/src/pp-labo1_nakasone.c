@@ -117,7 +117,7 @@ int main(void) {
 				//get y set
 				//OK Listar todos los albumes que no sean de vinilo.
 				printf("\n\nListar todos los albumes que no sean de vinilo\n");
-				tipoAlbum_listarAlbumDistintoVinilo(listaTipoAlbum, QTY_TIPO_ALBUM, listAlbum, QTY_ALBUM);
+				printAlbumNoVinilo(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
 				//	 Listar todos los albumes de vinilo que correspondan a un artista determinado.
 				printf("\n\nListar todos los albumes de vinilo que correspondan a un artista determinado.\n");
 				tipoAlbum_printViniloSegunArtista(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST);

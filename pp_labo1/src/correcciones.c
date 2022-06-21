@@ -127,6 +127,9 @@ int getForeingeKeys(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArt
 
 	    getGenero(indexAlbum,listaAlbum,sizeListaAlbum,listaGeneros, sizeGeneros,auxGenero);
 
+	   // getTipoArt(indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eTipoArtista* listaTypes, int sizeTypes, char* auxTipoArtista)
+
+
 	}
     return retorno;
 }
@@ -144,6 +147,7 @@ int getNombreArtista(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum,  eA
         	//printf("%d) index: {%d} %d ?- listArt %d",i, indexAlbum, listaAlbum[indexAlbum].artistaFk, listaArtista[i].idArtista);
 	        if(listaAlbum[indexAlbum].artistaFk == listaArtista[i].idArtista)
 	        {
+	        	//printf("nombre %d**",listaArtista[i].idArtista);
 	        	//printf("%d) nombre: %s - id %d - fk %d - %s\n",i, listaArtista[i].nombre,listaArtista[i].idArtista,listaAlbum[indexAlbum].artistaFk, auxArtista);
 	            strncpy(auxArtista, listaArtista[i].nombre, STR_SIZE);
 	            break;
@@ -165,6 +169,7 @@ int getTipoAlbum(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eTipoAl
 	    {
 	        if(listaAlbum[indexAlbum].tipoAlbumFk== listaTipoAlbum[i].idTipoAlbum)
 	        {
+	        	//printf("tipoalb %d**",listaTipoAlbum[i].idTipoAlbum);
 	            strncpy(auxTipoAlbum, listaTipoAlbum[i].descripcion, STR_SIZE);
 	            break;
 	        }
@@ -182,9 +187,30 @@ int getGenero(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eGenero* l
     {
         for(i=0;i<sizeGeneros; i++)
 	    {
-	        if(listaAlbum[indexAlbum].tipoAlbumFk== listaGeneros[i].idGenero)
+	        if(listaAlbum[indexAlbum].generoFk== listaGeneros[i].idGenero)
 	        {
+	        	//printf("genero %d **", listaGeneros[i].idGenero);
 	            strncpy(auxGenero, listaGeneros[i].descripcion, STR_SIZE);
+	            break;
+	        }
+	    }
+    }
+    return retorno;
+}
+
+int getTipoArt(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eTipoArtista* listaTypes, int sizeTypes, char* auxTipoArtista)
+{
+    int retorno;
+    int i;
+    retorno =-1;
+    if(indexAlbum >= 0 && listaAlbum != NULL && sizeListaAlbum>0 && listaTypes != NULL && sizeTypes >0 && auxTipoArtista)
+    {
+        for(i=0;i<sizeTypes; i++)
+	    {
+	        if(listaAlbum[indexAlbum].generoFk== listaTypes[i].idTipoArtista)
+	        {
+	        	//printf("genero %d **", listaGeneros[i].idGenero);
+	            strncpy(auxTipoArtista, listaTypes[i].descripcion, STR_SIZE);
 	            break;
 	        }
 	    }
@@ -341,11 +367,11 @@ int puntoCinco(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, i
 					break;
 				case 9:
 					//Albumes segun añio: indicar año
-					listar_printAlbumeSegunAnio(listaAlbum, sizeListaAlbum);
+					imprimirSegunAnio(listaAlbum,sizeListaAlbum,listaArtista, sizeListaArtista,listaTipoAlbum, sizeListaTipoAlbum,listaGenero, sizeListaGenero);
 					break;
 				case 10:
 					//album mas caro
-					listar_printAlbumesMasCaros(listaAlbum, sizeListaAlbum);
+					printAlbumesMasCaros(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
 					break;
 			}
 		}while(menuSecundario<11 );
@@ -405,7 +431,7 @@ int mostrarAlbumesPorArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* l
 			{
 				if(listaAlbum[j].isEmpty == NOT_EMPTY && listaAlbum[j].artistaFk == listaArtista[i].idArtista)
 				{
-					printPosicion(i, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+					printPosicion(j, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
 					printf("\n");
 					bandera=1;
 				}
@@ -418,3 +444,75 @@ int mostrarAlbumesPorArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* l
 	}
 	return retorno;
 }
+
+int imprimirSegunAnio(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
+{
+	int contador;
+	int i;
+	int yearSelected;
+
+	contador = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum)
+	{
+		listar_printYear(listaAlbum, sizeListaAlbum);
+		utn_GetNumeroInt(&yearSelected, "Ingrese un año: ", "ingrese un valor valido", 1851, MAX_YEAR, REINTENTOS);
+		alb_printEncabezado();
+
+		contador=0;
+		for (i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].fecha.year== yearSelected)
+			{
+				contador++;
+				printPosicion(i, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+			}
+		}
+	}
+	return contador;
+}
+
+int printAlbumesMasCaros(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
+{
+	int retorno;
+	float mayorPrecio;
+	int i;
+
+	retorno =-1;
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		retorno=0;
+		mayorPrecio = listar_findPrecioMasCaro(listaAlbum, sizeListaAlbum);
+		printf("Albumes con mayor precio de %.2f\n", mayorPrecio);
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty== NOT_EMPTY && listaAlbum[i].importe==mayorPrecio)
+			{
+				printPosicion(i, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+			}
+		}
+	}
+	return retorno;
+}
+
+int printAlbumNoVinilo(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
+{
+	int retorno;
+	int i;
+
+	retorno =-1;
+	if(listaTipoAlbum != NULL && sizeListaTipoAlbum>0)
+	{
+		retorno =0;
+		printf("Todos los discos que son Cinta o Cd\n");
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty == NOT_EMPTY && listaAlbum[i].tipoAlbumFk != VINILO)
+			{
+				printPosicion(i, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+				//printf("\n");
+			}
+		}
+	}
+	return retorno;
+}
+

@@ -59,13 +59,13 @@ int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
 	int i;
 
 	eAlbum cargaAlbum[] = {
-			{101, "Fantaisie-Impromptu",{1,1,1851},2500,1,2,1,1, NOT_EMPTY},
-			{102, "El disco de tu corazon", {1,1,2017}, 2050, 4,1,2,2,NOT_EMPTY},
-			{103, "Sin restricciones",{1,5,2004},2000,4,3,1,3, NOT_EMPTY},
-			{104, "El templo del pop",{1,8,2014},2500,4,4,2,1, NOT_EMPTY},
-			{105, "Have a Nice day",{1,10,2014},1900,5,1,1,2,NOT_EMPTY},
+			{101, "Fantaisie-Impromptu",{1,1,1851},2500,1,1,1,1, NOT_EMPTY},
+			{102, "El disco de tu corazon", {1,1,2017}, 2050, 4,2,2,3,NOT_EMPTY},
+			{103, "Sin restricciones",{1,5,2004},2000,4,2,2,3, NOT_EMPTY},
+			{104, "El templo del pop",{1,8,2014},2500,4,2,2,3, NOT_EMPTY},
+			{105, "Have a Nice day",{1,10,2014},1900,5,4,1,2,NOT_EMPTY},
 			{106, "Master of puppets",{1,10,1986}, 1800,6,3,2,3,NOT_EMPTY},
-			{107, "Made in Heaven",{1,11,1991},2100, 8,4,1,1,NOT_EMPTY}
+			{107, "Made in Heaven",{1,11,1991},2100, 8,1,2,1,NOT_EMPTY}
 			};
 
 	retorno = -1;
@@ -76,6 +76,7 @@ int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum)
 		{
 			listaAlbum[i]= cargaAlbum[i];
 		}
+		//printf("id: %d - nombre %s, importe %.2f, ")
 		retorno = 0;
 	}
 
@@ -1024,29 +1025,7 @@ float listar_findPrecioMasCaro(eAlbum* listaAlbum, int sizeListaAlbum)
 	return retorno;
 }
 
-int listar_printAlbumesMasCaros(eAlbum* listaAlbum, int sizeListaAlbum)
-{
-	int retorno;
-	float mayorPrecio;
-	int i;
 
-	retorno =-1;
-	if(listaAlbum!= NULL && sizeListaAlbum>0)
-	{
-		retorno=0;
-		mayorPrecio = listar_findPrecioMasCaro(listaAlbum, sizeListaAlbum);
-		printf("Albumes con mayor precio de %.2f\n", mayorPrecio);
-		for(i=0; i<sizeListaAlbum; i++)
-		{
-			if(listaAlbum[i].isEmpty== NOT_EMPTY && listaAlbum[i].importe==mayorPrecio)
-			{
-				alb_printPosicion(listaAlbum, i);
-				printf("\n");
-			}
-		}
-	}
-	return retorno;
-}
 
 int listar_printAlbumPorArtista(eArtista* listaArtistas, int sizeListaArtista, eAlbum* listaAlbum, int sizeListaAlbum)
 {
@@ -1102,7 +1081,7 @@ int listar_printYear(eAlbum* listaAlbum, int sizeListaAlbum)
 		{
 			if(listaAlbum[i].isEmpty == NOT_EMPTY)
 			{
-				printf("- %d\n", listaAlbum[i].fecha.year);
+				printf("-%d\n", listaAlbum[i].fecha.year);
 				contador++;
 			}
 		}
@@ -1111,31 +1090,7 @@ int listar_printYear(eAlbum* listaAlbum, int sizeListaAlbum)
 }
 
 
-int listar_printAlbumeSegunAnio(eAlbum* listaAlbum, int sizeListaAlbum)
-{
-	int contador;
-	int i;
-	int yearSelected;
 
-	contador = -1;
-	if(listaAlbum!= NULL && sizeListaAlbum)
-	{
-		listar_printYear(listaAlbum, sizeListaAlbum);
-		utn_GetNumeroInt(&yearSelected, "indique el anio que desea buscar", "ingrese un valor valido", MIN_YEAR, MAX_YEAR, REINTENTOS);
-
-		contador=0;
-		for (i=0; i<sizeListaAlbum; i++)
-		{
-			if(listaAlbum[i].fecha.year== yearSelected)
-			{
-				contador++;
-				alb_printPosicion(listaAlbum, i);
-				printf("\n");
-			}
-		}
-	}
-	return contador;
-}
 //*************************************************************
 
 
@@ -1405,7 +1360,8 @@ int listar_sortAlbum(eAlbum* listaAlbum, int sizeListAlbu, eArtista* listaArtist
 		printf("Indique el criterio de orden: \n1-Descendente segun importe\n2-Ascendente segun titulo\n");
 		utn_GetNumeroInt(&criterio, "ingrese el criterio: ", "ingrese un dato valido", 1, 2, REINTENTOS);
 		listar_sortAlbumSegunCriterio(listaAlbum, sizeListAlbu, criterio);
-		alb_printLista(listaAlbum, sizeListAlbu, listaArtista, sizeListArtista, listaTipoAlbum, sizeListaTipoAlbum,listaGenero, sizeListaGenero);
+		printListaAlbum(listaAlbum, sizeListAlbu, listaArtista, sizeListArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+		//alb_printLista(listaAlbum, sizeListAlbu, listaArtista, sizeListArtista, listaTipoAlbum, sizeListaTipoAlbum,listaGenero, sizeListaGenero);
 	}
 	return retorno;
 }
