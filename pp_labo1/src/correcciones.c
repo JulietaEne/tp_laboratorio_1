@@ -516,3 +516,38 @@ int printAlbumNoVinilo(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaAr
 	return retorno;
 }
 
+int printViniloSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero)
+
+{
+	int retorno;
+	int i;
+	int artistaSelected;
+	int bandera;
+
+	retorno = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum)
+	{
+		bandera = 0;
+		art_printListaArtista(listaArtista, sizeListaArtista);
+		utn_GetNumeroInt(&artistaSelected, "indique el codigo de artista que desea buscar: ", "ingrese un valor valido", 1, QTY_ARTIST, REINTENTOS);
+
+
+		alb_printEncabezado();
+		for (i=0; i<sizeListaAlbum; i++)
+		{
+			if( listaAlbum[i].isEmpty== NOT_EMPTY
+				&& listaAlbum[i].artistaFk== artistaSelected && listaAlbum[i].tipoAlbumFk==VINILO)
+			{
+				printPosicion(i, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero);
+				bandera = 1;
+			}
+		}
+		if(!bandera)
+		{
+			printf("no tiene album vinilo");
+		}
+		retorno=0;
+	}
+	return retorno;
+}
+

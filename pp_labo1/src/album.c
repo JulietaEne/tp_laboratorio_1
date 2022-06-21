@@ -1668,28 +1668,23 @@ int tipoAlbum_printViniloSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eA
 	{
 		bandera = 0;
 		art_printListaArtista(listaArtistas, sizeListaArtistas);
-		utn_GetNumeroInt(&artistaSelected, "indique el codigo de artista que desea buscar", "ingrese un valor valido", 1, QTY_ARTIST, REINTENTOS);
+		utn_GetNumeroInt(&artistaSelected, "indique el codigo de artista que desea buscar: ", "ingrese un valor valido", 1, QTY_ARTIST, REINTENTOS);
 
 		retorno=0;
 		for (i=0; i<sizeListaAlbum; i++)
 		{
 			if( listaAlbum[i].isEmpty== NOT_EMPTY
-				&& listaAlbum[i].artistaFk== artistaSelected)
+				&& listaAlbum[i].artistaFk== artistaSelected && listaAlbum[i].tipoAlbumFk==VINILO)
 			{
-				if(listaAlbum[i].tipoAlbumFk==VINILO)
-				{
-					alb_printPosicion(listaAlbum, i);
-					printf("\n");
-					bandera = 1;
-				}
-				else
-				{
-					if(!bandera)
-					{
-						printf("no tiene album vinilo");
-					}
-				}
+
+				alb_printPosicion(listaAlbum, i);
+				printf("\n");
+				bandera = 1;
 			}
+		}
+		if(!bandera)
+		{
+			printf("no tiene album vinilo");
 		}
 	}
 	return retorno;

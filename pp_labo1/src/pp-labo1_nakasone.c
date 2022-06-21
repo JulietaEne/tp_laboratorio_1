@@ -38,7 +38,7 @@ int main(void) {
 			inicioPrograma(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaGenero, QTY_GENERO, listaType, QTY_TYPE, listaTipoAlbum, QTY_TIPO_ALBUM, &ultimoId);
 			contadorCargados=alb_contadorAlbumesCargados(listAlbum, QTY_ALBUM);
 		}
-		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN");
+		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN\n7- SALIR");
 		switch (menuPrincipal)
 		{
 			case 1:
@@ -106,27 +106,21 @@ int main(void) {
 				break;
 			case 6:
 				printf("\nCONSIGNAS PARTE 2 EXAMEN\n");
-				 // OK La entidad Tipo de Album, la misma contendrá:
-				//	OK Campos: id y descripción.
-				//	OK Datos: 1, vinilo; 2, cinta; 3, CD.
-				//tipoAlbum_cargaForzadaDeDatos(listaTipoAlbum, QTY_TIPO_ALBUM);
-				//	 Listar todos los tipos de álbumes.
+
 				printf("\n\nListar todos los tipos de álbumes.\n");
 				tipoAlbum_printListaTipoAlbum(listaTipoAlbum, QTY_TIPO_ALBUM);
-				//OK Agregar el Tipo de álbum al Alta y Modificación de álbumes.
-				//get y set
-				//OK Listar todos los albumes que no sean de vinilo.
+
 				printf("\n\nListar todos los albumes que no sean de vinilo\n");
 				printAlbumNoVinilo(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
-				//	 Listar todos los albumes de vinilo que correspondan a un artista determinado.
-				printf("\n\nListar todos los albumes de vinilo que correspondan a un artista determinado.\n");
-				tipoAlbum_printViniloSegunArtista(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST);
 
+				printf("\n\nListar todos los albumes de vinilo que correspondan a un artista determinado.\n");
+				do{
+					printViniloSegunArtista(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
+					retornoFuncion = continuar("desea consultar otro artista?");
+				}while(retornoFuncion);
 				break;
 		}
-
-
-
-	}while(menuPrincipal != 6);
+	}while(menuPrincipal != 7);
+	printf("Saliendo...\n Muchas gracias!");
 return EXIT_SUCCESS;
 }
