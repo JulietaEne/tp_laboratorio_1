@@ -11,7 +11,7 @@ int compareEmployee(void* pEmployeeA,void* pEmployeeB)
 //	printf("estoy en la func compareEmployee");
 	retorno = 0;
 
-	printf("(A)%.2f ?= (B)%.2f",((Employee*)pEmployeeA)->salary,((Employee*)pEmployeeB)->salary );
+	//printf("(A)%.2f ?= (B)%.2f",((Employee*)pEmployeeA)->salary,((Employee*)pEmployeeB)->salary );
 
     if(((Employee*)pEmployeeA)->salary > ((Employee*)pEmployeeB)->salary)
     {

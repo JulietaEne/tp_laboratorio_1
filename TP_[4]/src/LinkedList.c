@@ -583,26 +583,35 @@ LinkedList* ll_subList(LinkedList* this,int from,int to)
     int sizeList;
     int i;
 
+    //printf("hola!");
+    //printf("size= %d\n", ll_len(this));
+    //printf("from= %d", from);
+    //printf("to= %d", to);
     sizeList = ll_len(this);
-    if(this != NULL && from >= 0 && from < to && to < sizeList)
+   // printf("size= %d\n", sizeList);
+    if(this != NULL && from >= 0 && from < to && to <= sizeList)//FROM PUEDE SER IGUAL A TO ?????
     {
+    	//printf("test 1??? \n");
     	cloneArray = ll_newLinkedList();
-    	//printf("memoria de clone %p\n", cloneArray);
-    	for(i=from; i<=to; i++)
+
+    	//{printf("memoria de clone %p\n", cloneArray);
+
+    	for(i=from; i<to; i++) // i<=to ???? no serìa????
     	{
     		auxNodeFromThis = getNode(this, i);
-    		printf("LISTA ORIGINAL(%p) %18p(nodo) %p(elemento) - %d\n", this, auxNodeFromThis, auxNodeFromThis->pElement, i);
+
+    		//printf("LISTA ORIGINAL(%p) %18p(nodo) %p(elemento) - %d\n", this, auxNodeFromThis, auxNodeFromThis->pElement, i);
     		if(auxNodeFromThis != NULL)
     		{
     			addNode(cloneArray, i, auxNodeFromThis->pElement);
     			/////////
     			auxNodeFromThis = getNode(cloneArray, i);
-    			printf("NUEVA LISTA(%p)  %20p(nodo) %p(elemento) - %d\n", cloneArray, auxNodeFromThis, auxNodeFromThis->pElement, i);
+    			//printf("NUEVA LISTA(%p)  %20p(nodo) %p(elemento) - %d\n", cloneArray, auxNodeFromThis, auxNodeFromThis->pElement, i);
     			/////////
     		}
-    	}
+    	}//}
     }
-    printf("retorno: %p\n\n", cloneArray);
+    //printf("retorno: %p\n\n", cloneArray);
     return cloneArray;
 }
 
@@ -622,7 +631,7 @@ LinkedList* ll_clone(LinkedList* this)
     sizeThis = ll_len(this);
     if(this != NULL)
     {
-    	cloneArray= ll_subList(this, 0, sizeThis-1);
+    	cloneArray= ll_subList(this, 0, sizeThis);
     }
 
     return cloneArray;
@@ -685,7 +694,7 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 					}
 				}
     		limite --;
-    		printf("flag: %d -", flagSwap);
+    		//printf("flag: %d -", flagSwap);
     	}while(flagSwap);
     	retorno = 0;
     }

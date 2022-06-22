@@ -109,6 +109,7 @@ int alb_printLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita
 int alb_printPosicion(eAlbum* listaAlbum, int indiceAlbum);
 int alb_printPosicionConArtista(eAlbum* listaAlbum, int indiceAlbum, eArtista* listaArtita, int indiceArtista);
 void alb_printEncabezado(void);
+void alb_printEncabezado2(void);
 int alb_findPorCodigo(eAlbum* listaAlbum, int sizeListaAlbum, int idConsulta);
 
 int alb_getTitulo(char* titulo, int sizeTitulo);
@@ -116,7 +117,7 @@ int alb_getImporte(float* importe);
 int alb_getFecha(eFecha* fechaAlbum);
 int alb_getArtista(eArtista* listaArtistas, int sizeListaArtista, int* idArtista);
 int alb_findPrimerEspacioLibreEnLista(eAlbum* listaAlbum, int sizeListaAlbum);
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros, int ultimoId);
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros, eTipoArtista* listaTipoArt, int sizeTipoArt, int ultimoId);
 int alb_cargarUnNuevoAlbumAlArray(char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaAlbum, float importeAlbum, int idArtistaAlbum, eAlbum* listaAlbum, int sizeListaAlbum, int tipoArtista, int tipoAlbum, int generofk, int ultimoId);
 int alb_solicitarCodigo(int* idSolicitado, eAlbum* listaAlbum, int sizeListaAlbum);
 int alb_cargaForzadaDeDatos(eAlbum* listaAlbum, int sizeListaAlbum);

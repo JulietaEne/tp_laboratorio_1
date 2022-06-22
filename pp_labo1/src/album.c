@@ -232,7 +232,7 @@ int alb_contadorAlbumesCargados(eAlbum* listaAlbum, int sizeListaAlbum/*, int* c
 *					  (0) if Ok
 *
 */
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros, int ultimoId)
+int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeListaGeneros, eTipoArtista* listaTipoArt, int sizeTipoArt, int ultimoId)
 {
 	int retorno;
 	int idArtistaAlbum;
@@ -264,7 +264,7 @@ int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArt
 			if(askPrintLista)
 			{
 				//alb_printLista(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeListaGeneros);
-				printListaAlbum(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeListaGeneros);
+				printListaAlbumConTipoArt(listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, listaTipoAlbum, sizeListTipoAlbum, listaGeneros, sizeListaGeneros, listaTipoArt,sizeTipoArt);
 			}
 		}
 	}
@@ -684,7 +684,10 @@ void alb_printEncabezado(void)
 	printf("\nTIPO ALBUM\tID\t\tTITULO\t\tFECHA\t\tPRECIO\t\tNOMBRE DE ARTISTA\t\tGENERO\n");
 }
 
-
+void alb_printEncabezado2(void)
+{
+	printf("\nTIPO ALBUM\tID\t\tTITULO\t\tFECHA\t\tPRECIO\t\tNOMBRE DE ARTISTA\t\tGENERO\t\tTIPO ARTISTA\n");
+}
 
 
 //______________________________________________________________-

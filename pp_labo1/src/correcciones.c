@@ -23,7 +23,7 @@ int inicioPrograma(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtist
 		tipoAlbum_cargaForzadaDeDatos(listaTipoALbum, sizelistaTipoALbum);
 		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &auxId);
 		*ultimoId=auxId;
-		printListaAlbum(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtista, listaTipoALbum, sizelistaTipoALbum, listaGeneros, sizeGeneros);
+		printListaAlbumConTipoArt(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtista, listaTipoALbum, sizelistaTipoALbum, listaGeneros, sizeGeneros, listaTypes,sizeTypes);
 
 		retorno =0;
 	}
@@ -242,6 +242,57 @@ int printPosicion(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtis
 													listaAlbum[indexAlbum].importe,
 													auxArtista,
 													auxGenero);
+	}
+	return retorno;
+}
+
+int printPosicionConTipoArt(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum, eGenero* listaGeneros, int sizeGeneros, eTipoArtista* listaTipoArt, int sizeTipoArt)
+{
+	int retorno;
+	char auxArtista[STR_SIZE];
+	char auxTipoAlbum[STR_SIZE];
+	char auxGenero[STR_SIZE];
+	char auxTipoArt[STR_SIZE];
+	retorno =-1;
+	if(indexAlbum >=0 && listaAlbum != NULL && sizeListaAlbum >0 && listaArtista != NULL && sizeListaArtista >0 && listaTipoAlbum != NULL && sizeListTipoAlbum >0 && listaGeneros != NULL && sizeGeneros >0)
+	{
+
+		getNombreArtista(indexAlbum, listaAlbum, sizeListaAlbum, listaArtista, sizeListaArtista, auxArtista);
+		getTipoAlbum(indexAlbum, listaAlbum, sizeListaAlbum, listaTipoAlbum, sizeListTipoAlbum, auxTipoAlbum);
+		getGenero(indexAlbum, listaAlbum, sizeListaAlbum, listaGeneros, sizeGeneros, auxGenero);
+		getTipoArt(indexAlbum, listaAlbum, sizeListaAlbum, listaTipoArt, sizeTipoArt, auxTipoArt);
+		//alb_printEncabezado();
+		//printf("auxArt: %s\n\n\n", auxArtista);
+		printf("%7s %11d %24s %4d/%d/%d %14.2f %25s %20s %20s\n",  auxTipoAlbum,
+													listaAlbum[indexAlbum].idAlbum,
+													listaAlbum[indexAlbum].titulo,
+													listaAlbum[indexAlbum].fecha.day,
+													listaAlbum[indexAlbum].fecha.month,
+													listaAlbum[indexAlbum].fecha.year,
+													listaAlbum[indexAlbum].importe,
+													auxArtista,
+													auxGenero,
+													auxTipoArt);
+	}
+	return retorno;
+}
+int printListaAlbumConTipoArt(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero, eTipoArtista* listaTipoArt, int sizeTipoArt)
+{
+	int retorno;
+	int i;
+	//int j;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtita != NULL && sizeListaArtista>0 && listaTipoAlbum != NULL && sizeListaTipoAlbum >0 && listaGenero != NULL && sizeListaGenero >0)
+	{
+		retorno = 0;
+		alb_printEncabezado2();
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty==NOT_EMPTY)
+			{
+				printPosicionConTipoArt(i, listaAlbum, sizeListaAlbum, listaArtita, sizeListaArtista, listaTipoAlbum, sizeListaTipoAlbum, listaGenero, sizeListaGenero, listaTipoArt, sizeTipoArt);
+			}
+		}
 	}
 	return retorno;
 }
@@ -547,6 +598,64 @@ int printViniloSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* li
 			printf("no tiene album vinilo");
 		}
 		retorno=0;
+	}
+	return retorno;
+}
+
+//Informar la cantidad de álbumes de un tipo de álbum determinado y de un género determinado.
+int recu_puntoUno(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtista, eGenero* listaGeneros, int sizeGeneros, eTipoArtista* listaTypes, int sizeTypes, eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum)
+{
+	int retorno;
+	int idTipoAlbum;
+	int generoFk;
+	int cantidad;
+	retorno=-1;
+	if(listaAlbum != NULL && sizeListaAlbum >0 && listaArtistas != NULL && sizeListaArtista >0 && listaTipoALbum != NULL && sizelistaTipoALbum >0 && listaGeneros != NULL && sizeGeneros >0 && listaTypes != NULL && sizeTypes>0)
+	{
+		//mostrar tipo de albumes y consultar criterio
+		alb_getTipoAlbum(listaTipoALbum, sizelistaTipoALbum, &idTipoAlbum);
+		printf("id= %d", idTipoAlbum);
+		// mostrar generos y consultar criterio
+		alb_getGenero(listaGeneros, sizeGeneros, &generoFk);
+		printf("id2= %d", generoFk);
+		//recorrer la lista y contabilizar los matcheados
+		cantidad = recu_contabilizarMatcheados(listaAlbum, sizelistaTipoALbum, idTipoAlbum, listaTipoALbum, sizelistaTipoALbum, generoFk, listaGeneros, sizeGeneros);
+		//mostrar el conteo final
+		printf("cantidad: %d", cantidad);
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int recu_contabilizarMatcheados(eAlbum* listaAlbum, int sizeListaAlbum, int idTipoAlbum, eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum, int generoFkIngresado, eGenero* listaGenero, int sizeListaGenero)
+{
+	int retorno;
+	int i;
+	int j;
+
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum > 0 && idTipoAlbum >= 0 && listaTipoALbum != NULL && sizelistaTipoALbum > 0 && listaGenero!= NULL && sizeListaGenero > 0)
+	{
+		retorno = 0;
+		//recibo idTipoAlbIngresado y idGeneroIngresado
+		//cuando encuentro idTipoAlb == idTipoAlbIngresado => recorro generos y cuando encuentro idGeneroIngresado == idGenero
+		//si entra, cuento
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(idTipoAlbum == listaAlbum[i].tipoAlbumFk)
+			{
+				printf("ok1\n");
+				for(j=0; j<sizeListaAlbum; j++)
+				{
+					if(generoFkIngresado == listaAlbum[i].generoFk)
+					{
+						printf("ok2\n");
+						retorno ++;
+					}
+				}
+			}
+		}
+		//recorrer la lista y contabilizar los matcheados
 	}
 	return retorno;
 }

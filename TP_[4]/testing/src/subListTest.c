@@ -49,9 +49,9 @@ void subListTestCase01(void)
 
     list = ll_newLinkedList();
     ll_add(list,NULL);
-    printf("case 1********\n");
+    //printf("case 1********\n");
     utest_assertNotNullMsg(ll_subList(list,0,1),"\nError en el valor de retorno de <subList> si los parametros son correctos\nno debe retornar NULL\n");
-    printf("********fin case 1\n");
+   // printf("********fin case 1\n");
 }
 
 void subListTestCase02(void)
@@ -62,6 +62,7 @@ void subListTestCase02(void)
     Employee* pAux[LENGTH];
     list = ll_newLinkedList();
 
+   // printf("case 2********\n");
     for(i=0; i < LENGTH; i++)
     {
         pAux[i] = newEmployee(id[i],unsortedList[i],unsortedList[i],salary[i],sector[i]);
@@ -86,7 +87,7 @@ void subListTestCase03(void)
     Employee* pAux[LENGTH];
 
     list = ll_newLinkedList();
-
+    //printf("case 3********\n");
     for(i=0; i < LENGTH; i++)
     {
         pAux[i] = newEmployee(id[i],unsortedList[i],unsortedList[i],salary[i],sector[i]);
@@ -107,7 +108,7 @@ void subListTestCase04(void)
     LinkedList* list;
     LinkedList* pSubList;
     Employee* pAux[LENGTH];
-
+   // printf("case 4********\n");
     list = ll_newLinkedList();
 
     for(i=0; i < LENGTH; i++)

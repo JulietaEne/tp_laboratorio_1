@@ -23,6 +23,8 @@ int getTipoAlbum(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eTipoAl
 int getGenero(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eGenero* listaGeneros, int sizeGeneros, char* auxGenero);
 int getTipoArt(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eTipoArtista* listaTypes, int sizeTypes, char* auxTipoArtista);
 int printPosicion(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum, eGenero* listaGeneros, int sizeGeneros);
+int printPosicionConTipoArt(int indexAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum, eGenero* listaGeneros, int sizeGeneros, eTipoArtista* listaTipoArt, int sizeTipoArt);
+int printListaAlbumConTipoArt(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero, eTipoArtista* listaTipoArt, int sizeTipoArt);
 int printListaAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);void consultaMostrarLista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListTipoAlbum,eGenero* listaGeneros, int sizeGeneros);
 int deleteAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtita, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
 int puntoCinco(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero, eTipoArtista* listaType, int sizeListType);
@@ -32,5 +34,6 @@ int imprimirSegunAnio(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArt
 int printAlbumesMasCaros(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
 int printAlbumNoVinilo(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
 int printViniloSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtista, int sizeListaArtista, eTipoAlbum* listaTipoAlbum, int sizeListaTipoAlbum,eGenero* listaGenero, int sizeListaGenero);
-
+int recu_puntoUno(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtista, eGenero* listaGeneros, int sizeGeneros, eTipoArtista* listaTypes, int sizeTypes, eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum);
+int recu_contabilizarMatcheados(eAlbum* listaAlbum, int sizeListaAlbum, int tipoAlbFkIngresado, eTipoAlbum* listaTipoALbum, int sizelistaTipoALbum, int generoFkIngresado, eGenero* listaGenero, int sizeListaGenero);
 #endif /* CORRECCIONES_H_ */
