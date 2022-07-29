@@ -115,7 +115,7 @@ int getDescripcionTipoArtista(int unAlbum, eAlbum* listaAlbum, eTipoArtista* lis
 void alb_printEncabezado(void);
 int alb_printListaCompleta(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosALbum, int sizeListaFormatosAlbum);
 int alb_cargarUnNuevoAlbumAlArray(eAlbum* listaAlbum, int sizeListaAlbum, int indexCarga, char* tituloAlbum, int sizeTituloAlbum, eFecha* fechaDePublicacion, float importeAlbum, int idNombreArtistaFk, int idTipoArtistaFk, int idFormatoVentadeAlbumFk, int idGeneroAlbumFk, int codigoIdAlbum);
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosALbum, int sizeListaFormatosAlbum, int ultimoCodigoIdAlbum);
+int programa_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosALbum, int sizeListaFormatosAlbum, int ultimoCodigoIdAlbum);
 int alb_getTituloAlbum(char* tituloAlbum, int sizeTituloAlbum);
 int alb_getFechaDePublicacion(eFecha* fechaDePublicacion);
 eFecha fecha_newFecha(void);
@@ -136,9 +136,19 @@ int generoAlbum_pedirGeneroDeAlbum(eGenero* listaGenerosDeAlbum, int sizeListaGe
 int generoAlbum_printListaGenerosDeAlbum(eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum);
 void generoAlbum_printEncabezado(void);
 int generoAlbum_printPosicionGenerosPorIndex(eGenero* listaGenerosDeAlbum, int indiceRecibidoGenerosAlbum);
+int programa_modificarAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int alb_solicitarCodigo(int* solicitudIdUnAlbum, eAlbum* listaAlbum, int sizeListaAlbum);
+int alb_findAlbumPorCodigoID(int solicitudIdUnAlbum, eAlbum* listaAlbum, int sizeListaAlbum);
+int alb_opcionesModificarAlbum(int indexUnAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int alb_setTituloAlbum(eAlbum* listaAlbum, int indexUnAlbum);
+int alb_setFechaDePublicacion(eAlbum* listaAlbum, int indexUnAlbum);
+int alb_setImporte(eAlbum* listaAlbum, int indexUnAlbum);
+int programa_deleteAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int alb_removerAlbumSegunIndex(eAlbum* listaAlbum, int indexUnAlbum);
 
 //**********************************************************
 //PP LABO - PARTE 2
 int formatoAlbum_cargaForzadaFormatosAlbum(eTipoAlbum* listaFormatosALbum, int sizelistaFormatosAlbum);
+int alb_setFormatoVentaAlbumPorId(eAlbum* listaAlbum, int indexUnAlbum, eTipoAlbum* listaFormatosALbum, int sizelistaFormatosAlbum);
 
 #endif /* ALBUM_H_ */

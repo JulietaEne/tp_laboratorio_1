@@ -22,10 +22,10 @@ int main(void) {
 	int contadorCargados;
 	eAlbum listAlbum[QTY_ALBUM];
 	int ultimoCodigoIdAlbum;
-	eArtista listArtista[QTY_ARTISTAS];
-	eGenero listaGenero[QTY_GENERO_ALBUM];
-	eTipoArtista listaType[QTY_TIPO_DE_ARTISTA];
-	eTipoAlbum listaTipoAlbum[QTY_FORMATOS_ALBUM];
+	eArtista listaArtistas[QTY_ARTISTAS];
+	eGenero listaGenerosDeAlbum[QTY_GENERO_ALBUM];
+	eTipoArtista listaTiposDeArtista[QTY_TIPO_DE_ARTISTA];
+	eTipoAlbum listaFormatosAlbum[QTY_FORMATOS_ALBUM];
 	int retornoFuncion;
 	//int menuSecundario;
 
@@ -36,7 +36,7 @@ int main(void) {
 	{
 		if(ultimoCodigoIdAlbum==ID_INICIAL)
 		{
-			inicioPrograma(listAlbum, QTY_ALBUM, listArtista, QTY_ARTISTAS, listaGenero, QTY_GENERO_ALBUM, listaType, QTY_TIPO_DE_ARTISTA, listaTipoAlbum, QTY_FORMATOS_ALBUM, &ultimoCodigoIdAlbum);
+			inicioPrograma(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM, &ultimoCodigoIdAlbum);
 			contadorCargados=alb_contadorAlbumesCargados(listAlbum, QTY_ALBUM);
 		}
 		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN -- RECUPERATORIO\n7- SALIR");
@@ -44,7 +44,7 @@ int main(void) {
 		{
 			case 1:
 				printf("\n\nALTA DE ALBUM\n");
-				retornoFuncion = alb_getNuevoAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTISTAS, listaGenero, QTY_GENERO_ALBUM, listaType, QTY_TIPO_DE_ARTISTA, listaTipoAlbum, QTY_FORMATOS_ALBUM, ultimoCodigoIdAlbum);
+				retornoFuncion = programa_getNuevoAlbum(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM, ultimoCodigoIdAlbum);
 				switch(retornoFuncion){
 					case 0:
 						ultimoCodigoIdAlbum++;
@@ -59,11 +59,11 @@ int main(void) {
 				}
 				break;
 
-			/*case 2:
+			case 2:
 				printf("\nMODIFICAR ALBUM\n");
 				if(contadorCargados>0)
 				{
-					modificarAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
+					programa_modificarAlbum(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
 				}
 				else
 				{
@@ -74,7 +74,7 @@ int main(void) {
 				printf("\nBORRAR ALBUM\n");
 				if(contadorCargados>0)
 				{
-				   retornoFuncion = deleteAlbum(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
+				   retornoFuncion = programa_deleteAlbum(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
 				   switch(retornoFuncion)
 				   {
 				       case -1:
@@ -94,7 +94,7 @@ int main(void) {
 					printf("Aun no se han cargado datos en el programa\n");
 				}
 				break;
-			case 4:
+			/*case 4:
 				printf("\nINFORMES\n");
 				if(contadorCargados>0)
 				{

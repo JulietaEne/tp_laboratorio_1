@@ -621,7 +621,7 @@ int alb_cargarUnNuevoAlbumAlArray(eAlbum* listaAlbum, int sizeListaAlbum, int in
 *					  (0) if Ok
 *
 */
-int alb_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosALbum, int sizeListaFormatosAlbum, int ultimoCodigoIdAlbum)
+int programa_getNuevoAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosALbum, int sizeListaFormatosAlbum, int ultimoCodigoIdAlbum)
 {
 	int retorno;
 	int indexCarga;
@@ -1150,6 +1150,305 @@ int generoAlbum_printPosicionGenerosPorIndex(eGenero* listaGenerosDeAlbum, int i
 
 	return retorno;
 }
+
+/**
+* \brief modify in a existing list of Album the values received as parameters
+* 	     in the position recived by parameters
+* \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+* \param sizeListaAlbum int Recibe por valor el tamaño del array
+* \param listaArtistas eArtista* Recibe la lista de los artistas
+* \param sizeListaArtistas int Recibe el tamaño de la lista de los artistas
+* \param listaGenerosDeAlbum eGenero* Recibe la lista de los generos
+* \param sizeListaGenerosDeAlbum int Recibe el tamaño de la lista de los artistas
+* \param listaTiposDeArtista eTipoArtista* Recibe la lista los tipos de artistas
+* \param sizeListaTiposDeArtista int Recibe el tamaño de la lista
+*
+* \return int Return (-1) if Error [Invalid length or NULL pointer or withoufree space]
+*					  (0) if Ok
+*
+*/
+int programa_modificarAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int aceptarConsulta;
+	int solicitudIdUnAlbum;
+	int indexUnAlbum;
+
+	retorno = -1;
+	aceptarConsulta = continuar("desea imprimir la lista de albumes?");
+	if(aceptarConsulta)
+	{
+		alb_printListaCompleta(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+	}
+	do
+	{
+		if(!alb_solicitarCodigo(&solicitudIdUnAlbum, listaAlbum, sizeListaAlbum))
+		{
+			indexUnAlbum = alb_findAlbumPorCodigoID(solicitudIdUnAlbum,listaAlbum,sizeListaAlbum);
+			if(solicitudIdUnAlbum>=0)
+			{
+				alb_printUnAlbum(indexUnAlbum, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				alb_opcionesModificarAlbum(indexUnAlbum, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				aceptarConsulta = (!continuar("Desea modificar otro?"));
+				retorno=0;
+			}
+		}
+		else
+		{
+			aceptarConsulta = continuar("Desea cancelar la operacion? Y/N");
+		}
+	}while(!aceptarConsulta);
+
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el código ID de un album y verifica que sea valido
+ * \param idUnAlbum int* Recibe la direccion de memoria donde se guardara el dato ingresado
+ * \param listaAlbum eAlbum* recibe la lista que utiiza para validar
+ * \param sizeListaAlbum int recibe el tamaño de la lista
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_solicitarCodigo(int* solicitudIdUnAlbum, eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int retorno;
+	int auxId;
+	int ultimoId;
+
+	retorno = -1;
+	if(solicitudIdUnAlbum != NULL)
+	{
+		utn_GetNumeroInt(&auxId, "Ingrese el Codigo del Album: ", "El dato ingresado no corresponde a un album cargado.\n", ID_INICIAL, ID_MAXIMO, REINTENTOS);
+		alb_indicarUltimoId(listaAlbum, sizeListaAlbum, &ultimoId);
+		if(auxId <= ultimoId)
+		{
+			*solicitudIdUnAlbum= auxId;
+			retorno =0;
+		}
+		else
+		{
+			printf("ingrese el codigo de un album existente");
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief Recibe el array de entidad Album y analiza el campo .id de cada elemento hasta encontrar coincidencia con el valor recibido por parametro
+ * \param solicitudIdUnAlbum int recibe por valor el dato contra el cual compara
+ * \param listaAlbum *eAlbum recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaAlbum int Recibe tamaño del array
+ *
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 					   -2 si no pudo recorrer el array
+ * 					   >=0 si la operacion se realizo correctamente (retorna el indice donde encontro la coincidencia)
+ *
+ */
+int alb_findAlbumPorCodigoID(int solicitudIdUnAlbum, eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int indexUnAlbum;
+	int i;
+	indexUnAlbum = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum >0 && solicitudIdUnAlbum> ID_INICIAL)
+	{
+		indexUnAlbum = -2;
+		for (i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].codigoIdAlbum == solicitudIdUnAlbum)
+			{
+				indexUnAlbum=i;
+				break;
+			}
+		}
+	}
+	return indexUnAlbum;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el dato que desea modificar y lo modifica
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaAlbum int Recibe por valor el tamaño del array
+ * \param listaArtistas eArtista* Recibe la lista de los artistas
+ * \param sizeListaArtistas int Recibe el tamaño de la lista de los artistas
+ * \param listaGenerosDeAlbum eGenero* Recibe la lista de los generos
+ * \param sizeListaGenerosDeAlbum int Recibe el tamaño de la lista de los artistas
+ * \param listaTiposDeArtista eTipoArtista* Recibe la lista los tipos de artistas
+ * \param sizeListaTiposDeArtista int Recibe el tamaño de la lista
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_opcionesModificarAlbum(int indexUnAlbum, eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int menuSecundario;
+	retorno=-1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		retorno=0;
+		do
+		{
+			menuSecundario= tp_ImprimirMenuSeisOpciones("\n\nIndique el campo que desea modificar: ", "1- Titulo", "2- Fecha de Publicacion", "3- Importe", "4- Tipo Album", "5- Imprimir cambios", "6- Volver atras");
+			switch (menuSecundario) {
+				case 1:
+					//modificar titulo
+					alb_setTituloAlbum(listaAlbum, indexUnAlbum);
+					break;
+				case 2:
+					//modificar fecha
+					alb_setFechaDePublicacion(listaAlbum, indexUnAlbum);
+					break;
+				case 3:
+					//modificar importe
+					alb_setImporte(listaAlbum, indexUnAlbum);
+					break;
+				case 4:
+					//camiar tipo album
+					alb_setFormatoVentaAlbumPorId(listaAlbum, indexUnAlbum, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
+					break;
+				case 5:
+					//imprimo los cambios
+					alb_printEncabezado();
+					alb_printUnAlbum(indexUnAlbum, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+					break;
+				case 6:
+					//salir
+					break;
+			}
+		}while(menuSecundario<6 );
+	}
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el nuevo titulo y si es valido lo aplica en el campo titulo del album indicado
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param indexUnAlbum int Recibe por valor el index del album que se modificará
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_setTituloAlbum(eAlbum* listaAlbum, int indexUnAlbum)
+{
+	int retorno;
+	char nuevoTitulo[STR_SIZE];
+
+	retorno = -1;
+	if(listaAlbum != NULL && indexUnAlbum>=0)
+	{
+		if(!alb_getTituloAlbum(nuevoTitulo, STR_SIZE))
+		{
+			strncpy(listaAlbum[indexUnAlbum].titulo, nuevoTitulo, STR_SIZE);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar la nueva fecha y si el dato es valido lo aplica en el campo fechaPublicacionAlbum del album indicado
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param indexUnAlbum int Recibe por valor el index del album que se modificará
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_setFechaDePublicacion(eAlbum* listaAlbum, int indexUnAlbum)
+{
+	int retorno;
+	eFecha nuevaFecha;
+
+	retorno = -1;
+	if(listaAlbum != NULL && indexUnAlbum>=0)
+	{
+		if(!alb_getFechaDePublicacion(&nuevaFecha))
+		{
+			listaAlbum[indexUnAlbum].fechaPublicacionAlbum = nuevaFecha;
+			retorno=0;
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el nuevo importe y si el dato es valido lo aplica en el campo importeAlbum del album indicado
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param indexUnAlbum int Recibe por valor el index del album que se modificará
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_setImporte(eAlbum* listaAlbum, int indexUnAlbum)
+{
+	int retorno;
+	float nuevoImporte;
+
+	retorno = -1;
+	if(listaAlbum != NULL && indexUnAlbum>=0)
+	{
+		if(!alb_getImporte(&nuevoImporte))
+		{
+			listaAlbum[indexUnAlbum].importeAlbum = nuevoImporte;
+			retorno=0;
+		}
+	}
+	return retorno;
+}
+
+int programa_deleteAlbum(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+    int retorno;
+    int solicitudIdUnAlbum;
+    int indexUnAlbum;
+    int aceptarConsulta;
+
+    retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		aceptarConsulta = continuar("desea imprimir la lista de albumes?");
+		if(aceptarConsulta)
+		{
+			alb_printListaCompleta(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+		}
+
+		if(!alb_solicitarCodigo(&solicitudIdUnAlbum, listaAlbum, sizeListaAlbum))
+		{
+			indexUnAlbum = alb_findAlbumPorCodigoID(solicitudIdUnAlbum,listaAlbum,sizeListaAlbum);
+			if(solicitudIdUnAlbum>=0)
+			{
+				retorno=-2;
+				alb_printUnAlbum(indexUnAlbum, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				aceptarConsulta=continuar("\nConfirma eliminar el album?");
+				if(aceptarConsulta==1)
+				{
+					alb_removerAlbumSegunIndex(listaAlbum, indexUnAlbum);
+					retorno =0;
+					printf("se ha eliminado exitosamente");
+				}
+			}
+		}
+		else
+		{
+			aceptarConsulta = continuar("Desea cancelar la operacion?");
+		}
+    }
+    return retorno;
+}
+
+int alb_removerAlbumSegunIndex(eAlbum* listaAlbum, int indexUnAlbum)
+{
+	int retorno;
+	retorno = -1;
+	if(listaAlbum!= NULL && indexUnAlbum>=0)
+	{
+		listaAlbum[indexUnAlbum].isEmpty = IS_DELETED;
+		retorno=0;
+	}
+	return retorno;
+}
+
 //**********************************************************
 //PP LABO - PARTE 2
 
@@ -1180,6 +1479,33 @@ int formatoAlbum_cargaForzadaFormatosAlbum(eTipoAlbum* listaFormatosALbum, int s
 			listaFormatosALbum[i]= cargaTipoAlbum[i];
 		}
 		retorno = 0;
+	}
+	return retorno;
+}
+
+/**
+ * \brief interactua con el usuario para solicitar el nuevo formato de venta del album y si el dato es valido lo aplica en el campo formatoDelAlbumFk del album indicado
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param indexUnAlbum int Recibe por valor el index del album que se modificará
+ * \param listaFormatosALbum eTipoAlbum* Recibe la lista de formatos para mostrarla
+ * \param indexUnAlbum int Recibe el tamaño de la lista
+ * \return retorna -1 si hubo un error en los parametros recibidos
+ * 		  			0 si la operacion se realizo correctamente
+ *
+ */
+int alb_setFormatoVentaAlbumPorId(eAlbum* listaAlbum, int indexUnAlbum, eTipoAlbum* listaFormatosALbum, int sizelistaFormatosAlbum)
+{
+	int retorno;
+	int nuevoFormatoDeVentaAlbum;
+
+	retorno = -1;
+	if(listaAlbum != NULL && indexUnAlbum>=0)
+	{
+		retorno =-2;
+		if(!alb_getFormatoVentaAlbumPorId(listaFormatosALbum, sizelistaFormatosAlbum, &nuevoFormatoDeVentaAlbum))
+		{
+			listaAlbum[indexUnAlbum].formatoDelAlbumFk = nuevoFormatoDeVentaAlbum;
+		}
 	}
 	return retorno;
 }
