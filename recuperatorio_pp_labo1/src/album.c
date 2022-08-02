@@ -111,7 +111,7 @@ int alb_cargaForzadaDatosDeAlbum(eAlbum* listaAlbum, int sizeListaAlbum)
 
 	eAlbum cargaAlbum[] = {
 			{101, "El disco de tu corazon",{1,1,2017}, 2050,2,2,2,1,NOT_EMPTY},
-			{102, "Sin restricciones",{1,5,2004},2000,2,2,2,3, NOT_EMPTY},
+			{102, "Sin restricciones",{1,5,2004},2500,2,2,2,3, NOT_EMPTY},
 			{103, "El templo del pop",{1,8,2014},2500,2,2,2,3, NOT_EMPTY},
 			{104, "Master of puppets",{1,10,1986}, 1800,3,3,2,3,NOT_EMPTY},
 			{105, "Dapódromo",{1,10,1996},1900,1,1,1,2,NOT_EMPTY},
@@ -548,7 +548,7 @@ int alb_printListaCompleta(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* lis
 	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas>0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista >0 && listaFormatosALbum != NULL && sizeListaFormatosAlbum>0)
 	{
 		retorno = 0;
-		alb_printEncabezado();
+		print_unEncabezado(1);
 		for(i=0; i<sizeListaAlbum; i++)
 		{
 			if(listaAlbum[i].isEmpty==NOT_EMPTY)
@@ -843,7 +843,7 @@ int art_printListaArtista(eArtista* listaArtistas, int sizeListaArtista)
 	if(listaArtistas!= NULL && sizeListaArtista>0)
 	{
 		retorno = 0;
-		art_printEncabezado();
+		print_unEncabezado(4);
 		for(i=0; i<sizeListaArtista; i++)
 		{
 			if( !validacionesInt_sonIdenticos(listaArtistas[i].isEmpty,IS_EMPTY))
@@ -855,15 +855,59 @@ int art_printListaArtista(eArtista* listaArtistas, int sizeListaArtista)
 	return retorno;
 }
 
-/**
- * \brief Imprime el encabezado de la lista eArtista
- * \param void
- * \return void
- *
+
+/*
+ * \brief la lista de artistas y su tamaño e imprime su contenido.
+ * \param listaArtistas eArtista* Recibe la direccion de memoria del array
+ * \param sizeListaArtista int Recibe por valor el tamaño del array
+
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 						0 si la operacion se realizo correctamente
  */
-void art_printEncabezado(void)
+int tipoArtista_printListaTiposArtista(eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista)
 {
-	printf("\nCODIGO\tNOMBRE ARTISTA\n");
+	int retorno;
+	int i;
+
+	retorno = -1;
+	if(listaTiposDeArtista!= NULL && sizeListaTiposDeArtista>0)
+	{
+		retorno = 0;
+		print_unEncabezado(5);
+		for(i=0; i<sizeListaTiposDeArtista; i++)
+		{
+			if( !validacionesInt_sonIdenticos(listaTiposDeArtista[i].isEmpty,IS_EMPTY))
+			{
+				tipoArtista_printTiposArtistaPorIndex(listaTiposDeArtista, i);
+			}
+		}
+	}
+	return retorno;
+}
+
+/*
+ * \brief Recibe un index de la lista e imprime su contenido.
+ * \param listaArtistas eArtista* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaArtistas int Recibe por valor el tamaño del array
+ *
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 						0 si la operacion se realizo correctamente
+ */
+int tipoArtista_printTiposArtistaPorIndex(eTipoArtista* listaTiposDeArtista, int indiceTiposArtista)
+{
+	int retorno;
+	retorno = -1;
+
+	if(listaTiposDeArtista!= NULL && indiceTiposArtista >=0)
+	{
+		retorno = 0;
+
+		printf(" %-7d %s\n",
+				listaTiposDeArtista[indiceTiposArtista].idTipoArtista,
+				listaTiposDeArtista[indiceTiposArtista].descripcion);
+	}
+
+	return retorno;
 }
 
 /*
@@ -890,6 +934,49 @@ int art_printArtistaPorIndex(eArtista* listaArtistas, int indiceRecibidoArtistas
 
 	return retorno;
 }
+/********************************************************/
+
+/**
+ * \brief Imprime el encabezado de la lista indicada
+ * \param codigoLista int Recibe el código del encabezado que se desea imprimir
+ * 						(1) Encabezado lista album (general)
+ * 						(2) Encabezado lista formatos de album
+ * 						(3) Encabezado lista géneros de album
+ * 						(4) Encabezado lista de artistas
+ * \return void
+ *
+ */
+void print_unEncabezado(int codigoLista)
+{
+	if(codigoLista >= 0 && codigoLista <= 5){
+		switch (codigoLista) {
+		case 1:
+			//1- encabezado general
+			printf("\nCODIGO ID\t\tTITULO DEL ALBUM\t\tGENERO\t\tFECHA DE PUBLICACION\tTIPO ALBUM\tIMPORTE\t\tARTISTA\t\tTIPO ARTISTA\n");
+			break;
+		case 2:
+			//2- lista de formatos de album
+			printf("\nCODIGO\tFORMATO DE VENTA\n");
+			break;
+		case 3:
+			//3- lista de generos de un album
+			printf("\nCODIGO\tGENERO ALBUM\n");
+			break;
+		case 4:
+			//4- lista artista
+			printf("\nCODIGO\tNOMBRE ARTISTA\n");
+			break;
+		case 5:
+			//5- lista tipos artista
+			printf("\nCODIGO\tTIPO ARTISTA\n");
+			break;
+		case 0:
+			break;
+		}
+	}
+}
+
+/********************************************************/
 
 /**
 * \brief solicita por buffer el codigo id de un artista de la lista
@@ -1104,7 +1191,7 @@ int generoAlbum_printListaGenerosDeAlbum(eGenero* listaGenerosDeAlbum, int sizeL
 	if(listaGenerosDeAlbum!= NULL && sizeListaGenerosDeAlbum>0)
 	{
 		retorno = 0;
-		generoAlbum_printEncabezado();
+		print_unEncabezado(3);
 		for(i=0; i<sizeListaGenerosDeAlbum; i++)
 		{
 			if( !validacionesInt_sonIdenticos(listaGenerosDeAlbum[i].isEmpty,IS_EMPTY))
@@ -1509,3 +1596,271 @@ int alb_setFormatoVentaAlbumPorId(eAlbum* listaAlbum, int indexUnAlbum, eTipoAlb
 	}
 	return retorno;
 }
+
+//*******informes********//
+
+int informes_informarCantAlbumsPreviosAlDosMil(eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int retorno;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum >0)
+	{
+		printf("Cantidad de albumes previos al 2000: %d", informes_analizarAlbumsPreviosAlDosmil(listaAlbum,sizeListaAlbum));
+	}
+	return retorno;
+}
+
+int informes_informarTotalyPromedioDeImportes(eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int retorno;
+	float sumatoriaImportes;
+	float promedio;
+
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum >0)
+	{
+		sumatoriaImportes = informes_calcularPromedioImportes(listaAlbum, sizeListaAlbum, &promedio);
+		if(sumatoriaImportes > 0)
+		{
+			printf("Total y promedio de importes cargados\nTOTAL $%.2f\nPROMEDIO $%.2f\n\n", sumatoriaImportes, promedio);
+			retorno=0;//retorna -1 si hubo un error. >0 si opero correctamente (retorna el promedio)
+		}
+		else
+		{
+			printf("No se encontraron albumes cargados");
+		}
+	}
+	return retorno;
+}
+
+float informes_calcularPromedioImportes(eAlbum* listaAlbum, int sizeListaAlbum, float* promedio)
+{
+	int retorno;
+	int cantAlbumsCargados;
+	float sumatoriaImportes;
+
+	retorno = -1;
+	if(listaAlbum!= NULL && sizeListaAlbum>0 && promedio != NULL)
+	{
+		cantAlbumsCargados = alb_contadorAlbumesCargados(listaAlbum, sizeListaAlbum);
+		sumatoriaImportes = informes_sumatoriaImportes(listaAlbum, sizeListaAlbum);
+		*promedio = sumatoriaImportes/(float)cantAlbumsCargados;
+		retorno = sumatoriaImportes;
+	}
+	return retorno;
+}
+
+/*
+ * \brief Recorre el array recibido para sumar los campos importe de cada album recorrido
+ * \param listaAlbum eAlbum* Recibe la direccion de memoria del array sobre el cual va a trabajar
+ * \param sizeListaAlbum int Recibe por valor el tamaño del array
+ * \return retorna int -1 si hubo un error en los parametros recibidos
+ * 					   >=0 si la operacion se realizo correctamente(retorna la sumatoria total)
+ *
+ */
+float informes_sumatoriaImportes(eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	float retorno;
+	int i;
+	float sumatoria;
+	retorno= -1;
+	sumatoria=0;
+
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		retorno = 0;
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY))
+			{
+				sumatoria=sumatoria+listaAlbum[i].importeAlbum;
+			}
+		}
+		retorno=sumatoria;
+	}
+	return retorno;
+}
+
+int informes_analizarAlbumsPreviosAlDosmil(eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int retorno;
+	int i;
+	int cantPreviosAlDosmil;
+	retorno= -1;
+	cantPreviosAlDosmil=0;
+
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY)
+					&& listaAlbum[i].fechaPublicacionAlbum.year < 2000)
+			{
+				cantPreviosAlDosmil++;
+			}
+		}
+		retorno=cantPreviosAlDosmil;
+	}
+	return retorno;
+}
+
+//listas
+int puntoCinco(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		printf("\nA. Lista de Generos de Albumes");
+		generoAlbum_printListaGenerosDeAlbum(listaGenerosDeAlbum, sizeListaGenerosDeAlbum);
+
+		printf("\n\nB. Lista de Tipos de Artistas Musicales");
+		tipoArtista_printListaTiposArtista(listaTiposDeArtista, sizeListaTiposDeArtista);
+
+		printf("\n\nC. Lista de Artistas Cargados");
+		art_printListaArtista(listaArtistas, sizeListaArtistas);
+
+		printf("\n\nD. Lista de Todos los Albumes Cargados");
+		alb_printListaCompleta(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+
+		printf("\n\nE. Lista de Albumes Ordenados: segun importe(descendente) y segun titulo(ascendente)");
+		alb_printListaCompletaOrdenada(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+
+		printf("\n\nF. Lista de Albumes publicados antes del 1/1/2000\n");
+		informes_printAlbumsPreviosAlDosmil(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+
+		printf("\n\nG. Lista de Albumes de Importe Mayor al promedio de los cargados\n");
+		informes_printAlbumsImporteMayorAlPromedio(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+
+		printf("\n\nH. Lista de Albumes según Artista\n");
+
+
+	}
+	return retorno;
+}
+
+int informes_printAlbumsPreviosAlDosmil(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int i;
+	int cantPreviosAlDosmil;
+	retorno= -1;
+	cantPreviosAlDosmil=0;
+
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY)
+					&& listaAlbum[i].fechaPublicacionAlbum.year < 2000)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+			}
+		}
+		retorno=cantPreviosAlDosmil;
+	}
+	return retorno;
+}
+
+int informes_printAlbumsImporteMayorAlPromedio(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int i;
+	float promedio;
+
+	retorno= -1;
+	informes_calcularPromedioImportes(listaAlbum, sizeListaAlbum, &promedio);
+	printf("\nPromedio de importes: $%.2f\n", promedio);
+	if(listaAlbum!= NULL && sizeListaAlbum>0)
+	{
+		print_unEncabezado(1);
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY)
+					&& listaAlbum[i].importeAlbum > promedio)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+			}
+		}
+		retorno=0;
+	}
+	return retorno;
+}
+
+int alb_swap(eAlbum* listaAlbum, int index1, int index2)
+{
+	int retorno;
+	eAlbum auxPass;
+	retorno = -1;
+	if(listaAlbum!= NULL)
+	{
+		auxPass= listaAlbum[index1];
+		listaAlbum[index1]= listaAlbum[index2];
+		listaAlbum[index2]= auxPass;
+		retorno=0;
+	}
+	return retorno;
+}
+
+int alb_printListaCompletaOrdenada(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas>0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista >0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum>0)
+	{
+		if(!alb_ordenarLista(listaAlbum, sizeListaAlbum))
+		{
+			alb_printListaCompleta(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+		}
+		retorno=0;
+	}
+	return retorno;
+}
+
+int alb_ordenarLista(eAlbum* listaAlbum, int sizeListaAlbum)
+{
+	int retorno;
+	int i;
+	int retornoCompare;
+	int flagSwap;
+	int nuevoLimite;
+
+	retorno = -1;
+
+	if(listaAlbum != NULL && sizeListaAlbum>0)
+	{
+		retorno = 0;
+		nuevoLimite = sizeListaAlbum -1;
+		do{
+			flagSwap = 0;
+			for(i=0; i<nuevoLimite; i++)
+			{
+				if(		listaAlbum[i].isEmpty== NOT_EMPTY
+						&& listaAlbum[i+1].isEmpty == NOT_EMPTY
+						&& listaAlbum[i].importeAlbum<listaAlbum[i+1].importeAlbum)
+				{
+					alb_swap(listaAlbum, i, i+1);
+					flagSwap = 1;
+				}else if(listaAlbum[i].isEmpty== NOT_EMPTY
+						&& listaAlbum[i+1].isEmpty == NOT_EMPTY
+						&& listaAlbum[i].importeAlbum==listaAlbum[i+1].importeAlbum)
+				{
+					arrayChar_convertirASustantivoPropio(listaAlbum[i].titulo, strlen(listaAlbum[i].titulo));
+					arrayChar_convertirASustantivoPropio(listaAlbum[i+1].titulo, strlen(listaAlbum[i+1].titulo));
+
+					retornoCompare = strncasecmp(listaAlbum[i].titulo, listaAlbum[i+1].titulo,STR_SIZE);
+					if(retornoCompare>0)
+					{
+						alb_swap(listaAlbum, i, i+1);
+						flagSwap = 1;
+					}
+				}
+			}
+			nuevoLimite --;
+		}while(flagSwap);
+	}
+
+	return retorno;
+}
+
+//int informes_printAlbumsSegunArtista()

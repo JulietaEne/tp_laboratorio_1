@@ -94,22 +94,22 @@ int main(void) {
 					printf("Aun no se han cargado datos en el programa\n");
 				}
 				break;
-			/*case 4:
+			case 4:
 				printf("\nINFORMES\n");
 				if(contadorCargados>0)
 				{
 					informes_informarTotalyPromedioDeImportes(listAlbum, QTY_ALBUM);
-					informes_informarCantAlbumPrevioAlDosMil(listAlbum, QTY_ALBUM);
+					informes_informarCantAlbumsPreviosAlDosMil(listAlbum, QTY_ALBUM);
 				}
 				break;
 			case 5:
 				printf("\nListas");
 				if(contadorCargados>0)
 				{
-					puntoCinco(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM,listaGenero, QTY_GENERO, listaType, QTY_TYPE);
+					puntoCinco(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
 				}
 				break;
-			case 6:
+			/*case 6:
 				printf("\nCONSIGNAS PARTE 2 EXAMEN -- RECUPERATORIO\n");
 
 				printf("\n\nListar todos los tipos de álbumes.\n");
