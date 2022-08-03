@@ -1733,7 +1733,13 @@ int puntoCinco(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, 
 		informes_printAlbumsImporteMayorAlPromedio(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
 
 		printf("\n\nH. Lista de Albumes según Artista\n");
+		informes_printAlbumsSegunArtista(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
 
+		printf("\n\nI. Lista todos los albumes de un año determinado\n");
+		informes_printAlbumSegunAnno(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+
+		printf("\n\nJ. Lista de Albumes más caros\n");
+		print_albumsMayorImporte(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
 
 	}
 	return retorno;
@@ -1863,4 +1869,140 @@ int alb_ordenarLista(eAlbum* listaAlbum, int sizeListaAlbum)
 	return retorno;
 }
 
-//int informes_printAlbumsSegunArtista()
+int informes_printAlbumsSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int i;
+	int j;
+	int flagAlbumDeArtista;
+
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas>0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista >0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum>0)
+	{
+		retorno = 0;
+		for(i=0; i<sizeListaArtistas; i++)
+		{
+			printf("\nAlbumes de %s\n", listaArtistas[i].nombre);
+			flagAlbumDeArtista =0;
+			for(j=0; j<sizeListaAlbum; j++)
+			{
+				if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY)
+						&& listaArtistas[i].idArtistaDelAlbum == listaAlbum[j].artistaDelAlbumFk)
+				{
+					alb_printUnAlbum(j, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+					flagAlbumDeArtista=1;
+				}
+			}
+			if(!flagAlbumDeArtista)
+			{
+				printf("aun no tiene albums cargados");
+			}
+		}
+	}
+	return retorno;
+}
+
+int informes_printAlbumSegunAnno(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int anno;
+	int i;
+	int flagAlgumPorAnno;
+
+	retorno = -1;
+	flagAlgumPorAnno = 0;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas>0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista >0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum>0)
+	{
+		utn_GetNumeroInt(&anno, "Ingrese el año que desea buscar: ", "ingrese un dato valido (1920-2022)", MIN_YEAR, MAX_YEAR, REINTENTOS);
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY)
+					&& listaAlbum[i].fechaPublicacionAlbum.year == anno)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				flagAlgumPorAnno = 1;
+			}
+		}
+		if(!flagAlgumPorAnno)
+		{
+			printf("El año %d aun no tiene albums cargados", anno);
+		}
+	}
+	return retorno;
+}
+
+
+int informes_hayarMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, float* mayorImporte)
+{
+	int retorno;
+	int i;
+	float importeMayor;
+
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && mayorImporte != NULL)
+	{
+		retorno=0;
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(i==0 || (listaAlbum[i].isEmpty == NOT_EMPTY && importeMayor < listaAlbum[i].importeAlbum))
+			{
+				importeMayor = listaAlbum[i].importeAlbum;
+			}
+		}
+		*mayorImporte = importeMayor;
+	}
+	return retorno;
+}
+
+int print_albumsMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int i;
+	float mayorImporte;
+
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas>0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista >0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum>0)
+	{
+		informes_hayarMayorImporte(listaAlbum, sizeListaAlbum, &mayorImporte);
+
+		retorno = 0;
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(validacionesInt_sonIdenticos(listaAlbum[i].isEmpty, NOT_EMPTY)
+					&& listaAlbum[i].importeAlbum == mayorImporte)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+			}
+		}
+	}
+	return retorno;
+}
+//consignas examen parte dos
+int consignasParteDosExamen(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		printf("\nA. Informar la cantidad de solistas de un año determinado");
+
+		printf("\n\nB. Listado de todos los albumes de un tipo de album y de un genero determinado");
+
+	}
+	return retorno;
+}
+
+//consignas recuperatorio
+int consignasRecuperatorio(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		printf("\nA. Informar la cantidad de solistas de un año determinado");
+
+		printf("\n\nB. Listado de todos los albumes de un tipo de album y de un genero determinado");
+
+	}
+	return retorno;
+}

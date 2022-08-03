@@ -167,6 +167,10 @@ int informes_printAlbumsImporteMayorAlPromedio(eAlbum* listaAlbum, int sizeLista
 int alb_swap(eAlbum* listaAlbum, int index1, int index2);
 int alb_printListaCompletaOrdenada(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
 int alb_ordenarLista(eAlbum* listaAlbum, int sizeListaAlbum);
+int informes_printAlbumsSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int informes_printAlbumSegunAnno(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int informes_hayarMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, float* mayorImporte);
+int print_albumsMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
 
 //**********************************************************
 //PP LABO - PARTE 2

@@ -39,7 +39,7 @@ int main(void) {
 			inicioPrograma(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM, &ultimoCodigoIdAlbum);
 			contadorCargados=alb_contadorAlbumesCargados(listAlbum, QTY_ALBUM);
 		}
-		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN -- RECUPERATORIO\n7- SALIR");
+		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN \n7- RECUPERATORIO \n8- RECUPERATORIO INSTANCIA FINAL\n9- SALIR");
 		switch (menuPrincipal)
 		{
 			case 1:
@@ -101,6 +101,10 @@ int main(void) {
 					informes_informarTotalyPromedioDeImportes(listAlbum, QTY_ALBUM);
 					informes_informarCantAlbumsPreviosAlDosMil(listAlbum, QTY_ALBUM);
 				}
+				else
+				{
+					printf("Aun no se han cargado datos en el programa\n");
+				}
 				break;
 			case 5:
 				printf("\nListas");
@@ -108,39 +112,31 @@ int main(void) {
 				{
 					puntoCinco(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
 				}
+				else
+				{
+					printf("Aun no se han cargado datos en el programa\n");
+				}
 				break;
-			/*case 6:
-				printf("\nCONSIGNAS PARTE 2 EXAMEN -- RECUPERATORIO\n");
-
-				printf("\n\nListar todos los tipos de álbumes.\n");
-				tipoAlbum_printListaTipoAlbum(listaTipoAlbum, QTY_TIPO_ALBUM);
-
-				printf("\n\nListar todos los albumes que no sean de vinilo\n");
-				printAlbumNoVinilo(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
-*/
-				/*printf("\n\nListar todos los albumes de vinilo que correspondan a un artista determinado.\n");
-				do{
-					printViniloSegunArtista(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaTipoAlbum, QTY_TIPO_ALBUM, listaGenero, QTY_GENERO);
-					retornoFuncion = continuar("desea consultar otro artista?");
-				}while(retornoFuncion);*/
-
-				/*
-				 * Informar la cantidad de álbumes de un tipo de álbum determinado y de un género determinado.*/
-				/*do{
-					recu_puntoUno(listAlbum, QTY_ALBUM, listArtista, QTY_ARTIST, listaGenero, QTY_GENERO, listaType, QTY_TYPE, listaTipoAlbum, QTY_TIPO_ALBUM);
-					retornoFuncion = continuar("desea consultar otro artista?");
-				}while(retornoFuncion);*/
-				/*
-					 Realizar un solo listado de todos los álbumes de solistas de un año determinado. El listado debe tener los
-					siguientes datos: Id, Título, Fecha de publicación, Importe, Descripción del género, Descripción del tipo
-					de artista, Descripción del artista y Descripción del tipo de álbum.
-				 *
-				 * */
-
-
-				//break;
+			case 6:
+				printf("\nCONSIGNAS EXAMEN PARTE 2\n");
+				if(contadorCargados>0)
+				{
+					consignasParteDosExamen(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
+				}
+				else
+				{
+					printf("Aun no se han cargado datos en el programa\n");
+				}
+				break;
+			case 7:
+				printf("\nCONSIGNAS RECUPERATORIO\n");
+				if(contadorCargados>0)
+				{
+					consignasRecuperatorio(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
+				}
+				break;
 		}
-	}while(menuPrincipal != 7);
+	}while(menuPrincipal != 9);
 	printf("Saliendo...\n Muchas gracias!");
 return EXIT_SUCCESS;
 }
