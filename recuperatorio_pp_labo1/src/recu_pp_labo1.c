@@ -39,7 +39,7 @@ int main(void) {
 			inicioPrograma(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM, &ultimoCodigoIdAlbum);
 			contadorCargados=alb_contadorAlbumesCargados(listAlbum, QTY_ALBUM);
 		}
-		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- PARTE 2 EXAMEN \n7- RECUPERATORIO \n8- RECUPERATORIO INSTANCIA FINAL\n9- SALIR");
+		menuPrincipal = tp_ImprimirMenuSeisOpciones("\n\nMENU", "1- Alta de album", "2- Modificacion de album", "3- Baja de album", "4- Informes", "5- Listas solicitadas", "6- 2da Parte del Examen \n7- Recuperatorio \n8- RECUPERATORIO INSTANCIA FINAL\n9- Salir");
 		switch (menuPrincipal)
 		{
 			case 1:
@@ -133,6 +133,13 @@ int main(void) {
 				if(contadorCargados>0)
 				{
 					consignasRecuperatorio(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
+				}
+				break;
+			case 8:
+				printf("\nCONSIGNAS RECUPERATORIO INSTANCIA FINAL 4/8/2022\n");
+				if(contadorCargados>0)
+				{
+					consignasRecuperatorioInstanciaFinal(listAlbum, QTY_ALBUM, listaArtistas, QTY_ARTISTAS, listaGenerosDeAlbum, QTY_GENERO_ALBUM, listaTiposDeArtista, QTY_TIPO_DE_ARTISTA, listaFormatosAlbum, QTY_FORMATOS_ALBUM);
 				}
 				break;
 		}

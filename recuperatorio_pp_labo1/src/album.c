@@ -113,7 +113,7 @@ int alb_cargaForzadaDatosDeAlbum(eAlbum* listaAlbum, int sizeListaAlbum)
 			{101, "El disco de tu corazon",{1,1,2017}, 2050,2,2,2,1,NOT_EMPTY},
 			{102, "Sin restricciones",{1,5,2004},2500,2,2,2,3, NOT_EMPTY},
 			{103, "El templo del pop",{1,8,2014},2500,2,2,2,3, NOT_EMPTY},
-			{104, "Master of puppets",{1,10,1986}, 1800,3,3,2,3,NOT_EMPTY},
+			{104, "Master of puppets",{1,10,1986}, 1800,3,3,1,3,NOT_EMPTY},
 			{105, "Dapódromo",{1,10,1996},1900,1,1,1,2,NOT_EMPTY},
 			{000, "",{},0,0,0,0,0,IS_EMPTY},
 			{000, "",{},0,0,0,0,0,IS_EMPTY},
@@ -257,13 +257,13 @@ int inicioPrograma(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtist
 {
 	int retorno;
 	int auxId;
-	int confirmar=1;
+	int confirmar;
 
 	retorno = -1;
 	auxId = *ultimoId;
 	if(listaAlbum != NULL && listaArtistas != NULL && listaGenerosDeAlbum && listaTiposDeArtista != NULL)
 	{
-		//confirmar = continuar("desea hardcodear 5 datos?");
+		confirmar = continuar("desea hardcodear 5 datos?");
 		if(confirmar){
 			alb_initListaAlbum(listaAlbum, sizeListaAlbum);
 			alb_cargaForzadaDatosDeAlbum(listaAlbum, sizeListaAlbum);
@@ -777,8 +777,10 @@ int alb_getImporte(float* importeAlbum)
 }
 
 /**
- * \brief interactua con el usuario para solicitar el precio del album
- * \param importa float* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \brief interactua con el usuario para solicitar el nombre de un artista
+ * \param listaArtistas eArtista* Recibe la direccion de memoria del array donde se guardara el dato ingresado
+ * \param sizeListaArtista int Recibe el tamaño de la lista
+ * \param idNombreArtistaFk int* Recibe la dirección de memoria donde se va a alojar el dato hayado
  * \return retorna -1 si hubo un error en los parametros recibidos
  * 		  			0 si la operacion se realizo correctamente
  *
@@ -1165,7 +1167,7 @@ int generoAlbum_pedirGeneroDeAlbum(eGenero* listaGenerosDeAlbum, int sizeListaGe
 			unId =0;
 			generoAlbum_printListaGenerosDeAlbum(listaGenerosDeAlbum, sizeListaGenerosDeAlbum);
 			utn_GetNumeroInt(&unId, "Ingrese el codigo de Genero del Album: ", "ingrese un codigo valido\n", 1, QTY_GENERO_ALBUM, REINTENTOS);
-			if(unId<QTY_GENERO_ALBUM && unId>0)
+			if(unId<=QTY_GENERO_ALBUM && unId>0)
 			{
 				idGenero= unId;
 			}
@@ -1977,17 +1979,73 @@ int print_albumsMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* l
 	}
 	return retorno;
 }
-//consignas examen parte dos
+
+//consignasParteDosExamen
 int consignasParteDosExamen(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
 {
 	int retorno;
 	retorno = -1;
 	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
 	{
-		printf("\nA. Informar la cantidad de solistas de un año determinado");
+		printf("\nA. Listar todos los albumes que no sean de vinilo\n");
+		examenParteDos_printNoVinilos(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
 
-		printf("\n\nB. Listado de todos los albumes de un tipo de album y de un genero determinado");
+		printf("\n\nB. Listar todos los albumes de vinilo que correspondan a un artista determinado");
+		examenParteDos_printViniloSegunArtistaDeterminado(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+	}
+	return retorno;
+}
 
+int examenParteDos_printNoVinilos(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int i;
+
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		retorno = 0;
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty == NOT_EMPTY && listaAlbum[i].formatoDelAlbumFk != VINILO)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+			}
+		}
+	}
+	return retorno;
+}
+
+int examenParteDos_printViniloSegunArtistaDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int idArtistaElegido;
+	int i;
+	int flagTieneAlbums;
+
+	flagTieneAlbums = 0;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		retorno = 0;
+		alb_getArtistaPorId(listaArtistas, sizeListaArtistas, &idArtistaElegido);
+
+		printf("\n... buscando en el sistema album tipo vinilo **ARTISTA:%s** ...\n", listaArtistas[idArtistaElegido-1].nombre);
+
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty == NOT_EMPTY
+					&& listaAlbum[i].artistaDelAlbumFk == idArtistaElegido
+					&& listaAlbum[i].formatoDelAlbumFk == VINILO)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				flagTieneAlbums = 1;
+			}
+		}
+		if(!flagTieneAlbums)
+		{
+			printf("El artista %s aún no tiene albums cargados en el sistema", listaArtistas[idArtistaElegido-1].nombre);
+		}
 	}
 	return retorno;
 }
@@ -1999,10 +2057,151 @@ int consignasRecuperatorio(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* lis
 	retorno = -1;
 	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
 	{
-		printf("\nA. Informar la cantidad de solistas de un año determinado");
+		printf("\nA. Informar la cantidad de solistas de un año determinado\n");
+		recuperatorio_contadorSolistasSegunAnnoDeterminado(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
 
-		printf("\n\nB. Listado de todos los albumes de un tipo de album y de un genero determinado");
+		printf("\n\nB. Listado de todos los albumes de un tipo de album y de un genero determinado\n\n  Según el tipo de album y el género que desea hallar, indique lo siguiente\n");
+		recuperatorio_listarAlbumesSegunTipoYgeneroDeterminado(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+	}
+	return retorno;
+}
 
+int recuperatorio_contadorSolistasSegunAnnoDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int anno;
+	int i;
+	int contador;
+
+	contador = 0;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		utn_GetNumeroInt(&anno, "Ingrese el año que desea buscar: ", "ingrese un dato valido (1920-2022)", MIN_YEAR, MAX_YEAR, REINTENTOS);
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty == NOT_EMPTY && listaAlbum[i].fechaPublicacionAlbum.year == anno && listaAlbum[i].tipoArtistaFk == SOLISTA)
+			{
+				contador++;
+			}
+		}
+
+		printf("La cantidad de bandas para el año %d es de: %d", anno, contador);
+
+	}
+	return retorno;
+}
+
+int recuperatorio_listarAlbumesSegunTipoYgeneroDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int formatoAlbumElegido;
+	int generoAlbumElegido;
+	int i;
+	int flagHalloFormatoYGenero;
+
+	flagHalloFormatoYGenero = 0;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		retorno = 0;
+		alb_getFormatoVentaAlbumPorId(listaFormatosAlbum, sizeListaFormatosAlbum, &formatoAlbumElegido);
+		alb_getGeneroAlbumPorId(listaGenerosDeAlbum, sizeListaGenerosDeAlbum, &generoAlbumElegido);
+
+		printf("\n... buscando en el sistema **TIPO ALBUM:%s - GENERO:%s** ...\n", listaFormatosAlbum[formatoAlbumElegido-1].descripcion, listaGenerosDeAlbum[generoAlbumElegido-1].descripcion);
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty == NOT_EMPTY
+					&& listaAlbum[i].formatoDelAlbumFk == formatoAlbumElegido
+					&& listaAlbum[i].generoDelAlbumFk == generoAlbumElegido)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				flagHalloFormatoYGenero =1;
+			}
+		}
+		if(!flagHalloFormatoYGenero)
+		{
+			printf("Aun no se han cargado albumes del formato y género indicados");
+		}
+	}
+	return retorno;
+}
+
+int consignasRecuperatorioInstanciaFinal(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	retorno = -1;
+	{
+		if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+		{
+			printf("\nA. Informar la cantidad de bandas de un género determinado.Para continuar, indique el género sobre el cual desea contabilizar:");
+			recuperatorioFinal_printContadorBandasPorDeterminadoGenero(listaAlbum, sizeListaAlbum, listaGenerosDeAlbum, sizeListaGenerosDeAlbum);
+
+			printf("\n\nB. listado de todos los álbumes de un artista determinado y de un tipo de álbum\n\n  Según el tipo de album y el género que desea hallar, indique lo siguiente\n");
+			recuperatorioFinal_printSegunArtistaYTipoAlbumDeterminado(listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+		}
+
+	}
+	return retorno;
+}
+/*
+ * Pido el id del genero que quiero contabilizar
+ * Recorro el array para analizar el campo correspondiente al idGenero => si es == al idIngresado
+ * Si hay coincidencia y si tambien es BANDA, contabiliza
+ *
+ *
+ * */
+void recuperatorioFinal_printContadorBandasPorDeterminadoGenero(eAlbum* listaAlbum, int sizeListaAlbum,eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum)
+{
+	int idGeneroIngresado;
+	int i;
+	int contadorBandas;
+
+	contadorBandas = 0;
+	alb_getGeneroAlbumPorId(listaGenerosDeAlbum, sizeListaGenerosDeAlbum, &idGeneroIngresado);
+
+	for(i=0; i<sizeListaAlbum; i++)
+	{
+		if(		listaAlbum[i].isEmpty == NOT_EMPTY
+				&& listaAlbum[i].generoDelAlbumFk == idGeneroIngresado
+				&& listaAlbum[i].tipoArtistaFk == BANDA)
+		{
+			contadorBandas++;
+		}
+	}
+	printf("En el género indicado la cantidad de albumes de BANDAS cargadas es de: %d", contadorBandas);
+}
+
+int recuperatorioFinal_printSegunArtistaYTipoAlbumDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum)
+{
+	int retorno;
+	int formatoAlbumElegido;
+	int artistaElegido;
+	int i;
+	int flagHalloFormatoYArtista;
+
+	flagHalloFormatoYArtista = 0;
+	retorno = -1;
+	if(listaAlbum != NULL && sizeListaAlbum>0 && listaArtistas != NULL && sizeListaArtistas> 0 && listaGenerosDeAlbum != NULL && sizeListaGenerosDeAlbum >0 && listaTiposDeArtista != NULL && sizeListaTiposDeArtista>0 && listaFormatosAlbum != NULL && sizeListaFormatosAlbum)
+	{
+		retorno = 0;
+		alb_getFormatoVentaAlbumPorId(listaFormatosAlbum, sizeListaFormatosAlbum, &formatoAlbumElegido);
+		alb_getArtistaPorId(listaArtistas, sizeListaArtistas, &artistaElegido);
+
+		printf("\n... buscando en el sistema **TIPO ALBUM:%s - ARTISTA:%s** ...\n", listaFormatosAlbum[formatoAlbumElegido-1].descripcion, listaArtistas[artistaElegido-1].nombre);
+		for(i=0; i<sizeListaAlbum; i++)
+		{
+			if(listaAlbum[i].isEmpty == NOT_EMPTY
+					&& listaAlbum[i].formatoDelAlbumFk == formatoAlbumElegido&& listaAlbum[i].artistaDelAlbumFk == artistaElegido)
+			{
+				alb_printUnAlbum(i, listaAlbum, sizeListaAlbum, listaArtistas, sizeListaArtistas, listaGenerosDeAlbum, sizeListaGenerosDeAlbum, listaTiposDeArtista, sizeListaTiposDeArtista, listaFormatosAlbum, sizeListaFormatosAlbum);
+				flagHalloFormatoYArtista =1;
+			}
+		}
+		if(!flagHalloFormatoYArtista)
+		{
+			printf("Aun no se han cargado albumes del formato y artista indicados");
+		}
 	}
 	return retorno;
 }

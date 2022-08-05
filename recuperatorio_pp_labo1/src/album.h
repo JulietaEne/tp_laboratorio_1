@@ -46,7 +46,8 @@
 
 #define QTY_FORMATOS_ALBUM 3
 #define VINILO 1
-
+#define SOLISTA 1
+#define BANDA 2
 
 struct
 {
@@ -171,7 +172,6 @@ int informes_printAlbumsSegunArtista(eAlbum* listaAlbum, int sizeListaAlbum, eAr
 int informes_printAlbumSegunAnno(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
 int informes_hayarMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, float* mayorImporte);
 int print_albumsMayorImporte(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
-
 //**********************************************************
 //PP LABO - PARTE 2
 int formatoAlbum_cargaForzadaFormatosAlbum(eTipoAlbum* listaFormatosALbum, int sizelistaFormatosAlbum);
@@ -179,7 +179,20 @@ int formatoAlbum_pedirFormatoAlbum(eTipoAlbum* listaFormatosALbum, int sizeLista
 int formatoAlbum_printListaFormatoVentaDeAlbum(eTipoAlbum* listaFormatosALbum, int sizeListaFormatosALbum);
 void formatoAlbum_printEncabezado(void);
 int formatoAlbum_printPosicionFormatosAlbumPorIndex(eTipoAlbum* listaFormatosAlbum, int indiceRecibidoFormatosAlbum);
+int examenParteDos_printNoVinilos(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int examenParteDos_printViniloSegunArtistaDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int consignasParteDosExamen(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
 
 int alb_setFormatoVentaAlbumPorId(eAlbum* listaAlbum, int indexUnAlbum, eTipoAlbum* listaFormatosALbum, int sizelistaFormatosAlbum);
+//**********************************************************
+//PP LABO - RECU 1
+int consignasRecuperatorio(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int recuperatorio_contadorSolistasSegunAnnoDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+int recuperatorio_listarAlbumesSegunTipoYgeneroDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+//**********************************************************
+//PP LABO - RECU INSTANCIA FINAL
+int consignasRecuperatorioInstanciaFinal(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
+void recuperatorioFinal_printContadorBandasPorDeterminadoGenero(eAlbum* listaAlbum, int sizeListaAlbum,eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum);
+int recuperatorioFinal_printSegunArtistaYTipoAlbumDeterminado(eAlbum* listaAlbum, int sizeListaAlbum, eArtista* listaArtistas, int sizeListaArtistas, eGenero* listaGenerosDeAlbum, int sizeListaGenerosDeAlbum, eTipoArtista* listaTiposDeArtista, int sizeListaTiposDeArtista, eTipoAlbum* listaFormatosAlbum, int sizeListaFormatosAlbum);
 
 #endif /* ALBUM_H_ */

@@ -6,7 +6,6 @@
 C_SRCS += \
 ../src/album.c \
 ../src/arrays.c \
-../src/funciones_genericas.c \
 ../src/recu_pp_labo1.c \
 ../src/tp.c \
 ../src/utn.c \
@@ -15,7 +14,6 @@ C_SRCS += \
 OBJS += \
 ./src/album.o \
 ./src/arrays.o \
-./src/funciones_genericas.o \
 ./src/recu_pp_labo1.o \
 ./src/tp.o \
 ./src/utn.o \
@@ -24,7 +22,6 @@ OBJS += \
 C_DEPS += \
 ./src/album.d \
 ./src/arrays.d \
-./src/funciones_genericas.d \
 ./src/recu_pp_labo1.d \
 ./src/tp.d \
 ./src/utn.d \
